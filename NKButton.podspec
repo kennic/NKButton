@@ -21,12 +21,12 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/namkennic/NKButton'
+  s.homepage         = 'https://github.com/kennic/NKButton'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Nam Kennic' => 'namkennic@me.com' }
-  s.source           = { :git => 'https://github.com/namkennic/NKButton.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/namkennic'
+  s.source           = { :git => 'https://github.com/kennic/NKButton.git', :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/namkennic'
 
   s.ios.deployment_target = '8.0'
 
@@ -37,7 +37,7 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'UIKit'
   s.dependency 'NKFrameLayoutKit'
   s.dependency 'NVActivityIndicatorView'
   
