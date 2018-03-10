@@ -1,9 +1,11 @@
 # NKButton
 
-[![CI Status](http://img.shields.io/travis/Nam Kennic/NKButton.svg?style=flat)](https://travis-ci.org/namkennic/NKButton)
+[![CI Status](http://img.shields.io/travis/namkennic/NKButton.svg?style=flat)](https://travis-ci.org/namkennic/NKButton)
 [![Version](https://img.shields.io/cocoapods/v/NKButton.svg?style=flat)](http://cocoapods.org/pods/NKButton)
 [![License](https://img.shields.io/cocoapods/l/NKButton.svg?style=flat)](http://cocoapods.org/pods/NKButton)
 [![Platform](https://img.shields.io/cocoapods/p/NKButton.svg?style=flat)](http://cocoapods.org/pods/NKButton)
+
+A full customizable UIButton
 
 ## Example
 
