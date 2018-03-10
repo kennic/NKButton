@@ -1,0 +1,24 @@
+PODS:
+  - NKButton (0.1.0):
+    - NKFrameLayoutKit
+    - NVActivityIndicatorView
+  - NKFrameLayoutKit (1.8.6)
+  - NVActivityIndicatorView (4.1.1):
+    - NVActivityIndicatorView/Presenter (= 4.1.1)
+  - NVActivityIndicatorView/Presenter (4.1.1)
+
+DEPENDENCIES:
+  - NKButton (from `../`)
+
+EXTERNAL SOURCES:
+  NKButton:
+    :path: ../
+
+SPEC CHECKSUMS:
+  NKButton: 6404af768acafdb2b89dadd889f09061c1fedc47
+  NKFrameLayoutKit: 7e842c674b7a9940428552e584b733ef79c89f80
+  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
+
+PODFILE CHECKSUM: dbe818f19f0e34e07a9ae6071e0c42f8f0eb5551
+
+COCOAPODS: 1.4.0
