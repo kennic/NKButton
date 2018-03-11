@@ -236,9 +236,9 @@ open class NKButton: UIButton, CAAnimationDelegate {
 	public var hideTitleWhileLoading : Bool = true
 	/** Button will animated to circle shape when set `isLoading = true`*/
 	public var transitionToCircleWhenLoading : Bool = false
-	/** Color of loading indicator */
+	/** Style of loading indicator */
 	public var loadingIndicatorStyle : NVActivityIndicatorType = .ballPulse
-	/** Scale ratio of loading indicator, based on the minimum value of button size.width or size.height */
+	/** Scale ratio of loading indicator, based on the minimum value of button width or height */
 	public var loadingIndicatorScaleRatio : CGFloat = 0.7
 	/** Color of loading indicator, if `nil`, it will use titleColor of normal state */
 	public var loadingIndicatorColor : UIColor? = nil
@@ -296,7 +296,7 @@ open class NKButton: UIButton, CAAnimationDelegate {
 		self.setShadowColor(color, for: .normal)
 	}
 	
-	init() {
+	public init() {
 		super.init(frame: .zero)
 		
 		self.layer.addSublayer(shadowLayer)
