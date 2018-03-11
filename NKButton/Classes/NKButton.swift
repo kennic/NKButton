@@ -523,8 +523,8 @@ open class NKButton: UIButton, CAAnimationDelegate {
 				result = normalColor != nil ? normalColor!.withAlphaComponent(0.3) : nil
 			}
 			else if state == .highlighted && autoSetHighlightedColor {
-//				let normalColor = self.backgroundColor(for: .normal)
-//				result = normalColor != nil ? normalColor!.darkening(to: 0.5) : nil
+				let normalColor = self.backgroundColor(for: .normal)
+				result = normalColor != nil ? normalColor!.darker(by: 0.5) : nil
 			}
 		}
 		
@@ -541,8 +541,8 @@ open class NKButton: UIButton, CAAnimationDelegate {
 				result = normalColor != nil ? normalColor!.withAlphaComponent(0.3) : nil
 			}
 			else if state == .highlighted && autoSetHighlightedColor {
-//				let normalColor = self.borderColor(for: .normal)
-//				result = normalColor != nil ? normalColor!.darkening(to: 0.5) : nil
+				let normalColor = self.borderColor(for: .normal)
+				result = normalColor != nil ? normalColor!.darker(by: 0.5) : nil
 			}
 		}
 		
@@ -664,6 +664,34 @@ open class NKButton: UIButton, CAAnimationDelegate {
 	deinit {
 		backgroundLayer.removeAllAnimations()
 		shadowLayer.removeAllAnimations()
+	}
+	
+}
+
+// MARK: -
+
+fileprivate extension UIColor {
+	
+	func lighter(by value:CGFloat = 0.5) -> UIColor? {
+		return self.adjust(by: abs(value) )
+	}
+	
+	func darker(by value:CGFloat = 0.5) -> UIColor? {
+		return self.adjust(by: -1 * abs(value) )
+	}
+	
+	func adjust(by value:CGFloat = 0.5) -> UIColor? {
+		var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+		
+		if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
+			return UIColor(red: min(r + value, 1.0),
+						   green: min(g + value, 1.0),
+						   blue: min(b + value, 1.0),
+						   alpha: a)
+		}
+		else {
+			return nil
+		}
 	}
 	
 }

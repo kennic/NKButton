@@ -18,7 +18,6 @@ extension NKButton {
 		button.titleLabel?.font = UIFont(name: "Helvetica", size: 14)
 		
 		button.setBackgroundColor(color, for: .normal)
-//		button.setBackgroundColor(color.darkening(to: 0.2), for: .highlighted)
 		button.setShadowColor(color, for: .normal)
 		
 		button.shadowOffset = CGSize(width: 0, height: 5)
