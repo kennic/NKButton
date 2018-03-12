@@ -129,12 +129,9 @@ class ViewController: UIViewController {
 			button.isLoading = false
 			
 			/*
-			self.button.expandFullscreen(duration: 0.5, completionBlock: { (sender) in
+			button.expandFullscreen(duration: 0.5, completionBlock: { (sender) in
 				UIView.animate(withDuration: 0.25, animations: {
 					button.alpha = 0.0
-				}, completion: { (finished) in
-					button.alpha = 1.0
-					button.isLoading = false
 				})
 			})
 			*/
