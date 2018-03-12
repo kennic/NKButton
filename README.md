@@ -11,6 +11,8 @@ A full customizable UIButton
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+![NKButton](https://github.com/kennic/NKButton/blob/master/demo.gif)
+
 ## Requirements
 
 ## Installation
