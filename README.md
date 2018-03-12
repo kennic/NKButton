@@ -13,8 +13,6 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ![NKButton](https://github.com/kennic/NKButton/blob/master/demo.gif)
 
-## Requirements
-
 ## Installation
 
 NKButton is available through [CocoaPods](http://cocoapods.org). To install
@@ -70,6 +68,10 @@ button.transitionToCircleWhenLoading = true // animate to circle shape while in 
 
 button.isLoading = true // show loading indicator in the button, and button will be disabled automatically until setting isLoading = false
 ```
+
+For sparkle effect on tap:
+
+[NKSparkleButton](https://github.com/kennic/NKSparkleButton)
 
 ## Author
 
