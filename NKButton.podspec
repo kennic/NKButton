@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '1.2'
+  s.version          = '2.0'
   s.summary          = 'A full customizable UIButton'
 
 # This description is used to generate tags and improve search results.
@@ -29,7 +29,7 @@ TODO: Add long description of the pod here.
   s.social_media_url = 'https://twitter.com/namkennic'
 
   s.ios.deployment_target = '8.0'
-  s.swift_version = '4.0'
+  s.swift_version = '4.1'
   
   s.source_files = 'NKButton/Classes/**/*'
   

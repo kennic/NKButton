@@ -1,24 +1,29 @@
 PODS:
-  - NKButton (1.1):
+  - NKButton (1.2):
     - NKFrameLayoutKit
     - NVActivityIndicatorView
-  - NKFrameLayoutKit (1.8.7)
-  - NVActivityIndicatorView (4.1.1):
-    - NVActivityIndicatorView/Presenter (= 4.1.1)
-  - NVActivityIndicatorView/Presenter (4.1.1)
+  - NKFrameLayoutKit (1.9.6)
+  - NVActivityIndicatorView (4.2.1):
+    - NVActivityIndicatorView/Presenter (= 4.2.1)
+  - NVActivityIndicatorView/Presenter (4.2.1)
 
 DEPENDENCIES:
   - NKButton (from `../`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - NKFrameLayoutKit
+    - NVActivityIndicatorView
+
 EXTERNAL SOURCES:
   NKButton:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  NKButton: c2e68f72be3ddf7d3fd6b887134bd0912d5cfd43
-  NKFrameLayoutKit: 8f42f38532cdf725848c5466827ed398130df7d4
-  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
+  NKButton: aeee969e775d43c922a6ed5f86753c538c37629d
+  NKFrameLayoutKit: c529742dc3a0e523fee54f1d04b767cf0055e6ae
+  NVActivityIndicatorView: 8068ba3ad39cb44cbaab25d89ff2546b3f092681
 
 PODFILE CHECKSUM: dbe818f19f0e34e07a9ae6071e0c42f8f0eb5551
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
