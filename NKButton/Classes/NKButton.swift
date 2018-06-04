@@ -275,6 +275,17 @@ open class NKButton: UIButton, CAAnimationDelegate {
 		}
 	}
 	
+	public var backgroundView: UIView? = nil {
+		didSet {
+			if let view = backgroundView {
+				view.isUserInteractionEnabled = false
+				view.layer.masksToBounds = true
+				self.layer.insertSublayer(view.layer, at: 0)
+				self.setNeedsLayout()
+			}
+		}
+	}
+	
 	fileprivate var loadingView : NVActivityIndicatorView? = nil
 	fileprivate var animationationDidEnd : NKButtonAnimationCompletionBlock? = nil
 	fileprivate let shadowLayer 	= CAShapeLayer()
@@ -414,6 +425,9 @@ open class NKButton: UIButton, CAAnimationDelegate {
 			self.cornerRadius = viewSize.height / 2
 			self.setNeedsDisplay()
 		}
+		
+		backgroundView?.layer.cornerRadius = self.cornerRadius
+		backgroundView?.frame = self.bounds
 	}
 	
 	fileprivate func updateLayoutAlignment() {
