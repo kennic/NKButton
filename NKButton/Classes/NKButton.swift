@@ -450,7 +450,7 @@ open class NKButton: UIButton {
 			
 			frameLayout.leftFrameLayout.contentHorizontalAlignment = .right
 			frameLayout.leftFrameLayout.contentVerticalAlignment = .center
-			frameLayout.rightFrameLayout.contentHorizontalAlignment = toEdge ? .center : .left
+			frameLayout.rightFrameLayout.contentHorizontalAlignment = toEdge ? .center : .right
 			frameLayout.rightFrameLayout.contentVerticalAlignment = .center
 			break
 			

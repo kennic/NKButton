@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '2.4'
+  s.version          = '2.5'
   s.summary          = 'A fully customizable UIButton'
 
 # This description is used to generate tags and improve search results.
@@ -40,7 +40,7 @@ A fully customizable button that fills all lacked functions from UIButton like:
   s.ios.deployment_target = '8.0'
   s.swift_version = '4.1'
   
-  s.source_files = 'NKButton/Classes/**/*'
+  s.source_files = 'NKButton/Classes/*.swift'
   
   # s.resource_bundles = {
   #   'NKButton' => ['NKButton/Assets/*.png']

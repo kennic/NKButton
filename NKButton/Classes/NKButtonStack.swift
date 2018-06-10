@@ -16,6 +16,9 @@ public struct NKButtonItem {
 	var userInfo : Any?
 }
 
+public typealias NKButtonCreationBlock = ((_ item: NKButtonItem, _ index: Int) -> UIButton)
+public typealias NKButtonSelectionBlock = ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)
+
 public class NKButtonStack: UIControl {
 	
 	public var items : [NKButtonItem]? = nil {
@@ -73,11 +76,8 @@ public class NKButtonStack: UIControl {
 			return super.frame
 		}
 		set (value) {
-			let sizeChanged = true//self.frame.size != value.size
 			super.frame = value
-			if sizeChanged {
-				self.setNeedsLayout()
-			}
+			self.setNeedsLayout()
 		}
 	}
 	
@@ -86,11 +86,8 @@ public class NKButtonStack: UIControl {
 			return super.bounds
 		}
 		set (value) {
-			let sizeChanged = true//self.bounds.size != value.size
 			super.bounds = value
-			if sizeChanged {
-				self.setNeedsLayout()
-			}
+			self.setNeedsLayout()
 		}
 	}
 	
@@ -108,13 +105,11 @@ public class NKButtonStack: UIControl {
 		}
 		set {
 			frameLayout.layoutDirection = newValue
+			self.setNeedsLayout()
 		}
 	}
 	
 	public var isMomentary: Bool = true
-	
-	public typealias NKButtonCreationBlock = ((_ item: NKButtonItem, _ index: Int) -> UIButton)
-	public typealias NKButtonSelectionBlock = ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)
 	
 	public var buttonCreationBlock 		: NKButtonCreationBlock? = nil
 	public var buttonConfigurationBlock : NKButtonSelectionBlock? = nil
