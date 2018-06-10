@@ -18,7 +18,16 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+A fully customizable button that fills all lacked functions from UIButton like:
+        + setBackgroundColor:forState:
+        + setBorderColor:forState 
+        + setShadowColor:forState
+        + cornerRadius and roundedButton
+        + imageAlignment (left, top, bottom, right)
+        + set spacing between image and text
+        + set loading state with loading indicator from NVActivityIndicator
+        + animate to circle shape while loading
+        + a backgroundView to attach an UIVisualEffectView if you want
                        DESC
 
   s.homepage         = 'https://github.com/kennic/NKButton'
