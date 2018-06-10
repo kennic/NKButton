@@ -111,7 +111,7 @@ public class NKButtonStack: UIControl {
 		}
 	}
 	
-	public var isMomentary: Bool
+	public var isMomentary: Bool = true
 	
 	public var buttonCreationBlock 		: ((_ item: NKButtonItem, _ index: Int) -> UIButton)? = nil
 	public var buttonConfigurationBlock : ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)? = nil
