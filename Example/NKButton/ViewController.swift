@@ -24,7 +24,7 @@ extension NKButton {
 		button.shadowOpacity = 0.6
 		button.shadowRadius = 10
 		
-		button.roundedButton = true
+		button.isRoundedButton = true
 		
 		return button
 	}
@@ -76,7 +76,7 @@ class ViewController: UIViewController {
 		twitterButton.hideTitleWhileLoading = false
 		twitterButton.underlineTitleDisabled = true
 		twitterButton.loadingIndicatorStyle = .ballBeat
-		twitterButton.roundedButton = false
+		twitterButton.isRoundedButton = false
 		twitterButton.cornerRadius = 10.0
 		twitterButton.extendSize = CGSize(width: 50, height: 20)
 		
