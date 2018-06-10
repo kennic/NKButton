@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '2.3'
-  s.summary          = 'A full customizable UIButton'
+  s.version          = '2.4'
+  s.summary          = 'A fully customizable UIButton'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?

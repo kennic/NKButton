@@ -113,9 +113,12 @@ public class NKButtonStack: UIControl {
 	
 	public var isMomentary: Bool = true
 	
-	public var buttonCreationBlock 		: ((_ item: NKButtonItem, _ index: Int) -> UIButton)? = nil
-	public var buttonConfigurationBlock : ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)? = nil
-	public var buttonSelectionBlock 	: ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)? = nil
+	public typealias NKButtonCreationBlock = ((_ item: NKButtonItem, _ index: Int) -> UIButton)
+	public typealias NKButtonSelectionBlock = ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)
+	
+	public var buttonCreationBlock 		: NKButtonCreationBlock? = nil
+	public var buttonConfigurationBlock : NKButtonSelectionBlock? = nil
+	public var buttonSelectionBlock 	: NKButtonSelectionBlock? = nil
 	
 	internal let scrollView = UIScrollView()
 	internal var frameLayout : NKGridFrameLayout!
@@ -240,6 +243,8 @@ public class NKButtonStack: UIControl {
 			let item = items![index]
 			buttonSelectionBlock!(sender, item, index)
 		}
+		
+		self.sendActions(for: .valueChanged)
 	}
 	
 }

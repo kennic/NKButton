@@ -26,7 +26,7 @@ public enum NKButtonImageAlignment {
 	case bottom(toEdge:Bool)
 }
 
-open class NKButton: UIButton, CAAnimationDelegate {
+open class NKButton: UIButton {
 	
 	/** Set/Get title of the button */
 	public var title : String? {
@@ -144,7 +144,7 @@ open class NKButton: UIButton, CAAnimationDelegate {
 		}
 	}
 	
-	/** If `true`, title label will not underlined when `Settings > Accessibility > Button Shapes` is ON */
+	/** If `true`, title label will not be underlined when `Settings > Accessibility > Button Shapes` is ON */
 	public var underlineTitleDisabled : Bool = false {
 		didSet {
 			if underlineTitleDisabled != oldValue {
@@ -669,15 +669,19 @@ open class NKButton: UIButton, CAAnimationDelegate {
 		}
 	}
 	
+	deinit {
+		backgroundLayer.removeAllAnimations()
+		shadowLayer.removeAllAnimations()
+	}
+	
+}
+
+extension NKButton: CAAnimationDelegate {
+	
 	public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
 		if flag {
 			animationationDidEnd?(self)
 		}
-	}
-	
-	deinit {
-		backgroundLayer.removeAllAnimations()
-		shadowLayer.removeAllAnimations()
 	}
 	
 }
