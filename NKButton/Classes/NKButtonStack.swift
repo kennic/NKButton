@@ -41,7 +41,7 @@ public class NKButtonStack: UIControl {
 	
 	public var firstButton: UIButton? {
 		get {
-			return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.frameLayout(at: 0).targetView as? UIButton : nil
+			return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.firstFrameLayout().targetView as? UIButton : nil
 		}
 	}
 	
