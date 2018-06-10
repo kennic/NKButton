@@ -90,7 +90,7 @@ open class NKButton: UIButton, CAAnimationDelegate {
 	/** Extend size that will be included in sizeThatFits function */
 	public var extendSize : CGSize = .zero
 	
-	/** Corner Radius, will be ignored if `roundedButton` is true */
+	/** Corner Radius, will be ignored if `isRoundedButton` is true */
 	public var cornerRadius : CGFloat = 0 {
 		didSet {
 			if cornerRadius != oldValue {
@@ -136,9 +136,9 @@ open class NKButton: UIButton, CAAnimationDelegate {
 	}
 	
 	/** Rounds both sides of the button */
-	public var roundedButton : Bool = false {
+	public var isRoundedButton : Bool = false {
 		didSet {
-			if roundedButton != oldValue {
+			if isRoundedButton != oldValue {
 				self.setNeedsLayout()
 			}
 		}
@@ -421,7 +421,7 @@ open class NKButton: UIButton, CAAnimationDelegate {
 			self.imageView?.alpha = hideImageWhileLoading ? 0.0 : 1.0
 		}
 		
-		if roundedButton {
+		if isRoundedButton {
 			self.cornerRadius = viewSize.height / 2
 			self.setNeedsDisplay()
 		}

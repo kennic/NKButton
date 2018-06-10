@@ -111,6 +111,8 @@ public class NKButtonStack: UIControl {
 		}
 	}
 	
+	public var isMomentary: Bool
+	
 	public var buttonCreationBlock 		: ((_ item: NKButtonItem, _ index: Int) -> UIButton)? = nil
 	public var buttonConfigurationBlock : ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)? = nil
 	public var buttonSelectionBlock 	: ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)? = nil
@@ -229,8 +231,12 @@ public class NKButtonStack: UIControl {
 	}
 	
 	@objc fileprivate func onButtonSelected(_ sender: UIButton) {
+		let index = sender.tag
+		if isMomentary {
+			self.selectedIndex = index
+		}
+		
 		if buttonSelectionBlock != nil {
-			let index = sender.tag
 			let item = items![index]
 			buttonSelectionBlock!(sender, item, index)
 		}
