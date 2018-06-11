@@ -405,15 +405,11 @@ open class NKButton: UIButton {
 		if loadingView != nil {
 			var point = CGPoint(x: 0, y: viewSize.height / 2)
 			switch (loadingIndicatorAlignment) {
-			case .left: 	point.x = 5
+			case .left: 	point.x = loadingView!.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
 			case .center: 	point.x = viewSize.width/2
-			case .right: 	point.x = viewSize.width - loadingView!.frame.size.width - 5
+			case .right: 	point.x = viewSize.width - (loadingView!.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
 			case .atImage:	point = self.imageView?.center ?? point
 			}
-			point.x += contentEdgeInsets.left / 2
-			point.x -= contentEdgeInsets.right / 2
-			point.y += contentEdgeInsets.top / 2
-			point.y -= contentEdgeInsets.bottom / 2
 			
 			loadingView!.center = point
 			

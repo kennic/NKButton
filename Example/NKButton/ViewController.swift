@@ -57,8 +57,8 @@ class ViewController: UIViewController {
 		facebookButton.setImage(facebookIcon, for: .highlighted)
 		facebookButton.setBackgroundColor(UIColor(red:0.45, green:0.59, blue:1.0, alpha:1.00), for: .highlighted)
 		facebookButton.spacing = 10.0 // space between icon and title
-		facebookButton.transitionToCircleWhenLoading = true
-		facebookButton.loadingIndicatorAlignment = .center
+//		facebookButton.transitionToCircleWhenLoading = true
+		facebookButton.loadingIndicatorAlignment = .right
 		facebookButton.underlineTitleDisabled = true
 		facebookButton.loadingIndicatorStyle = .ballClipRotatePulse
 		facebookButton.extendSize = CGSize(width: 50, height: 20)
