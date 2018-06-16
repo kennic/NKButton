@@ -1,8 +1,10 @@
 PODS:
-  - NKButton (2.5):
+  - NKButton (2.8):
+    - NKButton/Default (= 2.8)
+  - NKButton/Default (2.8):
     - NKFrameLayoutKit
     - NVActivityIndicatorView
-  - NKFrameLayoutKit (1.9.9)
+  - NKFrameLayoutKit (2.0)
   - NVActivityIndicatorView (4.2.1):
     - NVActivityIndicatorView/Presenter (= 4.2.1)
   - NVActivityIndicatorView/Presenter (4.2.1)
@@ -20,8 +22,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  NKButton: 0ed7720061285071e12c6d32b4c7a23b7a53d3ea
-  NKFrameLayoutKit: 28a2a468a6fc50f47f6d899f0530d598f5cb49be
+  NKButton: c9a53e74b459592236e7e86db7ff4cbd85c360ff
+  NKFrameLayoutKit: e06c8baa8d7a7a107d7201a2f17183f99318d879
   NVActivityIndicatorView: 8068ba3ad39cb44cbaab25d89ff2546b3f092681
 
 PODFILE CHECKSUM: dbe818f19f0e34e07a9ae6071e0c42f8f0eb5551
