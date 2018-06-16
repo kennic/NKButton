@@ -13,10 +13,10 @@ import NVActivityIndicatorView
 public typealias NKButtonAnimationCompletionBlock = ((_ sender: NKButton) -> Void)
 
 public enum NKButtonLoadingIndicatorAlignment : String {
-	case left	= "left"
-	case center	= "center"
-	case right	= "right"
-	case atImage = "atImage"
+	case left
+	case center
+	case right
+	case atImage
 }
 
 public enum NKButtonImageAlignment {

@@ -1,13 +1,9 @@
 PODS:
   - NKButton (2.8):
-    - NKButton/Default (= 2.8)
-  - NKButton/Default (2.8):
     - NKFrameLayoutKit
-    - NVActivityIndicatorView
+    - NVActivityIndicatorView/AppExtension
   - NKFrameLayoutKit (2.0)
-  - NVActivityIndicatorView (4.2.1):
-    - NVActivityIndicatorView/Presenter (= 4.2.1)
-  - NVActivityIndicatorView/Presenter (4.2.1)
+  - NVActivityIndicatorView/AppExtension (4.2.1)
 
 DEPENDENCIES:
   - NKButton (from `../`)
@@ -22,7 +18,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  NKButton: c9a53e74b459592236e7e86db7ff4cbd85c360ff
+  NKButton: d676536c7db826e6ab06690f413eea4ce53f1c78
   NKFrameLayoutKit: e06c8baa8d7a7a107d7201a2f17183f99318d879
   NVActivityIndicatorView: 8068ba3ad39cb44cbaab25d89ff2546b3f092681
 
