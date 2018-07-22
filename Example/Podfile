@@ -1,7 +1,8 @@
 use_frameworks!
 
 target 'NKButton_Example' do
-  pod 'NKButton', :path => '../'
+	pod 'FrameLayoutKit'
+  	pod 'NKButton', :path => '../'
 
   target 'NKButton_Tests' do
     inherit! :search_paths

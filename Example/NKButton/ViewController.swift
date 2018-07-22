@@ -8,7 +8,7 @@
 
 import UIKit
 import NKButton
-import NKFrameLayoutKit
+import FrameLayoutKit
 
 extension NKButton {
 	
@@ -36,7 +36,7 @@ class ViewController: UIViewController {
 	var facebookButton: NKButton!
 	var twitterButton: NKButton!
 	var forgotButton: NKButton!
-	var frameLayout: NKGridFrameLayout!
+	var frameLayout: StackFrameLayout!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,9 +96,8 @@ class ViewController: UIViewController {
 		twitterButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		forgotButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		
-		frameLayout = NKGridFrameLayout(direction: .vertical, andViews: [loginButton, facebookButton, twitterButton, forgotButton])
-		frameLayout.layoutAlignment = .top
-		frameLayout.intrinsicSizeEnabled = true
+		frameLayout = StackFrameLayout(direction: .vertical, alignment: .top, views: [loginButton, facebookButton, twitterButton, forgotButton])
+		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.spacing = 40
 //		frameLayout.showFrameDebug = true // uncomment this to see how frameLayout layout its contents
 		

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import NKFrameLayoutKit
+import FrameLayoutKit
 import NVActivityIndicatorView
 
 public typealias NKButtonAnimationCompletionBlock = ((_ sender: NKButton) -> Void)
@@ -161,7 +161,7 @@ open class NKButton: UIButton {
 	}
 	
 	/** Text Horizontal Alignment */
-	public var textHorizontalAlignment: UIControlContentHorizontalAlignment {
+	public var textHorizontalAlignment: NKContentHorizontalAlignment {
 		get {
 			return self.textFrameLayout.contentHorizontalAlignment
 		}
@@ -171,7 +171,7 @@ open class NKButton: UIButton {
 	}
 	
 	/** Text Vertical Alignment */
-	public var textVerticalAlignment: UIControlContentVerticalAlignment {
+	public var textVerticalAlignment: NKContentVerticalAlignment {
 		get {
 			return self.textFrameLayout.contentVerticalAlignment
 		}
@@ -244,14 +244,14 @@ open class NKButton: UIButton {
 	public var loadingIndicatorColor : UIColor? = nil
 	/** Alignment for loading indicator */
 	public var loadingIndicatorAlignment : NKButtonLoadingIndicatorAlignment = .center
-	/** `NKFrameLayout` that layout imageView */
-	public var imageFrameLayout: NKFrameLayout! {
+	/** `FrameLayout` that layout imageView */
+	public var imageFrameLayout: FrameLayout! {
 		get {
 			return imageFrame
 		}
 	}
-	/** `NKFrameLayout` that layout textLabel */
-	public var textFrameLayout: NKFrameLayout! {
+	/** `FrameLayout` that layout textLabel */
+	public var textFrameLayout: FrameLayout! {
 		get {
 			switch imageAlignment {
 			case .left(_):
@@ -268,8 +268,8 @@ open class NKButton: UIButton {
 			}
 		}
 	}
-	/** NKDoubleFrameLayout that layout the content */
-	public var contentFrameLayout: NKDoubleFrameLayout! {
+	/** DoubleFrameLayout that layout the content */
+	public var contentFrameLayout: DoubleFrameLayout! {
 		get {
 			return frameLayout
 		}
@@ -293,8 +293,8 @@ open class NKButton: UIButton {
 	fileprivate var bgColorDict		: [String : UIColor] = [:]
 	fileprivate var borderColorDict	: [String : UIColor] = [:]
 	fileprivate var shadowColorDict	: [String : UIColor] = [:]
-	fileprivate var imageFrame = NKFrameLayout()
-	fileprivate var frameLayout = NKDoubleFrameLayout(direction: .horizontal)!
+	fileprivate var imageFrame = FrameLayout()
+	fileprivate var frameLayout = DoubleFrameLayout(direction: .horizontal)
 	
 	// MARK: -
 	
@@ -316,9 +316,9 @@ open class NKButton: UIButton {
 		updateLayoutAlignment()
 		
 		frameLayout.layoutAlignment = .center
-		frameLayout.intrinsicSizeEnabled = true
+		frameLayout.isIntrinsicSizeEnabled = true
 		
-		imageFrame.contentAlignment = "cc"
+		imageFrame.contentAlignment = (.center, .center)
 		imageFrame.targetView = self.imageView
 		
 		self.addSubview(imageFrame)

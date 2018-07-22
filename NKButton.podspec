@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '2.9'
+  s.version          = '3.0'
   s.summary          = 'A fully customizable UIButton'
 
 # This description is used to generate tags and improve search results.
@@ -48,7 +48,7 @@ A fully customizable button that fills all lacked functions from UIButton like:
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit'
-  s.dependency 'NKFrameLayoutKit'
+  s.dependency 'FrameLayoutKit'
   s.dependency 'NVActivityIndicatorView/AppExtension'
   
 end
