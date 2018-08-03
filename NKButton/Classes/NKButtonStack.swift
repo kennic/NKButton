@@ -15,7 +15,7 @@ public struct NKButtonItem {
 	public var selectedImage: UIImage?
 	public var userInfo : Any?
 	
-	public init(title: String?, image: UIImage?, selectedImage: UIImage?, userInfo: Any?) {
+	public init(title: String?, image: UIImage? = nil, selectedImage: UIImage? = nil, userInfo: Any? = nil) {
 		self.title = title
 		self.image = image
 		self.selectedImage = selectedImage
