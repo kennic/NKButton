@@ -14,6 +14,13 @@ public struct NKButtonItem {
 	public var image: UIImage?
 	public var selectedImage: UIImage?
 	public var userInfo : Any?
+	
+	public init(title: String?, image: UIImage?, selectedImage: UIImage?, userInfo: Any?) {
+		self.title = title
+		self.image = image
+		self.selectedImage = selectedImage
+		self.userInfo = userInfo
+	}
 }
 
 public typealias NKButtonCreationBlock = ((NKButtonItem, Int) -> UIButton)
