@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '3.0'
+  s.version          = '3.0.1'
   s.summary          = 'A fully customizable UIButton'
 
 # This description is used to generate tags and improve search results.

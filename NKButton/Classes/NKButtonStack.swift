@@ -10,14 +10,14 @@ import UIKit
 import FrameLayoutKit
 
 public struct NKButtonItem {
-	var title: String?
-	var image: UIImage?
-	var selectedImage: UIImage?
-	var userInfo : Any?
+	public var title: String?
+	public var image: UIImage?
+	public var selectedImage: UIImage?
+	public var userInfo : Any?
 }
 
-public typealias NKButtonCreationBlock = ((_ item: NKButtonItem, _ index: Int) -> UIButton)
-public typealias NKButtonSelectionBlock = ((_ button: UIButton, _ item: NKButtonItem, _ index: Int) -> Void)
+public typealias NKButtonCreationBlock = ((NKButtonItem, Int) -> UIButton)
+public typealias NKButtonSelectionBlock = ((UIButton, NKButtonItem, Int) -> Void)
 
 public class NKButtonStack: UIControl {
 	
