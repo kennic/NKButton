@@ -44,7 +44,6 @@ Add border:
 ```swift
 button.setBorderColor(.black, for: .normal) // set border color for normal state
 button.setBorderColor(.white, for: .highlighted) // set border color for highlight state
-button.shadowOffset = CGSize(width: 0, height: 5)
 button.borderSize = 2.0 // border stroke size
 ```
 
