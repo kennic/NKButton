@@ -68,6 +68,8 @@ button.transitionToCircleWhenLoading = true // animate to circle shape while in 
 button.isLoading = true // show loading indicator in the button, and button will be disabled automatically until setting isLoading = false
 ```
 
+NKButton uses [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView) for loading indicator
+
 For sparkle effect on tap:
 
 [NKSparkleButton](https://github.com/kennic/NKSparkleButton)
