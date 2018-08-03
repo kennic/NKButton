@@ -70,6 +70,8 @@ button.isLoading = true // show loading indicator in the button, and button will
 
 NKButton uses [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView) for loading indicator
 
+NKButton uses [FrameLayoutKit](https://github.com/namkennic/FrameLayoutKit) for content layout
+
 For sparkle effect on tap:
 
 [NKSparkleButton](https://github.com/kennic/NKSparkleButton)
