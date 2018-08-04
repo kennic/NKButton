@@ -20,10 +20,10 @@ public enum NKButtonLoadingIndicatorAlignment : String {
 }
 
 public enum NKButtonImageAlignment {
-	case left(toEdge:Bool)
-	case right(toEdge:Bool)
-	case top(toEdge:Bool)
-	case bottom(toEdge:Bool)
+	case left
+	case right
+	case top
+	case bottom
 }
 
 open class NKButton: UIButton {
@@ -154,7 +154,7 @@ open class NKButton: UIButton {
 	}
 	
 	/** Image alignment */
-	public var imageAlignment : NKButtonImageAlignment = .left(toEdge: false) {
+	public var imageAlignment : NKButtonImageAlignment = .left {
 		didSet {
 			updateLayoutAlignment()
 		}
@@ -254,16 +254,16 @@ open class NKButton: UIButton {
 	public var textFrameLayout: FrameLayout! {
 		get {
 			switch imageAlignment {
-			case .left(_):
+			case .left:
 				return frameLayout.rightFrameLayout
 				
-			case .right(_):
+			case .right:
 				return frameLayout.leftFrameLayout
 				
-			case .top(_):
+			case .top:
 				return frameLayout.bottomFrameLayout
 				
-			case .bottom(_):
+			case .bottom:
 				return frameLayout.topFrameLayout
 			}
 		}
@@ -313,13 +313,15 @@ open class NKButton: UIButton {
 		self.layer.addSublayer(shadowLayer)
 		self.layer.addSublayer(backgroundLayer)
 		
-		updateLayoutAlignment()
-		
 		frameLayout.layoutAlignment = .center
 		frameLayout.isIntrinsicSizeEnabled = true
+		frameLayout.frameLayout1.contentAlignment = (.center, .center)
+		frameLayout.frameLayout2.contentAlignment = (.center, .center)
 		
 		imageFrame.contentAlignment = (.center, .center)
 		imageFrame.targetView = self.imageView
+		
+		updateLayoutAlignment()
 		
 		self.addSubview(imageFrame)
 		self.addSubview(frameLayout)
@@ -394,9 +396,10 @@ open class NKButton: UIButton {
 		super.layoutSubviews()
 		
 		let viewSize = self.bounds.size
-		shadowLayer.frame = self.bounds
-		backgroundLayer.frame = self.bounds
-		frameLayout.frame = self.bounds
+		let bounds = self.bounds
+		shadowLayer.frame = bounds
+		backgroundLayer.frame = bounds
+		frameLayout.frame = bounds
 		
 		if self.imageView != nil {
 			self.bringSubview(toFront: self.imageView!)
@@ -428,48 +431,32 @@ open class NKButton: UIButton {
 	
 	fileprivate func updateLayoutAlignment() {
 		switch imageAlignment {
-		case .left(let toEdge):
+		case .left:
 			frameLayout.layoutDirection = .horizontal
+			
 			frameLayout.leftFrameLayout.targetView = imageFrame
 			frameLayout.rightFrameLayout.targetView = self.titleLabel
-			
-			frameLayout.leftFrameLayout.contentHorizontalAlignment = toEdge ? .left : .center
-			frameLayout.leftFrameLayout.contentVerticalAlignment = .center
-			frameLayout.rightFrameLayout.contentHorizontalAlignment = .left
-			frameLayout.rightFrameLayout.contentVerticalAlignment = .center
 			break
 			
-		case .right(let toEdge):
+		case .right:
 			frameLayout.layoutDirection = .horizontal
+			
 			frameLayout.leftFrameLayout.targetView = self.titleLabel
 			frameLayout.rightFrameLayout.targetView = imageFrame
-			
-			frameLayout.leftFrameLayout.contentHorizontalAlignment = .right
-			frameLayout.leftFrameLayout.contentVerticalAlignment = .center
-			frameLayout.rightFrameLayout.contentHorizontalAlignment = toEdge ? .center : .right
-			frameLayout.rightFrameLayout.contentVerticalAlignment = .center
 			break
 			
-		case .top(let toEdge):
+		case .top:
 			frameLayout.layoutDirection = .vertical
+			
 			frameLayout.topFrameLayout.targetView = imageFrame
 			frameLayout.bottomFrameLayout.targetView = self.titleLabel
-			
-			frameLayout.topFrameLayout.contentVerticalAlignment = toEdge ? .top : .center
-			frameLayout.topFrameLayout.contentHorizontalAlignment = .center
-			frameLayout.bottomFrameLayout.contentHorizontalAlignment = .center
-			frameLayout.bottomFrameLayout.contentVerticalAlignment = .top
 			break
 			
-		case .bottom(let toEdge):
+		case .bottom:
 			frameLayout.layoutDirection = .vertical
+			
 			frameLayout.topFrameLayout.targetView = self.titleLabel
 			frameLayout.bottomFrameLayout.targetView = imageFrame
-			
-			frameLayout.topFrameLayout.contentHorizontalAlignment = .center
-			frameLayout.topFrameLayout.contentVerticalAlignment = .bottom
-			frameLayout.bottomFrameLayout.contentHorizontalAlignment = .center
-			frameLayout.bottomFrameLayout.contentVerticalAlignment = toEdge ? .bottom : .center
 			break
 		}
 		

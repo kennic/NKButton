@@ -49,7 +49,7 @@ class ViewController: UIViewController {
 		loginButton.underlineTitleDisabled = true
 		loginButton.spacing = 10.0 // space between icon and title
 		loginButton.extendSize = CGSize(width: 50, height: 20)
-		loginButton.imageAlignment = .right(toEdge: false)
+		loginButton.imageAlignment = .right
 		
 		let facebookIcon = #imageLiteral(resourceName: "facebook")
 		facebookButton = NKButton.DefaultButton(title: "FACEBOOK", color: UIColor(red:0.25, green:0.39, blue:0.80, alpha:1.00))
@@ -70,7 +70,7 @@ class ViewController: UIViewController {
 		twitterButton.setBackgroundColor(UIColor(red:0.45, green:0.59, blue:1.0, alpha:1.00), for: .highlighted)
 		twitterButton.spacing = 10.0 // space between icon and title
 		twitterButton.transitionToCircleWhenLoading = false
-		twitterButton.imageAlignment = .top(toEdge: false)
+		twitterButton.imageAlignment = .top
 		twitterButton.loadingIndicatorAlignment = .atImage
 		twitterButton.hideImageWhileLoading = true
 		twitterButton.hideTitleWhileLoading = false
