@@ -33,7 +33,7 @@ button.setTitleColor(.white, for: .highlighted) // set title color for highlight
 button.setBackgroundColor(.blue, for: .normal) // set background color for normal state
 button.setBackgroundColor(.green, for: .highlighted) // set background color for highlight state
 button.spacing = 10.0 // space between icon and title
-button.imageAlignment = .top(toEdge: false) // icon alignment
+button.imageAlignment = .top // icon alignment
 button.underlineTitleDisabled = true // no underline text when `Settings > Accessibility > Button Shapes` is ON
 button.isRoundedButton = false
 button.cornerRadius = 10.0
