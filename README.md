@@ -35,7 +35,7 @@ button.setBackgroundColor(.green, for: .highlighted) // set background color for
 button.spacing = 10.0 // space between icon and title
 button.imageAlignment = .top(toEdge: false) // icon alignment
 button.underlineTitleDisabled = true // no underline text when `Settings > Accessibility > Button Shapes` is ON
-button.roundedButton = false
+button.isRoundedButton = false
 button.cornerRadius = 10.0
 button.extendSize = CGSize(width: 50, height: 20) // size that will be included in sizeThatFits
 ```
@@ -54,6 +54,12 @@ button.setShadowColor(.green, for: .highlighted) // set shadow color for highlig
 button.shadowOffset = CGSize(width: 0, height: 5)
 button.shadowOpacity = 0.6
 button.shadowRadius = 10
+```
+
+Add gradient color:
+```swift
+button.setGradientColor([UIColor(white: 1.0, alpha: 0.5), UIColor(white: 1.0, alpha: 0.0)], for: .normal) // set gradient color for normal state
+button.setGradientColor([UIColor(white: 1.0, alpha: 0.0), UIColor(white: 1.0, alpha: 0.5)], for: .highlighted) // set gradient color for highlight state
 ```
 
 Set loading state:
