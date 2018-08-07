@@ -12,8 +12,8 @@ import FrameLayoutKit
 
 extension NKButton {
 	
-	class func DefaultButton(title:String, color:UIColor) -> NKButton {
-		let button: NKButton = NKButton(title: title, color: color)
+	class func DefaultButton(title:String, color: UIColor) -> NKButton {
+		let button: NKButton = NKButton(title: title, buttonColor: color, shadowColor: color)
 		button.title = title
 		button.titleLabel?.font = UIFont(name: "Helvetica", size: 14)
 		
@@ -68,6 +68,8 @@ class ViewController: UIViewController {
 		twitterButton.setImage(twitterIcon, for: .normal)
 		twitterButton.setImage(twitterIcon, for: .highlighted)
 		twitterButton.setBackgroundColor(UIColor(red:0.45, green:0.59, blue:1.0, alpha:1.00), for: .highlighted)
+		twitterButton.setGradientColor([UIColor(white: 1.0, alpha: 0.5), UIColor(white: 1.0, alpha: 0.0)], for: .normal)
+		twitterButton.setGradientColor([UIColor(white: 1.0, alpha: 0.0), UIColor(white: 1.0, alpha: 0.5)], for: .highlighted)
 		twitterButton.spacing = 10.0 // space between icon and title
 		twitterButton.transitionToCircleWhenLoading = false
 		twitterButton.imageAlignment = .top
@@ -80,7 +82,7 @@ class ViewController: UIViewController {
 		twitterButton.cornerRadius = 10.0
 		twitterButton.extendSize = CGSize(width: 50, height: 20)
 		
-		forgotButton = NKButton(title: "Forgot Password?", color: .clear)
+		forgotButton = NKButton(title: "Forgot Password?", buttonColor: .clear)
 		forgotButton.setImage(#imageLiteral(resourceName: "key"), for: .normal)
 		forgotButton.setTitleColor(.gray, for: .normal)
 		forgotButton.setTitleColor(.gray, for: .highlighted)

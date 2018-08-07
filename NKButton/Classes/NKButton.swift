@@ -163,20 +163,30 @@ open class NKButton: UIButton {
 	/** Text Horizontal Alignment */
 	public var textHorizontalAlignment: NKContentHorizontalAlignment {
 		get {
-			return self.textFrameLayout.contentHorizontalAlignment
+			return self.labelFrame.contentHorizontalAlignment
 		}
 		set {
-			self.textFrameLayout.contentHorizontalAlignment = newValue
+			self.labelFrame.contentHorizontalAlignment = newValue
 		}
 	}
 	
 	/** Text Vertical Alignment */
 	public var textVerticalAlignment: NKContentVerticalAlignment {
 		get {
-			return self.textFrameLayout.contentVerticalAlignment
+			return self.labelFrame.contentVerticalAlignment
 		}
 		set {
-			self.textFrameLayout.contentVerticalAlignment = newValue
+			self.labelFrame.contentVerticalAlignment = newValue
+		}
+	}
+	
+	/** Text Alignment */
+	public var textAlignemnt: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
+		get {
+			return self.labelFrame.contentAlignment
+		}
+		set {
+			self.labelFrame.contentAlignment = newValue
 		}
 	}
 	
@@ -251,21 +261,9 @@ open class NKButton: UIButton {
 		}
 	}
 	/** `FrameLayout` that layout textLabel */
-	public var textFrameLayout: FrameLayout! {
+	public var labelFrameLayout: FrameLayout! {
 		get {
-			switch imageAlignment {
-			case .left:
-				return frameLayout.rightFrameLayout
-				
-			case .right:
-				return frameLayout.leftFrameLayout
-				
-			case .top:
-				return frameLayout.bottomFrameLayout
-				
-			case .bottom:
-				return frameLayout.topFrameLayout
-			}
+			return labelFrame
 		}
 	}
 	/** DoubleFrameLayout that layout the content */
@@ -277,6 +275,8 @@ open class NKButton: UIButton {
 	
 	public var backgroundView: UIView? = nil {
 		didSet {
+			oldValue?.layer.removeFromSuperlayer()
+			
 			if let view = backgroundView {
 				view.isUserInteractionEnabled = false
 				view.layer.masksToBounds = true
@@ -286,25 +286,38 @@ open class NKButton: UIButton {
 		}
 	}
 	
-	fileprivate var loadingView : NVActivityIndicatorView? = nil
-	fileprivate var animationationDidEnd : NKButtonAnimationCompletionBlock? = nil
+	public var animationationDidEnd : NKButtonAnimationCompletionBlock? = nil
+	
+	fileprivate var loadingView 	: NVActivityIndicatorView? = nil
 	fileprivate let shadowLayer 	= CAShapeLayer()
 	fileprivate let backgroundLayer = CAShapeLayer()
-	fileprivate var bgColorDict		: [String : UIColor] = [:]
-	fileprivate var borderColorDict	: [String : UIColor] = [:]
-	fileprivate var shadowColorDict	: [String : UIColor] = [:]
-	fileprivate var imageFrame = FrameLayout()
-	fileprivate var frameLayout = DoubleFrameLayout(direction: .horizontal)
+	fileprivate let gradientLayer	= CAGradientLayer()
+	fileprivate let imageFrame 		= FrameLayout()
+	fileprivate let labelFrame 		= FrameLayout()
+	fileprivate let frameLayout 	= DoubleFrameLayout(direction: .horizontal)
+	
+	fileprivate var bgColorDict			: [String : UIColor] = [:]
+	fileprivate var borderColorDict		: [String : UIColor] = [:]
+	fileprivate var shadowColorDict		: [String : UIColor] = [:]
+	fileprivate var gradientColorDict	: [String : [UIColor]] = [:]
 	
 	// MARK: -
 	
-	public convenience init(title:String, color:UIColor) {
+	public convenience init(title: String, titleColor: UIColor? = nil, buttonColor: UIColor? = nil, shadowColor: UIColor? = nil) {
 		self.init()
 		self.title = title
 		
-//		self.setTitleColor(color.contrasting(), for: .normal)
-		self.setBackgroundColor(color, for: .normal)
-		self.setShadowColor(color, for: .normal)
+		if let color = titleColor {
+			self.setTitleColor(color, for: .normal)
+		}
+		
+		if let color = buttonColor {
+			self.setBackgroundColor(color, for: .normal)
+		}
+		
+		if let color = shadowColor {
+			self.setShadowColor(color, for: .normal)
+		}
 	}
 	
 	public init() {
@@ -312,6 +325,7 @@ open class NKButton: UIButton {
 		
 		self.layer.addSublayer(shadowLayer)
 		self.layer.addSublayer(backgroundLayer)
+		self.layer.addSublayer(gradientLayer)
 		
 		frameLayout.layoutAlignment = .center
 		frameLayout.isIntrinsicSizeEnabled = true
@@ -321,9 +335,13 @@ open class NKButton: UIButton {
 		imageFrame.contentAlignment = (.center, .center)
 		imageFrame.targetView = self.imageView
 		
+		labelFrame.contentAlignment = (.fill, .fill)
+		labelFrame.targetView = self.titleLabel
+		
 		updateLayoutAlignment()
 		
 		self.addSubview(imageFrame)
+		self.addSubview(labelFrame)
 		self.addSubview(frameLayout)
 	}
 	
@@ -361,11 +379,10 @@ open class NKButton: UIButton {
 		backgroundFrame.origin.x = (bounds.size.width - backgroundFrame.size.width) / 2
 		backgroundFrame.origin.y = (bounds.size.height - backgroundFrame.size.height) / 2
 		
-		let fillColor 	= self.backgroundColor(for: state)
-		let borderColor = self.borderColor(for: state)
-		let shadowColor	= self.shadowColor(for: state)
-		let roundedPath = UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
-		let path		= transitionToCircleWhenLoading && isLoading ? backgroundLayer.path : roundedPath.cgPath
+		let fillColor 		= self.backgroundColor(for: state)
+		let borderColor 	= self.borderColor(for: state)
+		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
+		let path			= transitionToCircleWhenLoading && isLoading ? backgroundLayer.path : roundedPath.cgPath
 		
 		backgroundLayer.path			= path
 		backgroundLayer.fillColor		= fillColor?.cgColor
@@ -373,18 +390,33 @@ open class NKButton: UIButton {
 		backgroundLayer.lineWidth		= borderSize
 		backgroundLayer.miterLimit		= roundedPath.miterLimit
 		
-		if shadowColor != nil {
+		if let shadowColor = self.shadowColor(for: state) {
 			shadowLayer.isHidden 		= false
 			shadowLayer.path 			= path
 			shadowLayer.shadowPath 		= path
-			shadowLayer.fillColor 		= shadowColor!.cgColor
-			shadowLayer.shadowColor 	= shadowColor!.cgColor
+			shadowLayer.fillColor 		= shadowColor.cgColor
+			shadowLayer.shadowColor 	= shadowColor.cgColor
 			shadowLayer.shadowRadius 	= shadowRadius
 			shadowLayer.shadowOpacity 	= shadowOpacity
 			shadowLayer.shadowOffset 	= shadowOffset
 		}
 		else {
 			shadowLayer.isHidden = true
+		}
+		
+		if let gradientColors = self.gradientColor(for: state) {
+			var colors: [CGColor] = []
+			for color in gradientColors {
+				colors.append(color.cgColor)
+			}
+			
+			gradientLayer.isHidden = false
+			gradientLayer.shadowPath = path
+			gradientLayer.colors = colors
+		}
+		else {
+			gradientLayer.isHidden = true
+			gradientLayer.colors = nil
 		}
 		
 		if underlineTitleDisabled {
@@ -399,6 +431,7 @@ open class NKButton: UIButton {
 		let bounds = self.bounds
 		shadowLayer.frame = bounds
 		backgroundLayer.frame = bounds
+		gradientLayer.frame = bounds
 		frameLayout.frame = bounds
 		
 		if self.imageView != nil {
@@ -425,8 +458,11 @@ open class NKButton: UIButton {
 			self.setNeedsDisplay()
 		}
 		
-		backgroundView?.layer.cornerRadius = self.cornerRadius
-		backgroundView?.frame = self.bounds
+		gradientLayer.cornerRadius = cornerRadius
+		gradientLayer.masksToBounds = cornerRadius > 0
+		
+		backgroundView?.layer.cornerRadius = cornerRadius
+		backgroundView?.frame = bounds
 	}
 	
 	fileprivate func updateLayoutAlignment() {
@@ -435,13 +471,13 @@ open class NKButton: UIButton {
 			frameLayout.layoutDirection = .horizontal
 			
 			frameLayout.leftFrameLayout.targetView = imageFrame
-			frameLayout.rightFrameLayout.targetView = self.titleLabel
+			frameLayout.rightFrameLayout.targetView = labelFrame
 			break
 			
 		case .right:
 			frameLayout.layoutDirection = .horizontal
 			
-			frameLayout.leftFrameLayout.targetView = self.titleLabel
+			frameLayout.leftFrameLayout.targetView = labelFrame
 			frameLayout.rightFrameLayout.targetView = imageFrame
 			break
 			
@@ -449,13 +485,13 @@ open class NKButton: UIButton {
 			frameLayout.layoutDirection = .vertical
 			
 			frameLayout.topFrameLayout.targetView = imageFrame
-			frameLayout.bottomFrameLayout.targetView = self.titleLabel
+			frameLayout.bottomFrameLayout.targetView = labelFrame
 			break
 			
 		case .bottom:
 			frameLayout.layoutDirection = .vertical
 			
-			frameLayout.topFrameLayout.targetView = self.titleLabel
+			frameLayout.topFrameLayout.targetView = labelFrame
 			frameLayout.bottomFrameLayout.targetView = imageFrame
 			break
 		}
@@ -510,6 +546,11 @@ open class NKButton: UIButton {
 		shadowColorDict[key] = color
 	}
 	
+	public func setGradientColor(_ colors: [UIColor]?, for state: UIControlState) {
+		let key = gradientColorKey(for: state)
+		gradientColorDict[key] = colors
+	}
+	
 	public func backgroundColor(for state: UIControlState) -> UIColor? {
 		let key = backgroundColorKey(for: state)
 		var result = bgColorDict[key]
@@ -551,6 +592,11 @@ open class NKButton: UIButton {
 		return shadowColorDict[key]
 	}
 	
+	public func gradientColor(for state: UIControlState) -> [UIColor]? {
+		let key = gradientColorKey(for: state)
+		return gradientColorDict[key]
+	}
+	
 	// MARK: -
 	
 	fileprivate func backgroundColorKey(for state: UIControlState) -> String {
@@ -565,6 +611,10 @@ open class NKButton: UIButton {
 		return "sd\(state.rawValue)"
 	}
 	
+	fileprivate func gradientColorKey(for state: UIControlState) -> String {
+		return "gr\(state.rawValue)"
+	}
+	
 	// MARK: -
 	
 	fileprivate func showLoadingView() {
@@ -574,6 +624,7 @@ open class NKButton: UIButton {
 			let indicatorSize = CGSize(width: minSize, height: minSize)
 			let loadingFrame = CGRect(x: 0, y: 0, width: indicatorSize.width, height: indicatorSize.height)
 			let color = loadingIndicatorColor ?? self.titleColor(for: .normal)
+			
 			loadingView = NVActivityIndicatorView(frame: loadingFrame, type: loadingIndicatorStyle, color: color, padding: 0)
 			loadingView!.startAnimating()
 			self.addSubview(loadingView!)
@@ -613,8 +664,10 @@ open class NKButton: UIButton {
 		
 		animation.fillMode = kCAFillModeForwards
 		animation.isRemovedOnCompletion = false
+		
 		backgroundLayer.add(animation, forKey: animation.keyPath)
 		shadowLayer.add(animation, forKey: animation.keyPath)
+		gradientLayer.add(animation, forKey: animation.keyPath)
 	}
 	
 	public func expandFullscreen(duration:Double = 0.3, completionBlock:NKButtonAnimationCompletionBlock? = nil) {
@@ -655,6 +708,7 @@ open class NKButton: UIButton {
 	deinit {
 		backgroundLayer.removeAllAnimations()
 		shadowLayer.removeAllAnimations()
+		gradientLayer.removeAllAnimations()
 	}
 	
 }

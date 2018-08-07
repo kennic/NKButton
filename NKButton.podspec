@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '3.0.3'
+  s.version          = '3.2'
   s.summary          = 'A fully customizable UIButton'
 
 # This description is used to generate tags and improve search results.
@@ -22,6 +22,7 @@ A fully customizable button that fills all lacked functions from UIButton like:
         + setBackgroundColor:forState:
         + setBorderColor:forState 
         + setShadowColor:forState
+		+ setGradientColor:forState
         + cornerRadius and roundedButton
         + imageAlignment (left, top, bottom, right)
         + set spacing between image and text
