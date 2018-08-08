@@ -194,6 +194,10 @@ open class NKButton: UIButton {
 	public var autoSetDisableColor : Bool = true
 	/** If `true`, highlighted color will be set from normal color with tranparency */
 	public var autoSetHighlightedColor : Bool = true
+	/** Enable impact feedback on touch */
+	public var isFeedbackEnabled: Bool = false
+	/** impact feedback style on touch */
+	public var feedbackStyle: UIImpactFeedbackStyle = .light
 	
 	/** Set loading state for this button */
 	public var isLoading : Bool = false {
@@ -273,6 +277,7 @@ open class NKButton: UIButton {
 		}
 	}
 	
+	/** The background view of the button */
 	public var backgroundView: UIView? = nil {
 		didSet {
 			oldValue?.layer.removeFromSuperlayer()
@@ -351,10 +356,6 @@ open class NKButton: UIButton {
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
 		var result = frameLayout.sizeThatFits(size)
-		
-//		if __CGSizeEqualToSize(result, .zero) {
-//			result = super.sizeThatFits(size)
-//		}
 		
 		result.width  += extendSize.width
 		result.height += extendSize.height
@@ -524,6 +525,14 @@ open class NKButton: UIButton {
 		didSet {
 			if super.isHighlighted != oldValue {
 				self.setNeedsDisplay()
+				
+				if isHighlighted && isFeedbackEnabled {
+					if #available(iOSApplicationExtension 10.0, *) {
+						let generator = UIImpactFeedbackGenerator(style: feedbackStyle)
+						generator.prepare()
+						generator.impactOccurred()
+					}
+				}
 			}
 		}
 	}
