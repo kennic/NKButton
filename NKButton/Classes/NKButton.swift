@@ -194,8 +194,6 @@ open class NKButton: UIButton {
 	public var autoSetDisableColor : Bool = true
 	/** If `true`, highlighted color will be set from normal color with tranparency */
 	public var autoSetHighlightedColor : Bool = true
-	/** Enable impact feedback on touch */
-	public var isFeedbackEnabled: Bool = false
 	
 	/** Set loading state for this button */
 	public var isLoading : Bool = false {
@@ -524,13 +522,13 @@ open class NKButton: UIButton {
 			if super.isHighlighted != oldValue {
 				self.setNeedsDisplay()
 				
-				guard #available(iOS 10, *) else { return }
-				
-				if isHighlighted && isFeedbackEnabled {
-					let generator = UIImpactFeedbackGenerator(style: .light)
-					generator.prepare()
-					generator.impactOccurred()
-				}
+//				if isHighlighted {
+//					if #available(iOS 10, *) {
+//						let generator = UIImpactFeedbackGenerator(style: .light)
+//						generator.prepare()
+//						generator.impactOccurred()
+//					}
+//				}
 			}
 		}
 	}
