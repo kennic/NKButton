@@ -526,12 +526,14 @@ open class NKButton: UIButton {
 			if super.isHighlighted != oldValue {
 				self.setNeedsDisplay()
 				
-				guard #available(iOS 10, *) else { return }
-				
 				if isHighlighted && isFeedbackEnabled {
-					let generator = UIImpactFeedbackGenerator(style: feedbackStyle)
-					generator.prepare()
-					generator.impactOccurred()
+					if #available(iOS 10, *) {
+						let generator = UIImpactFeedbackGenerator(style: feedbackStyle)
+						generator.prepare()
+						generator.impactOccurred()
+					}
+					else {
+					}
 				}
 			}
 		}
