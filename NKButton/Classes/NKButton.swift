@@ -557,7 +557,7 @@ open class NKButton: UIButton {
 		flash.toValue = intensity
 		flash.duration = flashDuration
 		flash.autoreverses = true
-		flash.repeatCount = Float(repeatCount)
+		flash.repeatCount = repeatCount < 0 ? Float.infinity : Float(repeatCount)
 		flashLayer.add(flash, forKey: "flashAnimation")
 	}
 	
