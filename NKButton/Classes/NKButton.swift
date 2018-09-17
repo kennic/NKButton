@@ -195,7 +195,13 @@ open class NKButton: UIButton {
 	/** If `true`, highlighted color will be set from normal color with tranparency */
 	public var autoSetHighlightedColor : Bool = true
 	
-	/** Set loading state for this button */
+	public var flashColor: UIColor! = UIColor(white: 1.0, alpha: 0.5) {
+		didSet {
+			flashLayer.fillColor = flashColor.cgColor
+		}
+	}
+	
+	/** Set loading state. Tap interaction will be disabled while loading */
 	public var isLoading : Bool = false {
 		didSet {
 			if isLoading != oldValue {
@@ -292,6 +298,7 @@ open class NKButton: UIButton {
 	fileprivate var loadingView 	: NVActivityIndicatorView? = nil
 	fileprivate let shadowLayer 	= CAShapeLayer()
 	fileprivate let backgroundLayer = CAShapeLayer()
+	fileprivate let flashLayer 		= CAShapeLayer()
 	fileprivate let gradientLayer	= CAGradientLayer()
 	fileprivate let imageFrame 		= FrameLayout()
 	fileprivate let labelFrame 		= FrameLayout()
@@ -324,8 +331,12 @@ open class NKButton: UIButton {
 	public init() {
 		super.init(frame: .zero)
 		
+		flashLayer.opacity = 0
+		flashLayer.fillColor = self.flashColor.cgColor
+		
 		self.layer.addSublayer(shadowLayer)
 		self.layer.addSublayer(backgroundLayer)
+		self.layer.addSublayer(flashLayer)
 		self.layer.addSublayer(gradientLayer)
 		
 		frameLayout.layoutAlignment = .center
@@ -387,6 +398,9 @@ open class NKButton: UIButton {
 		backgroundLayer.lineWidth		= borderSize
 		backgroundLayer.miterLimit		= roundedPath.miterLimit
 		
+		flashLayer.path 				= path
+		flashLayer.fillColor 			= flashColor.cgColor
+		
 		if let shadowColor = self.shadowColor(for: state) {
 			shadowLayer.isHidden 		= false
 			shadowLayer.path 			= path
@@ -428,6 +442,7 @@ open class NKButton: UIButton {
 		let bounds = self.bounds
 		shadowLayer.frame = bounds
 		backgroundLayer.frame = bounds
+		flashLayer.frame = bounds
 		gradientLayer.frame = bounds
 		frameLayout.frame = bounds
 		
@@ -535,6 +550,20 @@ open class NKButton: UIButton {
 	
 	
 	// MARK: -
+	
+	public func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.65, repeatCount: Int = 10) {
+		let flash = CABasicAnimation(keyPath: "opacity")
+		flash.fromValue = 0.0
+		flash.toValue = intensity
+		flash.duration = flashDuration
+		flash.autoreverses = true
+		flash.repeatCount = Float(repeatCount)
+		flashLayer.add(flash, forKey: "flashAnimation")
+	}
+	
+	public func stopFlashing() {
+		flashLayer.removeAnimation(forKey: "flashAnimation")
+	}
 	
 	public func setBackgroundColor(_ color: UIColor?, for state: UIControlState) {
 		let key = backgroundColorKey(for: state)
@@ -673,6 +702,7 @@ open class NKButton: UIButton {
 		backgroundLayer.add(animation, forKey: animation.keyPath)
 		shadowLayer.add(animation, forKey: animation.keyPath)
 		gradientLayer.add(animation, forKey: animation.keyPath)
+		flashLayer.add(animation, forKey: animation.keyPath)
 	}
 	
 	public func expandFullscreen(duration:Double = 0.3, completionBlock:NKButtonAnimationCompletionBlock? = nil) {
@@ -714,6 +744,7 @@ open class NKButton: UIButton {
 		backgroundLayer.removeAllAnimations()
 		shadowLayer.removeAllAnimations()
 		gradientLayer.removeAllAnimations()
+		flashLayer.removeAllAnimations()
 	}
 	
 }

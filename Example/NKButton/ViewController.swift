@@ -125,6 +125,11 @@ class ViewController: UIViewController {
 	@objc func onButtonSelected(_ button: NKButton) {
 		print("Button Selected")
 		
+		if button == facebookButton {
+			button.startFlashing()
+			return
+		}
+		
 		button.isLoading = true
 		DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
 			button.isLoading = false
