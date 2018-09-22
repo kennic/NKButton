@@ -551,7 +551,7 @@ open class NKButton: UIButton {
 	
 	// MARK: -
 	
-	public func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.65, repeatCount: Int = 10) {
+	public func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.85, repeatCount: Int = 10) {
 		let flash = CABasicAnimation(keyPath: "opacity")
 		flash.fromValue = 0.0
 		flash.toValue = intensity
@@ -735,7 +735,7 @@ open class NKButton: UIButton {
 	fileprivate func disableUnderlineLabel() {
 		let attributedText: NSMutableAttributedString? = titleLabel?.attributedText?.mutableCopy() as? NSMutableAttributedString
 		if attributedText != nil {
-			attributedText!.addAttribute(NSAttributedStringKey.underlineStyle, value: (0), range: NSRange(location: 0, length: attributedText!.length))
+			attributedText!.addAttribute(NSAttributedString.Key.underlineStyle, value: (0), range: NSRange(location: 0, length: attributedText!.length))
 			titleLabel?.attributedText = attributedText
 		}
 	}

@@ -36,6 +36,7 @@ class ViewController: UIViewController {
 	var facebookButton: NKButton!
 	var twitterButton: NKButton!
 	var forgotButton: NKButton!
+	var flashButton: NKButton!
 	var frameLayout: StackFrameLayout!
 
     override func viewDidLoad() {
@@ -93,12 +94,18 @@ class ViewController: UIViewController {
 		forgotButton.autoSetDisableColor = false
 		forgotButton.extendSize = CGSize(width: 50, height: 20)
 		
+		flashButton = NKButton.DefaultButton(title: "TAP TO FLASH", color: UIColor(red:0.61, green:0.11, blue:0.08, alpha:1.00))
+		flashButton.flashColor = .red
+		flashButton.underlineTitleDisabled = true
+		flashButton.extendSize = CGSize(width: 50, height: 20)
+		
 		loginButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		facebookButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		twitterButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		forgotButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
+		flashButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		
-		frameLayout = StackFrameLayout(direction: .vertical, alignment: .top, views: [loginButton, facebookButton, twitterButton, forgotButton])
+		frameLayout = StackFrameLayout(direction: .vertical, alignment: .top, views: [loginButton, facebookButton, twitterButton, forgotButton, flashButton])
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.spacing = 40
 //		frameLayout.showFrameDebug = true // uncomment this to see how frameLayout layout its contents
@@ -107,6 +114,7 @@ class ViewController: UIViewController {
 		self.view.addSubview(facebookButton)
 		self.view.addSubview(twitterButton)
 		self.view.addSubview(forgotButton)
+		self.view.addSubview(flashButton)
 		self.view.addSubview(frameLayout)
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -125,8 +133,8 @@ class ViewController: UIViewController {
 	@objc func onButtonSelected(_ button: NKButton) {
 		print("Button Selected")
 		
-		if button == facebookButton {
-			button.startFlashing()
+		if button == flashButton {
+			button.startFlashing(flashDuration: 0.25, intensity: 0.9, repeatCount: 10)
 			return
 		}
 		

@@ -74,6 +74,11 @@ button.transitionToCircleWhenLoading = true // animate to circle shape while in 
 button.isLoading = true // show loading indicator in the button, and button will be disabled automatically until setting isLoading = false
 ```
 
+Flashing:
+```swift
+button.startFlashing()
+button.startFlashing(flashDuration: 0.25, intensity: 0.9, repeatCount: 10)
+```
 NKButton uses [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView) for loading indicator, so it currently has 32 animation types
 
 NKButton uses [FrameLayoutKit](https://github.com/kennic/FrameLayoutKit) for content layout so you can customize the layout easily

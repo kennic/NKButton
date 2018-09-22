@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '3.4.2'
+  s.version          = '3.5'
   s.summary          = 'A fully customizable UIButton'
   s.description      = <<-DESC
 A fully customizable button that fills all lacked functions from UIButton like:
@@ -32,7 +32,7 @@ A fully customizable button that fills all lacked functions from UIButton like:
   s.social_media_url = 'https://twitter.com/namkennic'
 
   s.ios.deployment_target = '9.3'
-  s.swift_version = '4.1'
+  s.swift_version = '4.2'
   
   s.source_files = 'NKButton/Classes/*.swift'
   
