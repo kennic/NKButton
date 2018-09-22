@@ -383,7 +383,7 @@ open class NKButton: UIButton {
 	override open func draw(_ rect: CGRect) {
 		super.draw(rect)
 		
-		var backgroundFrame: CGRect = UIEdgeInsetsInsetRect(bounds, contentEdgeInsets)
+		var backgroundFrame: CGRect = bounds.inset(by: contentEdgeInsets)
 		backgroundFrame.origin.x = (bounds.size.width - backgroundFrame.size.width) / 2
 		backgroundFrame.origin.y = (bounds.size.height - backgroundFrame.size.height) / 2
 		
@@ -447,7 +447,7 @@ open class NKButton: UIButton {
 		frameLayout.frame = bounds
 		
 		if self.imageView != nil {
-			self.bringSubview(toFront: self.imageView!)
+			self.bringSubviewToFront(self.imageView!)
 		}
 		
 		if loadingView != nil {
@@ -565,27 +565,27 @@ open class NKButton: UIButton {
 		flashLayer.removeAnimation(forKey: "flashAnimation")
 	}
 	
-	public func setBackgroundColor(_ color: UIColor?, for state: UIControlState) {
+	public func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = backgroundColorKey(for: state)
 		bgColorDict[key] = color
 	}
 	
-	public func setBorderColor(_ color: UIColor?, for state: UIControlState) {
+	public func setBorderColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = borderColorKey(for: state)
 		borderColorDict[key] = color
 	}
 	
-	public func setShadowColor(_ color: UIColor?, for state: UIControlState) {
+	public func setShadowColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = shadowColorKey(for: state)
 		shadowColorDict[key] = color
 	}
 	
-	public func setGradientColor(_ colors: [UIColor]?, for state: UIControlState) {
+	public func setGradientColor(_ colors: [UIColor]?, for state: UIControl.State) {
 		let key = gradientColorKey(for: state)
 		gradientColorDict[key] = colors
 	}
 	
-	public func backgroundColor(for state: UIControlState) -> UIColor? {
+	public func backgroundColor(for state: UIControl.State) -> UIColor? {
 		let key = backgroundColorKey(for: state)
 		var result = bgColorDict[key]
 		
@@ -603,7 +603,7 @@ open class NKButton: UIButton {
 		return result
 	}
 	
-	public func borderColor(for state: UIControlState) -> UIColor? {
+	public func borderColor(for state: UIControl.State) -> UIColor? {
 		let key = borderColorKey(for: state)
 		var result = borderColorDict[key]
 		
@@ -621,31 +621,31 @@ open class NKButton: UIButton {
 		return result
 	}
 	
-	public func shadowColor(for state: UIControlState) -> UIColor? {
+	public func shadowColor(for state: UIControl.State) -> UIColor? {
 		let key = shadowColorKey(for: state)
 		return shadowColorDict[key]
 	}
 	
-	public func gradientColor(for state: UIControlState) -> [UIColor]? {
+	public func gradientColor(for state: UIControl.State) -> [UIColor]? {
 		let key = gradientColorKey(for: state)
 		return gradientColorDict[key]
 	}
 	
 	// MARK: -
 	
-	fileprivate func backgroundColorKey(for state: UIControlState) -> String {
+	fileprivate func backgroundColorKey(for state: UIControl.State) -> String {
 		return "bg\(state.rawValue)"
 	}
 	
-	fileprivate func borderColorKey(for state: UIControlState) -> String {
+	fileprivate func borderColorKey(for state: UIControl.State) -> String {
 		return "br\(state.rawValue)"
 	}
 	
-	fileprivate func shadowColorKey(for state: UIControlState) -> String {
+	fileprivate func shadowColorKey(for state: UIControl.State) -> String {
 		return "sd\(state.rawValue)"
 	}
 	
-	fileprivate func gradientColorKey(for state: UIControlState) -> String {
+	fileprivate func gradientColorKey(for state: UIControl.State) -> String {
 		return "gr\(state.rawValue)"
 	}
 	
@@ -682,7 +682,7 @@ open class NKButton: UIButton {
 			animation.fromValue = frame.width
 			animation.toValue = frame.height
 			animation.duration = 0.1
-			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 			backgroundLayer.masksToBounds = true
 			backgroundLayer.cornerRadius = cornerRadius
 		}
@@ -690,13 +690,13 @@ open class NKButton: UIButton {
 			animation.fromValue = frame.height
 			animation.toValue = frame.width
 			animation.duration = 0.15
-			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 			
 			self.setNeedsLayout()
 			self.setNeedsDisplay()
 		}
 		
-		animation.fillMode = kCAFillModeForwards
+		animation.fillMode = CAMediaTimingFillMode.forwards
 		animation.isRemovedOnCompletion = false
 		
 		backgroundLayer.add(animation, forKey: animation.keyPath)
@@ -723,10 +723,10 @@ open class NKButton: UIButton {
 		let animation = CABasicAnimation(keyPath: "transform.scale")
 		animation.fromValue = 1.0
 		animation.toValue = 26.0
-		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		animation.duration = duration
 		animation.delegate = self
-		animation.fillMode = kCAFillModeForwards
+		animation.fillMode = CAMediaTimingFillMode.forwards
 		animation.isRemovedOnCompletion = false
 		
 		backgroundLayer.add(animation, forKey: animation.keyPath)

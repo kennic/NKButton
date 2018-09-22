@@ -6,7 +6,6 @@ target 'NKButton_Example' do
 
   target 'NKButton_Tests' do
     inherit! :search_paths
-
     
   end
 end
