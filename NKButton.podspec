@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '3.5'
+  s.version          = '3.6'
   s.summary          = 'A fully customizable UIButton'
   s.description      = <<-DESC
 A fully customizable button that fills all lacked functions from UIButton like:
