@@ -44,13 +44,15 @@ class ViewController: UIViewController {
 		
 		loginButton = NKButton.DefaultButton(title: "SIGN IN", color: UIColor(red:0.90, green:0.18, blue:0.15, alpha:1.00))
 		loginButton.setImage(#imageLiteral(resourceName: "login"), for: .normal)
-		loginButton.transitionToCircleWhenLoading = true
+		loginButton.transitionToCircleWhenLoading = false
 		loginButton.loadingIndicatorStyle = .ballScaleRippleMultiple
 		loginButton.loadingIndicatorAlignment = .center
 		loginButton.underlineTitleDisabled = true
 		loginButton.spacing = 10.0 // space between icon and title
 		loginButton.extendSize = CGSize(width: 50, height: 20)
-		loginButton.imageAlignment = .right
+		loginButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+		loginButton.imageAlignment = .rightEdge
+		loginButton.isRoundedButton = false
 		
 		let facebookIcon = #imageLiteral(resourceName: "facebook")
 		facebookButton = NKButton.DefaultButton(title: "FACEBOOK", color: UIColor(red:0.25, green:0.39, blue:0.80, alpha:1.00))
@@ -63,6 +65,9 @@ class ViewController: UIViewController {
 		facebookButton.underlineTitleDisabled = true
 		facebookButton.loadingIndicatorStyle = .ballClipRotatePulse
 		facebookButton.extendSize = CGSize(width: 50, height: 20)
+		facebookButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+		facebookButton.imageAlignment = .leftEdge
+		facebookButton.isRoundedButton = false
 		
 		let twitterIcon = #imageLiteral(resourceName: "twitter")
 		twitterButton = NKButton.DefaultButton(title: "TWITTER", color: UIColor(red:0.42, green:0.67, blue:0.91, alpha:1.00))
