@@ -350,6 +350,7 @@ open class NKButton: UIButton {
 		self.layer.addSublayer(flashLayer)
 		self.layer.addSublayer(gradientLayer)
 		
+		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.frameLayout1.contentAlignment = (.center, .center)
 		frameLayout.frameLayout2.contentAlignment = (.center, .center)
 		
@@ -491,7 +492,6 @@ open class NKButton: UIButton {
 		case .left:
 			frameLayout.layoutDirection = .horizontal
 			frameLayout.layoutAlignment = .center
-			frameLayout.isIntrinsicSizeEnabled = true
 			
 			frameLayout.leftFrameLayout.targetView = imageFrame
 			frameLayout.rightFrameLayout.targetView = labelFrame
@@ -500,7 +500,6 @@ open class NKButton: UIButton {
 		case .leftEdge:
 			frameLayout.layoutDirection = .horizontal
 			frameLayout.layoutAlignment = .left
-			frameLayout.isIntrinsicSizeEnabled = true
 			
 			frameLayout.leftFrameLayout.targetView = imageFrame
 			frameLayout.rightFrameLayout.targetView = labelFrame
@@ -509,7 +508,6 @@ open class NKButton: UIButton {
 		case .right:
 			frameLayout.layoutDirection = .horizontal
 			frameLayout.layoutAlignment = .center
-			frameLayout.isIntrinsicSizeEnabled = true
 			
 			frameLayout.leftFrameLayout.targetView = labelFrame
 			frameLayout.rightFrameLayout.targetView = imageFrame
@@ -518,7 +516,6 @@ open class NKButton: UIButton {
 		case .rightEdge:
 			frameLayout.layoutDirection = .horizontal
 			frameLayout.layoutAlignment = .right
-			frameLayout.isIntrinsicSizeEnabled = true
 			
 			frameLayout.leftFrameLayout.targetView = labelFrame
 			frameLayout.rightFrameLayout.targetView = imageFrame
@@ -527,7 +524,6 @@ open class NKButton: UIButton {
 		case .top:
 			frameLayout.layoutDirection = .vertical
 			frameLayout.layoutAlignment = .center
-			frameLayout.isIntrinsicSizeEnabled = true
 			
 			frameLayout.topFrameLayout.targetView = imageFrame
 			frameLayout.bottomFrameLayout.targetView = labelFrame
@@ -536,7 +532,6 @@ open class NKButton: UIButton {
 		case .topEdge:
 			frameLayout.layoutDirection = .vertical
 			frameLayout.layoutAlignment = .top
-			frameLayout.isIntrinsicSizeEnabled = false
 			
 			frameLayout.topFrameLayout.targetView = imageFrame
 			frameLayout.bottomFrameLayout.targetView = labelFrame
@@ -545,7 +540,6 @@ open class NKButton: UIButton {
 		case .bottom:
 			frameLayout.layoutDirection = .vertical
 			frameLayout.layoutAlignment = .center
-			frameLayout.isIntrinsicSizeEnabled = true
 			
 			frameLayout.topFrameLayout.targetView = labelFrame
 			frameLayout.bottomFrameLayout.targetView = imageFrame
@@ -554,7 +548,6 @@ open class NKButton: UIButton {
 		case .bottomEdge:
 			frameLayout.layoutDirection = .vertical
 			frameLayout.layoutAlignment = .bottom
-			frameLayout.isIntrinsicSizeEnabled = false
 			
 			frameLayout.topFrameLayout.targetView = labelFrame
 			frameLayout.bottomFrameLayout.targetView = imageFrame
