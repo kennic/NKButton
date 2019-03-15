@@ -832,3 +832,59 @@ fileprivate extension UIColor {
 	}
 	
 }
+
+/**
+Supports:
+let button = NKButton()
+button.titles[[.normal, .highlighted]] = ""
+*/
+class UIControlStateValue<T> {
+	private let getter: (UIControl.State) -> T?
+	private let setter: (T?, UIControl.State) -> Void
+	
+	// The initializer is fileprivate here because all
+	// extensions are in a single file. If it's split
+	// in multiple files, this should be internal
+	fileprivate init(getter: @escaping (UIControl.State) -> T?,
+					 setter: @escaping (T?, UIControl.State) -> Void) {
+		self.getter = getter
+		self.setter = setter
+	}
+	
+	subscript(state: UIControl.State) -> T? {
+		get {
+			return self.getter(state)
+		}
+		set {
+			self.setter(newValue, state)
+		}
+	}
+}
+
+extension NKButton {
+	
+	var titles: UIControlStateValue<String> {
+		return UIControlStateValue<String>.init(getter: self.title(for:), setter: self.setTitle(_:for:))
+	}
+	
+	var titleColors: UIControlStateValue<UIColor> {
+		return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
+	}
+	
+	var backgroundColors: UIControlStateValue<UIColor> {
+		return UIControlStateValue<UIColor>.init(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
+	}
+	
+	var  borderColors: UIControlStateValue<UIColor> {
+		return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
+	}
+	
+	var  shadowColors: UIControlStateValue<UIColor> {
+		return UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:))
+	}
+	
+	var  gradientColors: UIControlStateValue<[UIColor]> {
+		return UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:))
+	}
+	
+}
