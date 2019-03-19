@@ -123,7 +123,7 @@ public class NKButtonStack: UIControl {
 	public var buttonSelectionBlock 	: NKButtonSelectionBlock? = nil
 	
 	internal let scrollView = UIScrollView()
-	internal var frameLayout : StackFrameLayout!
+	public var frameLayout : StackFrameLayout!
 	
 	// MARK: -
 	
