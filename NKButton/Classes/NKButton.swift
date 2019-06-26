@@ -455,14 +455,18 @@ open class NKButton: UIButton {
 		#if swift(>=4.2)
 		frameLayout.frame = bounds.inset(by: contentEdgeInsets)
 		#else
-		frameLayout.frame = UIEdgeInsetsInsetRect(bounds, contentEdgeInsets)\
+		frameLayout.frame = UIEdgeInsetsInsetRect(bounds, contentEdgeInsets)
 		#endif
 		
 		frameLayout.setNeedsLayout()
 		frameLayout.layoutIfNeeded()
 		
 		if self.imageView != nil {
+			#if swift(>=4.2)
 			self.bringSubviewToFront(self.imageView!)
+			#else
+			self.bringSubview(toFront: self.imageView!)
+			#endif
 		}
 		
 		if loadingView != nil {
@@ -733,7 +737,11 @@ open class NKButton: UIButton {
 			animation.fromValue = frame.width
 			animation.toValue = frame.height
 			animation.duration = 0.1
+			#if swift(>=4.2)
 			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+			#else
+			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			#endif
 			backgroundLayer.masksToBounds = true
 			backgroundLayer.cornerRadius = cornerRadius
 		}
@@ -741,13 +749,21 @@ open class NKButton: UIButton {
 			animation.fromValue = frame.height
 			animation.toValue = frame.width
 			animation.duration = 0.15
+			#if swift(>=4.2)
 			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+			#else
+			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			#endif
 			
 			self.setNeedsLayout()
 			self.setNeedsDisplay()
 		}
 		
+		#if swift(>=4.2)
 		animation.fillMode = CAMediaTimingFillMode.forwards
+		#else
+		animation.fillMode = kCAFillModeForwards
+		#endif
 		animation.isRemovedOnCompletion = false
 		
 		backgroundLayer.add(animation, forKey: animation.keyPath)
@@ -774,10 +790,15 @@ open class NKButton: UIButton {
 		let animation = CABasicAnimation(keyPath: "transform.scale")
 		animation.fromValue = 1.0
 		animation.toValue = 26.0
-		animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		animation.duration = duration
 		animation.delegate = self
+		#if swift(>=4.2)
+		animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 		animation.fillMode = CAMediaTimingFillMode.forwards
+		#else
+		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+		animation.fillMode = kCAFillModeForwards
+		#endif
 		animation.isRemovedOnCompletion = false
 		
 		backgroundLayer.add(animation, forKey: animation.keyPath)
