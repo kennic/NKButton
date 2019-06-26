@@ -393,7 +393,7 @@ open class NKButton: UIButton {
 	override open func draw(_ rect: CGRect) {
 		super.draw(rect)
 		
-		let backgroundFrame = bounds//.inset(by: backgroundEdgeInsets)
+		let backgroundFrame = bounds
 		let fillColor 		= self.backgroundColor(for: state)
 		let borderColor 	= self.borderColor(for: state)
 		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
@@ -452,7 +452,12 @@ open class NKButton: UIButton {
 		flashLayer.frame = bounds
 		gradientLayer.frame = bounds
 		
+		#if swift(>=4.2)
 		frameLayout.frame = bounds.inset(by: contentEdgeInsets)
+		#else
+		frameLayout.frame = UIEdgeInsetsInsetRect(bounds, contentEdgeInsets)\
+		#endif
+		
 		frameLayout.setNeedsLayout()
 		frameLayout.layoutIfNeeded()
 		
