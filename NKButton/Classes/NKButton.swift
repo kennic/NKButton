@@ -445,8 +445,9 @@ open class NKButton: UIButton {
 	override open func layoutSubviews() {
 		super.layoutSubviews()
 		
-		let viewSize = self.bounds.size
 		let bounds = self.bounds
+		let viewSize = bounds.size
+		
 		shadowLayer.frame = bounds
 		backgroundLayer.frame = bounds
 		flashLayer.frame = bounds
@@ -461,24 +462,24 @@ open class NKButton: UIButton {
 		frameLayout.setNeedsLayout()
 		frameLayout.layoutIfNeeded()
 		
-		if self.imageView != nil {
+		if let imageView = self.imageView {
 			#if swift(>=4.2)
-			self.bringSubviewToFront(self.imageView!)
+			self.bringSubviewToFront(imageView)
 			#else
-			self.bringSubview(toFront: self.imageView!)
+			self.bringSubview(toFront: imageView)
 			#endif
 		}
 		
-		if loadingView != nil {
+		if let loadingView = loadingView {
 			var point = CGPoint(x: 0, y: viewSize.height / 2)
 			switch (loadingIndicatorAlignment) {
-			case .left: 	point.x = loadingView!.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
+			case .left: 	point.x = loadingView.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
 			case .center: 	point.x = viewSize.width/2
-			case .right: 	point.x = viewSize.width - (loadingView!.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
+			case .right: 	point.x = viewSize.width - (loadingView.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
 			case .atImage:	point = self.imageView?.center ?? point
 			}
 			
-			loadingView!.center = point
+			loadingView.center = point
 			
 			self.titleLabel?.alpha = hideTitleWhileLoading ? 0.0 : 1.0
 			self.imageView?.alpha = hideImageWhileLoading ? 0.0 : 1.0
@@ -571,7 +572,7 @@ open class NKButton: UIButton {
 	
 	override open var frame: CGRect {
 		didSet {
-			if __CGSizeEqualToSize(super.frame.size, oldValue.size) {
+			if !__CGSizeEqualToSize(super.frame.size, oldValue.size) {
 				self.setNeedsDisplay()
 				self.setNeedsLayout()
 			}
@@ -580,7 +581,7 @@ open class NKButton: UIButton {
 	
 	override open var bounds: CGRect {
 		didSet {
-			if __CGSizeEqualToSize(super.bounds.size, oldValue.size) {
+			if !__CGSizeEqualToSize(super.bounds.size, oldValue.size) {
 				self.setNeedsDisplay()
 				self.setNeedsLayout()
 			}
