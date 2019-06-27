@@ -1,11 +1,3 @@
-#
-# Be sure to run `pod lib lint NKButton.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
   s.version          = '3.8.6'
@@ -25,12 +17,12 @@ A fully customizable button that fills all lacked functions from UIButton like:
                        DESC
 
   s.homepage         = 'https://github.com/kennic/NKButton'
-  # s.screenshots    = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+# s.screenshots    = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Nam Kennic' => 'namkennic@me.com' }
   s.source           = { :git => 'https://github.com/kennic/NKButton.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/namkennic'
-	s.platform          = :ios, '8.0'
+  s.platform          = :ios, '8.0'
   s.ios.deployment_target = '8.0'
   s.swift_version = '4.2'
   
