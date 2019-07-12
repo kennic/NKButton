@@ -106,12 +106,12 @@ public class NKButtonStack: UIControl {
 		}
 	}
 	
-	public var direction: NKLayoutDirection {
+	public var axis: NKLayoutAxis {
 		get {
-			return frameLayout.layoutDirection
+			return frameLayout.axis
 		}
 		set {
-			frameLayout.layoutDirection = newValue
+			frameLayout.axis = newValue
 			self.setNeedsLayout()
 		}
 	}
@@ -127,18 +127,18 @@ public class NKButtonStack: UIControl {
 	
 	// MARK: -
 	
-	convenience public init(items : [NKButtonItem], direction: NKLayoutDirection = .horizontal) {
+	convenience public init(items : [NKButtonItem], axis: NKLayoutAxis = .horizontal) {
 		self.init()
 		
-		self.direction = direction
+		self.axis = axis
 		self.items = items
 	}
 	
 	public init() {
 		super.init(frame: .zero)
 		
-		frameLayout = StackFrameLayout(direction: .horizontal)
-		frameLayout.layoutAlignment = .split
+		frameLayout = StackFrameLayout(axis: .horizontal)
+		frameLayout.distribution = .equal
 		frameLayout.spacing = 1.0
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.shouldCacheSize = false

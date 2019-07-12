@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '3.8.6'
+  s.version          = '3.8.7'
   s.summary          = 'A fully customizable UIButton'
   s.description      = <<-DESC
 A fully customizable button that fills all lacked functions from UIButton like:
@@ -17,7 +17,6 @@ A fully customizable button that fills all lacked functions from UIButton like:
                        DESC
 
   s.homepage         = 'https://github.com/kennic/NKButton'
-# s.screenshots    = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Nam Kennic' => 'namkennic@me.com' }
   s.source           = { :git => 'https://github.com/kennic/NKButton.git', :tag => s.version.to_s }
@@ -27,12 +26,6 @@ A fully customizable button that fills all lacked functions from UIButton like:
   s.swift_version = '4.2'
   
   s.source_files = 'NKButton/Classes/*.swift'
-  
-  # s.resource_bundles = {
-  #   'NKButton' => ['NKButton/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit'
   s.dependency 'FrameLayoutKit'
   s.dependency 'NVActivityIndicatorView/AppExtension'

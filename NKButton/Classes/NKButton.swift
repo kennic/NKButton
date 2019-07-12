@@ -312,7 +312,7 @@ open class NKButton: UIButton {
 	fileprivate let gradientLayer	= CAGradientLayer()
 	fileprivate let imageFrame 		= FrameLayout()
 	fileprivate let labelFrame 		= FrameLayout()
-	fileprivate let frameLayout 	= DoubleFrameLayout(direction: .horizontal)
+	fileprivate let frameLayout 	= DoubleFrameLayout(axis: .horizontal)
 	
 	fileprivate var bgColorDict			: [String : UIColor] = [:]
 	fileprivate var borderColorDict		: [String : UIColor] = [:]
@@ -500,64 +500,64 @@ open class NKButton: UIButton {
 	fileprivate func updateLayoutAlignment() {
 		switch imageAlignment {
 		case .left:
-			frameLayout.layoutDirection = .horizontal
-			frameLayout.layoutAlignment = .center
+			frameLayout.axis = .horizontal
+			frameLayout.distribution = .center
 			
 			frameLayout.leftFrameLayout.targetView = imageFrame
 			frameLayout.rightFrameLayout.targetView = labelFrame
 			break
 			
 		case .leftEdge:
-			frameLayout.layoutDirection = .horizontal
-			frameLayout.layoutAlignment = .left
+			frameLayout.axis = .horizontal
+			frameLayout.distribution = .left
 			
 			frameLayout.leftFrameLayout.targetView = imageFrame
 			frameLayout.rightFrameLayout.targetView = labelFrame
 			break
 			
 		case .right:
-			frameLayout.layoutDirection = .horizontal
-			frameLayout.layoutAlignment = .center
+			frameLayout.axis = .horizontal
+			frameLayout.distribution = .center
 			
 			frameLayout.leftFrameLayout.targetView = labelFrame
 			frameLayout.rightFrameLayout.targetView = imageFrame
 			break
 			
 		case .rightEdge:
-			frameLayout.layoutDirection = .horizontal
-			frameLayout.layoutAlignment = .right
+			frameLayout.axis = .horizontal
+			frameLayout.distribution = .right
 			
 			frameLayout.leftFrameLayout.targetView = labelFrame
 			frameLayout.rightFrameLayout.targetView = imageFrame
 			break
 			
 		case .top:
-			frameLayout.layoutDirection = .vertical
-			frameLayout.layoutAlignment = .center
+			frameLayout.axis = .vertical
+			frameLayout.distribution = .center
 			
 			frameLayout.topFrameLayout.targetView = imageFrame
 			frameLayout.bottomFrameLayout.targetView = labelFrame
 			break
 			
 		case .topEdge:
-			frameLayout.layoutDirection = .vertical
-			frameLayout.layoutAlignment = .top
+			frameLayout.axis = .vertical
+			frameLayout.distribution = .top
 			
 			frameLayout.topFrameLayout.targetView = imageFrame
 			frameLayout.bottomFrameLayout.targetView = labelFrame
 			break
 			
 		case .bottom:
-			frameLayout.layoutDirection = .vertical
-			frameLayout.layoutAlignment = .center
+			frameLayout.axis = .vertical
+			frameLayout.distribution = .center
 			
 			frameLayout.topFrameLayout.targetView = labelFrame
 			frameLayout.bottomFrameLayout.targetView = imageFrame
 			break
 			
 		case .bottomEdge:
-			frameLayout.layoutDirection = .vertical
-			frameLayout.layoutAlignment = .bottom
+			frameLayout.axis = .vertical
+			frameLayout.distribution = .bottom
 			
 			frameLayout.topFrameLayout.targetView = labelFrame
 			frameLayout.bottomFrameLayout.targetView = imageFrame

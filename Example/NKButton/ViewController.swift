@@ -110,7 +110,7 @@ class ViewController: UIViewController {
 		forgotButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		flashButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		
-		frameLayout = StackFrameLayout(direction: .vertical, alignment: .top, views: [loginButton, facebookButton, twitterButton, forgotButton, flashButton])
+		frameLayout = StackFrameLayout(axis: .vertical, distribution: .top, views: [loginButton, facebookButton, twitterButton, forgotButton, flashButton])
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.spacing = 40
 //		frameLayout.showFrameDebug = true // uncomment this to see how frameLayout layout its contents
