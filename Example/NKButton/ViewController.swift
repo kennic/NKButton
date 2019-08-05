@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		loginButton = NKButton.DefaultButton(title: "SIGN IN", color: UIColor(red:0.90, green:0.18, blue:0.15, alpha:1.00))
+		loginButton = NKButton.DefaultButton(title: "SIGN IN", color: UIColor(red:0.10, green:0.58, blue:0.15, alpha:1.00))
 		loginButton.setImage(#imageLiteral(resourceName: "login"), for: .normal)
 		loginButton.transitionToCircleWhenLoading = false
 		loginButton.loadingIndicatorStyle = .ballScaleRippleMultiple
@@ -52,6 +52,7 @@ class ViewController: UIViewController {
 		loginButton.extendSize = CGSize(width: 50, height: 20)
 		loginButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 		loginButton.imageAlignment = .rightEdge
+		loginButton.contentFrameLayout.leftFrameLayout.contentAlignment = (.center, .right)
 		loginButton.isRoundedButton = false
 		
 		let facebookIcon = #imageLiteral(resourceName: "facebook")
@@ -79,6 +80,7 @@ class ViewController: UIViewController {
 		twitterButton.spacing = 10.0 // space between icon and title
 		twitterButton.transitionToCircleWhenLoading = false
 		twitterButton.imageAlignment = .top
+		twitterButton.titleLabel?.textAlignment = .center
 		twitterButton.loadingIndicatorAlignment = .atImage
 		twitterButton.hideImageWhileLoading = true
 		twitterButton.hideTitleWhileLoading = false
@@ -93,11 +95,14 @@ class ViewController: UIViewController {
 		forgotButton.setTitleColor(.gray, for: .normal)
 		forgotButton.setTitleColor(.gray, for: .highlighted)
 		forgotButton.setTitleColor(.gray, for: .disabled)
+		forgotButton.setBorderColor(.gray, for: .normal)
+		forgotButton.borderSize = 1.0
 		forgotButton.showsTouchWhenHighlighted = true
 		forgotButton.titleLabel?.font = UIFont(name: "Helvetica", size: 14)
 		forgotButton.spacing = 5.0 // space between icon and title
 		forgotButton.autoSetDisableColor = false
-		forgotButton.extendSize = CGSize(width: 50, height: 20)
+		forgotButton.isRoundedButton = true
+		forgotButton.extendSize = CGSize(width: 20, height: 20)
 		
 		flashButton = NKButton.DefaultButton(title: "TAP TO FLASH", color: UIColor(red:0.61, green:0.11, blue:0.08, alpha:1.00))
 		flashButton.flashColor = .red
@@ -115,12 +120,12 @@ class ViewController: UIViewController {
 		frameLayout.spacing = 40
 //		frameLayout.showFrameDebug = true // uncomment this to see how frameLayout layout its contents
 		
-		self.view.addSubview(loginButton)
-		self.view.addSubview(facebookButton)
-		self.view.addSubview(twitterButton)
-		self.view.addSubview(forgotButton)
-		self.view.addSubview(flashButton)
-		self.view.addSubview(frameLayout)
+		view.addSubview(loginButton)
+		view.addSubview(facebookButton)
+		view.addSubview(twitterButton)
+		view.addSubview(forgotButton)
+		view.addSubview(flashButton)
+		view.addSubview(frameLayout)
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
 			self.viewDidLayoutSubviews()
@@ -130,7 +135,7 @@ class ViewController: UIViewController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		let viewSize = self.view.bounds.size
+		let viewSize = view.bounds.size
 		let contentSize = frameLayout.sizeThatFits(CGSize(width: viewSize.width * 0.9, height: viewSize.height))
 		frameLayout.frame = CGRect(x: (viewSize.width - contentSize.width)/2, y: (viewSize.height - contentSize.height)/2, width: contentSize.width, height: contentSize.height)
 	}

@@ -1,6 +1,6 @@
 PODS:
-  - FrameLayoutKit (3.6)
-  - NKButton (3.8.6):
+  - FrameLayoutKit (3.7.1)
+  - NKButton (3.8.9):
     - FrameLayoutKit
     - NVActivityIndicatorView/AppExtension
   - NVActivityIndicatorView/AppExtension (4.7.0)
@@ -19,8 +19,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FrameLayoutKit: 1d1e3b54bcbf0eb0d2b52e2f1be8460051666865
-  NKButton: d7b759631eebb7a4ca5d58502eae7bde79abbdf9
+  FrameLayoutKit: 84a29a25e736134f25680ccae6f932934c5ba420
+  NKButton: 139df00478b31580441d56465418f7bedcb76f0c
   NVActivityIndicatorView: b19ddab2576f805cbe0fb2306cba3476e09a1dea
 
 PODFILE CHECKSUM: 3c8132335bcc852f5ec3badc3fe26980af9bfc9a

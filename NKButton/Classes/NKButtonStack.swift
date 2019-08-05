@@ -13,7 +13,7 @@ public struct NKButtonItem {
 	public var title: String?
 	public var image: UIImage?
 	public var selectedImage: UIImage?
-	public var userInfo : Any?
+	public var userInfo: Any?
 	
 	public init(title: String?, image: UIImage? = nil, selectedImage: UIImage? = nil, userInfo: Any? = nil) {
 		self.title = title
@@ -28,16 +28,16 @@ public typealias NKButtonSelectionBlock = ((UIButton, NKButtonItem, Int) -> Void
 
 public class NKButtonStack: UIControl {
 	
-	public var items : [NKButtonItem]? = nil {
+	public var items: [NKButtonItem]? = nil {
 		didSet {
 			updateLayout()
 			self.setNeedsLayout()
 		}
 	}
 	
-	public var buttons : [UIButton] {
+	public var buttons: [UIButton] {
 		get {
-			var results : [UIButton] = []
+			var results: [UIButton] = []
 			frameLayout.enumerate { (layout, idx, stop) in
 				results.append(layout.targetView as! UIButton)
 			}
@@ -58,7 +58,7 @@ public class NKButtonStack: UIControl {
 		}
 	}
 	
-	public var spacing : CGFloat {
+	public var spacing: CGFloat {
 		get {
 			return frameLayout.spacing
 		}
@@ -68,7 +68,7 @@ public class NKButtonStack: UIControl {
 		}
 	}
 	
-	public var contentEdgeInsets : UIEdgeInsets {
+	public var contentEdgeInsets: UIEdgeInsets {
 		get {
 			return frameLayout.edgeInsets
 		}
@@ -118,16 +118,16 @@ public class NKButtonStack: UIControl {
 	
 	public var isMomentary: Bool = true
 	
-	public var buttonCreationBlock 		: NKButtonCreationBlock? = nil
-	public var buttonConfigurationBlock : NKButtonSelectionBlock? = nil
-	public var buttonSelectionBlock 	: NKButtonSelectionBlock? = nil
+	public var buttonCreationBlock: NKButtonCreationBlock? = nil
+	public var buttonConfigurationBlock: NKButtonSelectionBlock? = nil
+	public var buttonSelectionBlock: NKButtonSelectionBlock? = nil
 	
 	internal let scrollView = UIScrollView()
-	public var frameLayout : StackFrameLayout!
+	public var frameLayout: StackFrameLayout!
 	
 	// MARK: -
 	
-	convenience public init(items : [NKButtonItem], axis: NKLayoutAxis = .horizontal) {
+	convenience public init(items: [NKButtonItem], axis: NKLayoutAxis = .horizontal) {
 		self.init()
 		
 		self.axis = axis
@@ -203,7 +203,7 @@ public class NKButtonStack: UIControl {
 			frameLayout.enumerate({ (layout, idx, stop) in
 				let index = Int(idx)
 				let buttonItem = items![index]
-				let button : UIButton = layout.targetView as? UIButton ?? buttonCreationBlock?(buttonItem, index) ?? UIButton(type: .custom)
+				let button: UIButton = layout.targetView as? UIButton ?? buttonCreationBlock?(buttonItem, index) ?? UIButton(type: .custom)
 				button.tag = index
 				button.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 				scrollView.addSubview(button)
