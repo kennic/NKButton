@@ -586,6 +586,13 @@ open class NKButton: UIButton {
 		}
 	}
 	
+	override open var center: CGPoint {
+		didSet {
+			setNeedsDisplay()
+			setNeedsLayout()
+		}
+	}
+	
 	override open var isHighlighted: Bool {
 		didSet {
 			if super.isHighlighted != oldValue {
