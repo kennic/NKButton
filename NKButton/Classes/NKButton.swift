@@ -35,11 +35,11 @@ open class NKButton: UIButton {
 	/** Set/Get title of the button */
 	open var title: String? {
 		get {
-			return self.currentTitle
+			return currentTitle
 		}
 		set {
-			self.setTitle(newValue, for: .normal)
-			self.setNeedsLayout()
+			setTitle(newValue, for: .normal)
+			setNeedsLayout()
 		}
 	}
 	
@@ -51,7 +51,7 @@ open class NKButton: UIButton {
 		set {
 			frameLayout.spacing = newValue
 			frameLayout.setNeedsLayout()
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -63,7 +63,7 @@ open class NKButton: UIButton {
 		set {
 			imageFrame.minSize = newValue
 			frameLayout.setNeedsLayout()
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -75,7 +75,7 @@ open class NKButton: UIButton {
 		set {
 			imageFrame.maxSize = newValue
 			frameLayout.setNeedsLayout()
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -87,7 +87,7 @@ open class NKButton: UIButton {
 		set {
 			imageFrame.fixSize = newValue
 			frameLayout.setNeedsLayout()
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -98,7 +98,7 @@ open class NKButton: UIButton {
 	open var cornerRadius: CGFloat = 0 {
 		didSet {
 			if cornerRadius != oldValue {
-				self.setNeedsDisplay()
+				setNeedsDisplay()
 			}
 		}
 	}
@@ -107,7 +107,7 @@ open class NKButton: UIButton {
 	open var shadowRadius: CGFloat = 0 {
 		didSet {
 			if shadowRadius != oldValue {
-				self.setNeedsDisplay()
+				setNeedsDisplay()
 			}
 		}
 	}
@@ -116,7 +116,7 @@ open class NKButton: UIButton {
 	open var shadowOpacity: Float = 0.5 {
 		didSet {
 			if shadowOpacity != oldValue {
-				self.setNeedsDisplay()
+				setNeedsDisplay()
 			}
 		}
 	}
@@ -125,17 +125,18 @@ open class NKButton: UIButton {
 	open var shadowOffset: CGSize = .zero {
 		didSet {
 			if shadowOffset != oldValue {
-				self.setNeedsDisplay()
+				setNeedsDisplay()
 			}
 		}
 	}
 	
 	/** Size of border */
-	open var borderSize: CGFloat = 0 {
-		didSet {
-			if borderSize != oldValue {
-				self.setNeedsDisplay()
-			}
+	open var borderSize: CGFloat {
+		get {
+			return borderSize(for: .normal)
+		}
+		set {
+			setBorderSize(newValue, for: .normal)
 		}
 	}
 	
@@ -143,7 +144,7 @@ open class NKButton: UIButton {
 	open var isRoundedButton: Bool = false {
 		didSet {
 			if isRoundedButton != oldValue {
-				self.setNeedsLayout()
+				setNeedsLayout()
 			}
 		}
 	}
@@ -152,7 +153,7 @@ open class NKButton: UIButton {
 	open var underlineTitleDisabled: Bool = false {
 		didSet {
 			if underlineTitleDisabled != oldValue {
-				self.setNeedsDisplay()
+				setNeedsDisplay()
 			}
 		}
 	}
@@ -167,30 +168,33 @@ open class NKButton: UIButton {
 	/** Text Horizontal Alignment */
 	open var textHorizontalAlignment: NKContentHorizontalAlignment {
 		get {
-			return self.labelFrame.contentHorizontalAlignment
+			return labelFrame.contentHorizontalAlignment
 		}
 		set {
-			self.labelFrame.contentHorizontalAlignment = newValue
+			labelFrame.contentHorizontalAlignment = newValue
+			setNeedsLayout()
 		}
 	}
 	
 	/** Text Vertical Alignment */
 	open var textVerticalAlignment: NKContentVerticalAlignment {
 		get {
-			return self.labelFrame.contentVerticalAlignment
+			return labelFrame.contentVerticalAlignment
 		}
 		set {
-			self.labelFrame.contentVerticalAlignment = newValue
+			labelFrame.contentVerticalAlignment = newValue
+			setNeedsLayout()
 		}
 	}
 	
 	/** Text Alignment */
 	open var textAlignemnt: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
 		get {
-			return self.labelFrame.contentAlignment
+			return labelFrame.contentAlignment
 		}
 		set {
-			self.labelFrame.contentAlignment = newValue
+			labelFrame.contentAlignment = newValue
+			setNeedsLayout()
 		}
 	}
 	
@@ -200,6 +204,7 @@ open class NKButton: UIButton {
 		}
 		set {
 			frameLayout.edgeInsets = newValue
+			setNeedsLayout()
 		}
 	}
 	
@@ -219,40 +224,40 @@ open class NKButton: UIButton {
 		didSet {
 			if isLoading != oldValue {
 				if isLoading {
-					self.isEnabled = false
+					isEnabled = false
 					showLoadingView()
 					
 					if transitionToCircleWhenLoading {
-						self.titleLabel?.alpha = 0.0
-						self.imageView?.alpha = 0.0
+						titleLabel?.alpha = 0.0
+						imageView?.alpha = 0.0
 						transition(toCircle: true)
 					}
 					else {
 						if hideImageWhileLoading {
-							self.imageView?.alpha = 0.0
+							imageView?.alpha = 0.0
 						}
 						
 						if hideTitleWhileLoading {
-							self.titleLabel?.alpha = 0.0
+							titleLabel?.alpha = 0.0
 						}
 					}
 				}
 				else {
-					self.isEnabled = true
+					isEnabled = true
 					hideLoadingView()
 					
 					if transitionToCircleWhenLoading {
-						self.titleLabel?.alpha = 1.0
-						self.imageView?.alpha = 1.0
+						titleLabel?.alpha = 1.0
+						imageView?.alpha = 1.0
 						transition(toCircle: false)
 					}
 					else {
 						if hideImageWhileLoading {
-							self.imageView?.alpha = 1.0
+							imageView?.alpha = 1.0
 						}
 						
 						if hideTitleWhileLoading {
-							self.titleLabel?.alpha = 1.0
+							titleLabel?.alpha = 1.0
 						}
 					}
 				}
@@ -300,8 +305,8 @@ open class NKButton: UIButton {
 			if let view = backgroundView {
 				view.isUserInteractionEnabled = false
 				view.layer.masksToBounds = true
-				self.layer.insertSublayer(view.layer, at: 0)
-				self.setNeedsLayout()
+				layer.insertSublayer(view.layer, at: 0)
+				setNeedsLayout()
 			}
 		}
 	}
@@ -321,6 +326,7 @@ open class NKButton: UIButton {
 	fileprivate var borderColorDict		: [String : UIColor] = [:]
 	fileprivate var shadowColorDict		: [String : UIColor] = [:]
 	fileprivate var gradientColorDict	: [String : [UIColor]] = [:]
+	fileprivate var borderSizeDict		: [String : CGFloat] = [:]
 	
 	// MARK: -
 	
@@ -329,15 +335,15 @@ open class NKButton: UIButton {
 		self.title = title
 		
 		if let color = titleColor {
-			self.setTitleColor(color, for: .normal)
+			setTitleColor(color, for: .normal)
 		}
 		
 		if let color = buttonColor {
-			self.setBackgroundColor(color, for: .normal)
+			setBackgroundColor(color, for: .normal)
 		}
 		
 		if let color = shadowColor {
-			self.setShadowColor(color, for: .normal)
+			setShadowColor(color, for: .normal)
 		}
 	}
 	
@@ -345,29 +351,29 @@ open class NKButton: UIButton {
 		super.init(frame: .zero)
 		
 		flashLayer.opacity = 0
-		flashLayer.fillColor = self.flashColor.cgColor
+		flashLayer.fillColor = flashColor.cgColor
 		contentEdgeInsets = .zero
 		
-		self.layer.addSublayer(shadowLayer)
-		self.layer.addSublayer(backgroundLayer)
-		self.layer.addSublayer(flashLayer)
-		self.layer.addSublayer(gradientLayer)
+		layer.addSublayer(shadowLayer)
+		layer.addSublayer(backgroundLayer)
+		layer.addSublayer(flashLayer)
+		layer.addSublayer(gradientLayer)
 		
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.frameLayout1.contentAlignment = (.center, .center)
 		frameLayout.frameLayout2.contentAlignment = (.center, .center)
 		
 		imageFrame.contentAlignment = (.center, .center)
-		imageFrame.targetView = self.imageView
+		imageFrame.targetView = imageView
 		
 		labelFrame.contentAlignment = (.fill, .fill)
-		labelFrame.targetView = self.titleLabel
+		labelFrame.targetView = titleLabel
 		
 		updateLayoutAlignment()
 		
-		self.addSubview(imageFrame)
-		self.addSubview(labelFrame)
-		self.addSubview(frameLayout)
+		addSubview(imageFrame)
+		addSubview(labelFrame)
+		addSubview(frameLayout)
 	}
 	
 	required public init?(coder aDecoder: NSCoder) {
@@ -386,32 +392,30 @@ open class NKButton: UIButton {
 	}
 	
 	override open func sizeToFit() {
-		let size = self.sizeThatFits(UIScreen.main.bounds.size)
-		var frame = self.frame
-		frame.size.width = size.width
-		frame.size.height = size.height
-		self.frame = frame
+		let size = sizeThatFits(UIScreen.main.bounds.size)
+		frame = CGRect(origin: frame.origin, size: size)
 	}
 	
 	override open func draw(_ rect: CGRect) {
 		super.draw(rect)
 		
 		let backgroundFrame = bounds
-		let fillColor 		= self.backgroundColor(for: state)
-		let borderColor 	= self.borderColor(for: state)
+		let fillColor 		= backgroundColor(for: state)
+		let strokeColor 	= borderColor(for: state)
+		let strokeSize		= borderSize(for: state)
 		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
 		let path			= transitionToCircleWhenLoading && isLoading ? backgroundLayer.path : roundedPath.cgPath
 		
 		backgroundLayer.path			= path
 		backgroundLayer.fillColor		= fillColor?.cgColor
-		backgroundLayer.strokeColor		= borderColor?.cgColor
-		backgroundLayer.lineWidth		= borderSize
+		backgroundLayer.strokeColor		= strokeColor?.cgColor
+		backgroundLayer.lineWidth		= strokeSize
 		backgroundLayer.miterLimit		= roundedPath.miterLimit
 		
 		flashLayer.path 				= path
 		flashLayer.fillColor 			= flashColor.cgColor
 		
-		if let shadowColor = self.shadowColor(for: state) {
+		if let shadowColor = shadowColor(for: state) {
 			shadowLayer.isHidden 		= false
 			shadowLayer.path 			= path
 			shadowLayer.shadowPath 		= path
@@ -425,7 +429,7 @@ open class NKButton: UIButton {
 			shadowLayer.isHidden = true
 		}
 		
-		if let gradientColors = self.gradientColor(for: state) {
+		if let gradientColors = gradientColor(for: state) {
 			var colors: [CGColor] = []
 			for color in gradientColors {
 				colors.append(color.cgColor)
@@ -441,7 +445,7 @@ open class NKButton: UIButton {
 		}
 		
 		if underlineTitleDisabled {
-			self.disableUnderlineLabel()
+			removeLabelUnderline()
 		}
 	}
 	
@@ -460,11 +464,11 @@ open class NKButton: UIButton {
 		frameLayout.setNeedsLayout()
 		frameLayout.layoutIfNeeded()
 		
-		if let imageView = self.imageView {
+		if let imageView = imageView {
 			#if swift(>=4.2)
-			self.bringSubviewToFront(imageView)
+			bringSubviewToFront(imageView)
 			#else
-			self.bringSubview(toFront: imageView)
+			bringSubview(toFront: imageView)
 			#endif
 		}
 		
@@ -474,18 +478,18 @@ open class NKButton: UIButton {
 			case .left: 	point.x = loadingView.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
 			case .center: 	point.x = viewSize.width/2
 			case .right: 	point.x = viewSize.width - (loadingView.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
-			case .atImage:	point = self.imageView?.center ?? point
+			case .atImage:	point = imageView?.center ?? point
 			}
 			
 			loadingView.center = point
 			
-			self.titleLabel?.alpha = hideTitleWhileLoading ? 0.0 : 1.0
-			self.imageView?.alpha = hideImageWhileLoading ? 0.0 : 1.0
+			titleLabel?.alpha = hideTitleWhileLoading ? 0.0 : 1.0
+			imageView?.alpha = hideImageWhileLoading ? 0.0 : 1.0
 		}
 		
 		if isRoundedButton {
-			self.cornerRadius = viewSize.height / 2
-			self.setNeedsDisplay()
+			cornerRadius = viewSize.height / 2
+			setNeedsDisplay()
 		}
 		
 		gradientLayer.cornerRadius = cornerRadius
@@ -562,34 +566,30 @@ open class NKButton: UIButton {
 			break
 		}
 		
-		self.setNeedsDisplay()
-		self.setNeedsLayout()
+		setNeedsDisplay()
+		setNeedsLayout()
 	}
 	
 	// MARK: -
 	
 	override open var frame: CGRect {
 		didSet {
-			if !__CGSizeEqualToSize(super.frame.size, oldValue.size) {
-				self.setNeedsDisplay()
-				self.setNeedsLayout()
-			}
+			setNeedsDisplay()
+			setNeedsLayout()
 		}
 	}
 	
 	override open var bounds: CGRect {
 		didSet {
-			if !__CGSizeEqualToSize(super.bounds.size, oldValue.size) {
-				self.setNeedsDisplay()
-				self.setNeedsLayout()
-			}
+			setNeedsDisplay()
+			setNeedsLayout()
 		}
 	}
 	
 	override open var isHighlighted: Bool {
 		didSet {
 			if super.isHighlighted != oldValue {
-				self.setNeedsDisplay()
+				setNeedsDisplay()
 				
 //				if isHighlighted {
 //					if #available(iOS 10, *) {
@@ -622,21 +622,31 @@ open class NKButton: UIButton {
 	open func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = backgroundColorKey(for: state)
 		bgColorDict[key] = color
+		setNeedsDisplay()
 	}
 	
 	open func setBorderColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = borderColorKey(for: state)
 		borderColorDict[key] = color
+		setNeedsDisplay()
 	}
 	
 	open func setShadowColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = shadowColorKey(for: state)
 		shadowColorDict[key] = color
+		setNeedsDisplay()
 	}
 	
 	open func setGradientColor(_ colors: [UIColor]?, for state: UIControl.State) {
 		let key = gradientColorKey(for: state)
 		gradientColorDict[key] = colors
+		setNeedsDisplay()
+	}
+	
+	open func setBorderSize(_ value: CGFloat?, for state: UIControl.State) {
+		let key = borderSizeKey(for: state)
+		borderSizeDict[key] = value
+		setNeedsDisplay()
 	}
 	
 	open func backgroundColor(for state: UIControl.State) -> UIColor? {
@@ -645,11 +655,11 @@ open class NKButton: UIButton {
 		
 		if result == nil {
 			if state == .disabled && autoSetDisableColor {
-				let normalColor = self.backgroundColor(for: .normal)
+				let normalColor = backgroundColor(for: .normal)
 				result = normalColor != nil ? normalColor!.withAlphaComponent(0.3) : nil
 			}
 			else if state == .highlighted && autoSetHighlightedColor {
-				let normalColor = self.backgroundColor(for: .normal)
+				let normalColor = backgroundColor(for: .normal)
 				result = normalColor != nil ? normalColor!.darker(by: 0.5) : nil
 			}
 		}
@@ -663,11 +673,11 @@ open class NKButton: UIButton {
 		
 		if result == nil {
 			if state == .disabled && autoSetDisableColor {
-				let normalColor = self.borderColor(for: .normal)
+				let normalColor = borderColor(for: .normal)
 				result = normalColor != nil ? normalColor!.withAlphaComponent(0.3) : nil
 			}
 			else if state == .highlighted && autoSetHighlightedColor {
-				let normalColor = self.borderColor(for: .normal)
+				let normalColor = borderColor(for: .normal)
 				result = normalColor != nil ? normalColor!.darker(by: 0.5) : nil
 			}
 		}
@@ -683,6 +693,11 @@ open class NKButton: UIButton {
 	open func gradientColor(for state: UIControl.State) -> [UIColor]? {
 		let key = gradientColorKey(for: state)
 		return gradientColorDict[key]
+	}
+	
+	open func borderSize(for state: UIControl.State) -> CGFloat {
+		let key = borderSizeKey(for: state)
+		return borderSizeDict[key] ?? 0
 	}
 	
 	// MARK: -
@@ -703,20 +718,24 @@ open class NKButton: UIButton {
 		return "gr\(state.rawValue)"
 	}
 	
+	fileprivate func borderSizeKey(for state: UIControl.State) -> String {
+		return "bs\(state.rawValue)"
+	}
+	
 	// MARK: -
 	
 	fileprivate func showLoadingView() {
 		if loadingView == nil {
-			let viewSize = self.bounds.size
+			let viewSize = bounds.size
 			let minSize = min(viewSize.width, viewSize.height) * loadingIndicatorScaleRatio
 			let indicatorSize = CGSize(width: minSize, height: minSize)
 			let loadingFrame = CGRect(x: 0, y: 0, width: indicatorSize.width, height: indicatorSize.height)
-			let color = loadingIndicatorColor ?? self.titleColor(for: .normal)
+			let color = loadingIndicatorColor ?? titleColor(for: .normal)
 			
 			loadingView = NVActivityIndicatorView(frame: loadingFrame, type: loadingIndicatorStyle, color: color, padding: 0)
 			loadingView!.startAnimating()
-			self.addSubview(loadingView!)
-			self.setNeedsLayout()
+			addSubview(loadingView!)
+			setNeedsLayout()
 		}
 	}
 	
@@ -754,8 +773,8 @@ open class NKButton: UIButton {
 			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
 			#endif
 			
-			self.setNeedsLayout()
-			self.setNeedsDisplay()
+			setNeedsLayout()
+			setNeedsDisplay()
 		}
 		
 		#if swift(>=4.2)
@@ -772,19 +791,19 @@ open class NKButton: UIButton {
 	}
 	
 	open func expandFullscreen(duration:Double = 0.3, completionBlock:NKButtonAnimationCompletionBlock? = nil) {
-		self.animationationDidEnd = completionBlock
+		animationationDidEnd = completionBlock
 		hideLoadingView()
 		
-		if self.window != nil {
-			let targetFrame = self.convert(self.bounds, to: self.window!)
-			self.window!.addSubview(self)
-			self.frame = targetFrame
+		if window != nil {
+			let targetFrame = convert(bounds, to: window!)
+			window!.addSubview(self)
+			frame = targetFrame
 		}
 		
-		self.isEnabled = true // back to normal color
-		self.isUserInteractionEnabled = false
-		self.titleLabel?.alpha = 0.0
-		self.imageView?.alpha = 0.0
+		isEnabled = true // back to normal color
+		isUserInteractionEnabled = false
+		titleLabel?.alpha = 0.0
+		imageView?.alpha = 0.0
 		
 		let animation = CABasicAnimation(keyPath: "transform.scale")
 		animation.fromValue = 1.0
@@ -803,7 +822,7 @@ open class NKButton: UIButton {
 		backgroundLayer.add(animation, forKey: animation.keyPath)
 	}
 	
-	fileprivate func disableUnderlineLabel() {
+	fileprivate func removeLabelUnderline() {
 		let attributedText: NSMutableAttributedString? = titleLabel?.attributedText?.mutableCopy() as? NSMutableAttributedString
 		if attributedText != nil {
 			attributedText!.addAttribute(NSAttributedString.Key.underlineStyle, value: (0), range: NSRange(location: 0, length: attributedText!.length))
@@ -835,17 +854,17 @@ extension NKButton: CAAnimationDelegate {
 fileprivate extension UIColor {
 	
 	func lighter(by value:CGFloat = 0.5) -> UIColor? {
-		return self.adjust(by: abs(value) )
+		return adjust(by: abs(value) )
 	}
 	
 	func darker(by value:CGFloat = 0.5) -> UIColor? {
-		return self.adjust(by: -1 * abs(value) )
+		return adjust(by: -1 * abs(value) )
 	}
 	
 	func adjust(by value:CGFloat = 0.5) -> UIColor? {
 		var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
 		
-		if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
+		if getRed(&r, green: &g, blue: &b, alpha: &a) {
 			return UIColor(red: min(r + value, 1.0),
 						   green: min(g + value, 1.0),
 						   blue: min(b + value, 1.0),
@@ -878,10 +897,10 @@ class UIControlStateValue<T> {
 	
 	subscript(state: UIControl.State) -> T? {
 		get {
-			return self.getter(state)
+			return getter(state)
 		}
 		set {
-			self.setter(newValue, state)
+			setter(newValue, state)
 		}
 	}
 }

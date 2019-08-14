@@ -31,7 +31,7 @@ public class NKButtonStack: UIControl {
 	public var items: [NKButtonItem]? = nil {
 		didSet {
 			updateLayout()
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -64,7 +64,7 @@ public class NKButtonStack: UIControl {
 		}
 		set {
 			frameLayout.spacing = newValue
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -74,27 +74,19 @@ public class NKButtonStack: UIControl {
 		}
 		set {
 			frameLayout.edgeInsets = newValue
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
 	override open var frame: CGRect {
-		get {
-			return super.frame
-		}
-		set (value) {
-			super.frame = value
-			self.setNeedsLayout()
+		didSet {
+			setNeedsLayout()
 		}
 	}
 	
 	override open var bounds: CGRect {
-		get {
-			return super.bounds
-		}
-		set (value) {
-			super.bounds = value
-			self.setNeedsLayout()
+		didSet {
+			setNeedsLayout()
 		}
 	}
 	
@@ -112,7 +104,7 @@ public class NKButtonStack: UIControl {
 		}
 		set {
 			frameLayout.axis = newValue
-			self.setNeedsLayout()
+			setNeedsLayout()
 		}
 	}
 	
@@ -131,7 +123,9 @@ public class NKButtonStack: UIControl {
 		self.init()
 		
 		self.axis = axis
-		self.items = items
+		defer {
+			self.items = items
+		}
 	}
 	
 	public init() {
@@ -167,10 +161,10 @@ public class NKButtonStack: UIControl {
 		
 		let contentSize = frameLayout.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
 		scrollView.contentSize = contentSize
-		scrollView.frame = self.bounds
+		scrollView.frame = bounds
 		
-		var contentFrame = self.bounds
-		if contentSize.width > self.bounds.size.width {
+		var contentFrame = bounds
+		if contentSize.width > bounds.size.width {
 			contentFrame.size.width = contentSize.width
 		}
 		frameLayout.frame = contentFrame
@@ -237,7 +231,7 @@ public class NKButtonStack: UIControl {
 	@objc fileprivate func onButtonSelected(_ sender: UIButton) {
 		let index = sender.tag
 		if isMomentary {
-			self.selectedIndex = index
+			selectedIndex = index
 		}
 		
 		if buttonSelectionBlock != nil {
@@ -245,7 +239,7 @@ public class NKButtonStack: UIControl {
 			buttonSelectionBlock!(sender, item, index)
 		}
 		
-		self.sendActions(for: .valueChanged)
+		sendActions(for: .valueChanged)
 	}
 	
 }
