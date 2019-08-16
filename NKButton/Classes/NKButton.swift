@@ -626,6 +626,24 @@ open class NKButton: UIButton {
 		flashLayer.removeAnimation(forKey: "flashAnimation")
 	}
 	
+	override open func setTitle(_ title: String?, for state: UIControl.State) {
+		super.setTitle(title, for: state)
+		
+		if self.state == state {
+			titleLabel?.text = title
+			setNeedsLayout()
+		}
+	}
+	
+	override open func setImage(_ image: UIImage?, for state: UIControl.State) {
+		super.setImage(image, for: state)
+		
+		if self.state == state {
+			imageView?.image = image
+			setNeedsLayout()
+		}
+	}
+	
 	open func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
 		let key = backgroundColorKey(for: state)
 		bgColorDict[key] = color
