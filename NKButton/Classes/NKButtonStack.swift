@@ -36,26 +36,20 @@ public class NKButtonStack: UIControl {
 	}
 	
 	public var buttons: [UIButton] {
-		get {
-			var results: [UIButton] = []
-			frameLayout.enumerate { (layout, idx, stop) in
-				results.append(layout.targetView as! UIButton)
-			}
-			
-			return results
+		var results: [UIButton] = []
+		frameLayout.enumerate { (layout, idx, stop) in
+			results.append(layout.targetView as! UIButton)
 		}
+		
+		return results
 	}
 	
 	public var firstButton: UIButton? {
-		get {
-			return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.firstFrameLayout?.targetView as? UIButton : nil
-		}
+		return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.firstFrameLayout?.targetView as? UIButton : nil
 	}
 	
 	public var lastButton: UIButton? {
-		get {
-			return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.lastFrameLayout?.targetView as? UIButton : nil
-		}
+		return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.lastFrameLayout?.targetView as? UIButton : nil
 	}
 	
 	public var spacing: CGFloat {
@@ -115,7 +109,7 @@ public class NKButtonStack: UIControl {
 	public var buttonSelectionBlock: NKButtonSelectionBlock? = nil
 	
 	public let scrollView = UIScrollView()
-	public var frameLayout: StackFrameLayout!
+	public let frameLayout = StackFrameLayout(axis: .horizontal, distribution: .equal)
 	
 	// MARK: -
 	
@@ -131,8 +125,6 @@ public class NKButtonStack: UIControl {
 	public init() {
 		super.init(frame: .zero)
 		
-		frameLayout = StackFrameLayout(axis: .horizontal)
-		frameLayout.distribution = .equal
 		frameLayout.spacing = 1.0
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.shouldCacheSize = false
@@ -188,6 +180,7 @@ public class NKButtonStack: UIControl {
 					if Int(index) >= Int(total) {
 						if let button: UIButton = layout.targetView as? UIButton {
 							button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
+							button.removeFromSuperview()
 						}
 					}
 				})
@@ -204,10 +197,7 @@ public class NKButtonStack: UIControl {
 				scrollView.addSubview(button)
 				layout.targetView = button
 				
-				if buttonConfigurationBlock != nil {
-					buttonConfigurationBlock!(button, buttonItem, index)
-				}
-				else {
+				guard let configurationBlock = buttonConfigurationBlock else {
 					button.setTitle(buttonItem.title, for: .normal)
 					button.setImage(buttonItem.image, for: .normal)
 					
@@ -215,13 +205,17 @@ public class NKButtonStack: UIControl {
 						button.setImage(buttonItem.selectedImage, for: .highlighted)
 						button.setImage(buttonItem.selectedImage, for: .selected)
 					}
+					return
 				}
+				
+				configurationBlock(button, buttonItem, index)
 			})
 		}
 		else {
 			frameLayout.enumerate({ (layout, index, stop) in
 				if let button: UIButton = layout.targetView as? UIButton {
 					button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
+					button.removeFromSuperview()
 				}
 			})
 			
