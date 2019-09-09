@@ -114,7 +114,7 @@ public class NKButtonStack: UIControl {
 	public var buttonConfigurationBlock: NKButtonSelectionBlock? = nil
 	public var buttonSelectionBlock: NKButtonSelectionBlock? = nil
 	
-	internal let scrollView = UIScrollView()
+	public let scrollView = UIScrollView()
 	public var frameLayout: StackFrameLayout!
 	
 	// MARK: -
@@ -144,8 +144,9 @@ public class NKButtonStack: UIControl {
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.clipsToBounds = false
+		scrollView.delaysContentTouches = false
 		scrollView.addSubview(frameLayout)
-		self.addSubview(scrollView)
+		addSubview(scrollView)
 	}
 	
 	required public init?(coder aDecoder: NSCoder) {
