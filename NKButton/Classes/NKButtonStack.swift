@@ -45,11 +45,11 @@ public class NKButtonStack: UIControl {
 	}
 	
 	public var firstButton: UIButton? {
-		return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.firstFrameLayout?.targetView as? UIButton : nil
+		return frameLayout.firstFrameLayout?.targetView as? UIButton
 	}
 	
 	public var lastButton: UIButton? {
-		return frameLayout.numberOfFrameLayouts > 0 ? frameLayout.lastFrameLayout?.targetView as? UIButton : nil
+		return frameLayout.lastFrameLayout?.targetView as? UIButton
 	}
 	
 	public var spacing: CGFloat {
@@ -165,8 +165,8 @@ public class NKButtonStack: UIControl {
 	
 	// MARK: -
 	
-	public func button(at index:Int) -> UIButton {
-		return frameLayout.frameLayout(at: index)!.targetView as! UIButton
+	public func button(at index: Int) -> UIButton? {
+		return frameLayout.frameLayout(at: index)?.targetView as? UIButton
 	}
 	
 	// MARK: -
