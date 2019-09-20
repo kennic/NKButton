@@ -906,8 +906,9 @@ fileprivate extension UIColor {
 Supports:
 let button = NKButton()
 button.titles[[.normal, .highlighted]] = ""
+button.backgroundColors[[.normal, .highlighted]] = .white
 */
-class UIControlStateValue<T> {
+public class UIControlStateValue<T> {
 	private let getter: (UIControl.State) -> T?
 	private let setter: (T?, UIControl.State) -> Void
 	
@@ -932,27 +933,27 @@ class UIControlStateValue<T> {
 
 extension NKButton {
 	
-	var titles: UIControlStateValue<String> {
+	public var titles: UIControlStateValue<String> {
 		return UIControlStateValue<String>.init(getter: self.title(for:), setter: self.setTitle(_:for:))
 	}
 	
-	var titleColors: UIControlStateValue<UIColor> {
+	public var titleColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
 	}
 	
-	var backgroundColors: UIControlStateValue<UIColor> {
+	public var backgroundColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>.init(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
 	}
 	
-	var  borderColors: UIControlStateValue<UIColor> {
+	public var borderColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
 	}
 	
-	var  shadowColors: UIControlStateValue<UIColor> {
+	public var shadowColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:))
 	}
 	
-	var  gradientColors: UIControlStateValue<[UIColor]> {
+	public var gradientColors: UIControlStateValue<[UIColor]> {
 		return UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:))
 	}
 	
