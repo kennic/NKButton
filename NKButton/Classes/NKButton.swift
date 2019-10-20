@@ -280,15 +280,11 @@ open class NKButton: UIButton {
 	open var loadingIndicatorAlignment: NKButtonLoadingIndicatorAlignment = .center
 	/** `FrameLayout` that layout imageView */
 	open var imageFrameLayout: FrameLayout! {
-		get {
-			return imageFrame
-		}
+		return imageFrame
 	}
 	/** `FrameLayout` that layout textLabel */
 	open var labelFrameLayout: FrameLayout! {
-		get {
-			return labelFrame
-		}
+		return labelFrame
 	}
 	/** DoubleFrameLayout that layout the content */
 	open var contentFrameLayout: DoubleFrameLayout! {
@@ -365,9 +361,15 @@ open class NKButton: UIButton {
 		
 		imageFrame.contentAlignment = (.center, .center)
 		imageFrame.targetView = imageView
+		if let imageView = imageView {
+			imageFrame.addSubview(imageView)
+		}
 		
 		labelFrame.contentAlignment = (.fill, .fill)
 		labelFrame.targetView = titleLabel
+		if let titleLabel = titleLabel {
+			labelFrame.addSubview(titleLabel)
+		}
 		
 		updateLayoutAlignment()
 		
