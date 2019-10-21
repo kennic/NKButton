@@ -361,9 +361,6 @@ open class NKButton: UIButton {
 		
 		imageFrame.contentAlignment = (.center, .center)
 		imageFrame.targetView = imageView
-		if let imageView = imageView {
-			imageFrame.addSubview(imageView)
-		}
 		
 		labelFrame.contentAlignment = (.fill, .fill)
 		labelFrame.targetView = titleLabel
@@ -499,6 +496,12 @@ open class NKButton: UIButton {
 		
 		backgroundView?.layer.cornerRadius = cornerRadius
 		backgroundView?.frame = bounds
+	}
+	
+	open override func didMoveToWindow() {
+		super.didMoveToWindow()
+		setNeedsLayout()
+		layoutIfNeeded()
 	}
 	
 	fileprivate func updateLayoutAlignment() {
