@@ -379,6 +379,14 @@ open class NKButton: UIButton {
 		super.init(coder: aDecoder)
 	}
 	
+	open override func setNeedsLayout() {
+		super.setNeedsLayout()
+		
+		frameLayout.setNeedsLayout()
+		imageFrame.setNeedsLayout()
+		labelFrame.setNeedsLayout()
+	}
+	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
 		var result = frameLayout.sizeThatFits(size)
 		
@@ -500,8 +508,14 @@ open class NKButton: UIButton {
 	
 	open override func didMoveToWindow() {
 		super.didMoveToWindow()
+		guard window != nil else { return }
 		setNeedsLayout()
-		layoutIfNeeded()
+	}
+	
+	open override func didMoveToSuperview() {
+		super.didMoveToSuperview()
+		guard window != nil else { return }
+		setNeedsLayout()
 	}
 	
 	fileprivate func updateLayoutAlignment() {
