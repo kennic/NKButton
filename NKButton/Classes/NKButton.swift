@@ -46,11 +46,11 @@ open class NKButton: UIButton {
 	/** Space between image and text */
 	open var spacing: CGFloat {
 		get {
-			return frameLayout.spacing
+			return contentFrameLayout.spacing
 		}
 		set {
-			frameLayout.spacing = newValue
-			frameLayout.setNeedsLayout()
+			contentFrameLayout.spacing = newValue
+			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -58,11 +58,11 @@ open class NKButton: UIButton {
 	/** Minimum size of imageView, set zero to width or height to disable */
 	open var imageMinSize: CGSize {
 		get {
-			return imageFrame.minSize
+			return imageFrameLayout.minSize
 		}
 		set {
-			imageFrame.minSize = newValue
-			frameLayout.setNeedsLayout()
+			imageFrameLayout.minSize = newValue
+			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -70,11 +70,11 @@ open class NKButton: UIButton {
 	/** Maximum size of imageView, set zero to width or height to disable */
 	open var imageMaxSize: CGSize {
 		get {
-			return imageFrame.maxSize
+			return imageFrameLayout.maxSize
 		}
 		set {
-			imageFrame.maxSize = newValue
-			frameLayout.setNeedsLayout()
+			imageFrameLayout.maxSize = newValue
+			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -82,11 +82,11 @@ open class NKButton: UIButton {
 	/** Fixed size of imageView, set zero to width or height to disable */
 	open var imageFixSize: CGSize {
 		get {
-			return imageFrame.fixSize
+			return imageFrameLayout.fixSize
 		}
 		set {
-			imageFrame.fixSize = newValue
-			frameLayout.setNeedsLayout()
+			imageFrameLayout.fixSize = newValue
+			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -188,7 +188,7 @@ open class NKButton: UIButton {
 	}
 	
 	/** Text Alignment */
-	open var textAlignemnt: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
+	open var textAlignment: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
 		get {
 			return labelFrame.contentAlignment
 		}
@@ -200,10 +200,10 @@ open class NKButton: UIButton {
 	
 	override open var contentEdgeInsets: UIEdgeInsets {
 		get {
-			return frameLayout.edgeInsets
+			return contentFrameLayout.edgeInsets
 		}
 		set {
-			frameLayout.edgeInsets = newValue
+			contentFrameLayout.edgeInsets = newValue
 			setNeedsLayout()
 		}
 	}
@@ -222,54 +222,53 @@ open class NKButton: UIButton {
 	/** Set loading state. Tap interaction will be disabled while loading */
 	open var isLoading: Bool = false {
 		didSet {
-			if isLoading != oldValue {
-				if isLoading {
-					isEnabled = false
-					showLoadingView()
-					
-					if transitionToCircleWhenLoading {
-						titleLabel?.alpha = 0.0
-						imageView?.alpha = 0.0
-						transition(toCircle: true)
-					}
-					else {
-						if hideImageWhileLoading {
-							imageView?.alpha = 0.0
-						}
-						
-						if hideTitleWhileLoading {
-							titleLabel?.alpha = 0.0
-						}
-					}
+			guard isLoading != oldValue else { return }
+			isEnabled = !isLoading
+			
+			if isLoading {
+				showLoadingView()
+				
+				if transitionToCircleWhenLoading {
+					titleLabel?.alpha = 0.0
+					imageView?.alpha = 0.0
+					transition(toCircle: true)
 				}
 				else {
-					isEnabled = true
-					hideLoadingView()
-					
-					if transitionToCircleWhenLoading {
-						titleLabel?.alpha = 1.0
-						imageView?.alpha = 1.0
-						transition(toCircle: false)
+					if hideImageWhileLoading {
+						imageView?.alpha = 0.0
 					}
-					else {
-						if hideImageWhileLoading {
-							imageView?.alpha = 1.0
-						}
-						
-						if hideTitleWhileLoading {
-							titleLabel?.alpha = 1.0
-						}
+					
+					if hideTitleWhileLoading {
+						titleLabel?.alpha = 0.0
+					}
+				}
+			}
+			else {
+				hideLoadingView()
+				
+				if transitionToCircleWhenLoading {
+					titleLabel?.alpha = 1.0
+					imageView?.alpha = 1.0
+					transition(toCircle: false)
+				}
+				else {
+					if hideImageWhileLoading {
+						imageView?.alpha = 1.0
+					}
+					
+					if hideTitleWhileLoading {
+						titleLabel?.alpha = 1.0
 					}
 				}
 			}
 		}
 	}
 	/** imageView will be hidden when `isLoading` is true */
-	open var hideImageWhileLoading: Bool = false
+	open var hideImageWhileLoading = false
 	/** titleLabel will be hidden when `isLoading` is true */
-	open var hideTitleWhileLoading: Bool = true
+	open var hideTitleWhileLoading = true
 	/** Button will animated to circle shape when set `isLoading = true`*/
-	open var transitionToCircleWhenLoading: Bool = false
+	open var transitionToCircleWhenLoading = false
 	/** Style of loading indicator */
 	open var loadingIndicatorStyle: NVActivityIndicatorType = .ballPulse
 	/** Scale ratio of loading indicator, based on the minimum value of button width or height */
@@ -278,34 +277,24 @@ open class NKButton: UIButton {
 	open var loadingIndicatorColor: UIColor? = nil
 	/** Alignment for loading indicator */
 	open var loadingIndicatorAlignment: NKButtonLoadingIndicatorAlignment = .center
-	/** `FrameLayout` that layout imageView */
-	open var imageFrameLayout: FrameLayout! {
-		return imageFrame
-	}
-	/** `FrameLayout` that layout textLabel */
-	open var labelFrameLayout: FrameLayout! {
-		return labelFrame
-	}
-	/** DoubleFrameLayout that layout the content */
-	open var contentFrameLayout: DoubleFrameLayout! {
-		get {
-			return frameLayout
-		}
-	}
 	
 	/** The background view of the button */
 	open var backgroundView: UIView? = nil {
 		didSet {
 			oldValue?.layer.removeFromSuperlayer()
-			
-			if let view = backgroundView {
-				view.isUserInteractionEnabled = false
-				view.layer.masksToBounds = true
-				layer.insertSublayer(view.layer, at: 0)
-				setNeedsLayout()
-			}
+			guard let view = backgroundView else { return }
+			view.isUserInteractionEnabled = false
+			view.layer.masksToBounds = true
+			layer.insertSublayer(view.layer, at: 0)
+			setNeedsLayout()
 		}
 	}
+	/** `FrameLayout` that layout imageView */
+	public let imageFrameLayout		= FrameLayout()
+	/** `FrameLayout` that handles textLabel */
+	public let labelFrameLayout		= FrameLayout()
+	/** `FrameLayout` that handles contents */
+	public let contentFrameLayout 	= DoubleFrameLayout(axis: .horizontal)
 	
 	open var animationationDidEnd: NKButtonAnimationCompletionBlock? = nil
 	
@@ -314,15 +303,16 @@ open class NKButton: UIButton {
 	fileprivate let backgroundLayer = CAShapeLayer()
 	fileprivate let flashLayer 		= CAShapeLayer()
 	fileprivate let gradientLayer	= CAGradientLayer()
-	fileprivate let imageFrame 		= FrameLayout()
-	fileprivate let labelFrame 		= FrameLayout()
-	fileprivate let frameLayout 	= DoubleFrameLayout(axis: .horizontal)
 	
 	fileprivate var bgColorDict			: [String : UIColor] = [:]
 	fileprivate var borderColorDict		: [String : UIColor] = [:]
 	fileprivate var shadowColorDict		: [String : UIColor] = [:]
 	fileprivate var gradientColorDict	: [String : [UIColor]] = [:]
 	fileprivate var borderSizeDict		: [String : CGFloat] = [:]
+	
+	fileprivate var labelFrame: FrameLayout {
+		return contentFrameLayout.leftFrameLayout.targetView == labelFrameLayout ? contentFrameLayout.leftFrameLayout : contentFrameLayout.rightFrameLayout
+	}
 	
 	// MARK: -
 	
@@ -345,7 +335,15 @@ open class NKButton: UIButton {
 	
 	public init() {
 		super.init(frame: .zero)
-		
+		setupUI()
+	}
+	
+	required public init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		setupUI()
+	}
+	
+	open func setupUI() {
 		flashLayer.opacity = 0
 		flashLayer.fillColor = flashColor.cgColor
 		contentEdgeInsets = .zero
@@ -355,40 +353,32 @@ open class NKButton: UIButton {
 		layer.addSublayer(flashLayer)
 		layer.addSublayer(gradientLayer)
 		
-		frameLayout.isIntrinsicSizeEnabled = true
-		frameLayout.frameLayout1.contentAlignment = (.center, .center)
-		frameLayout.frameLayout2.contentAlignment = (.center, .center)
+		contentFrameLayout.isIntrinsicSizeEnabled = true
+		contentFrameLayout.frameLayout1.contentAlignment = (.center, .center)
+		contentFrameLayout.frameLayout2.contentAlignment = (.center, .center)
 		
-		imageFrame.contentAlignment = (.center, .center)
-		imageFrame.targetView = imageView
+		imageFrameLayout.contentAlignment = (.center, .center)
+		imageFrameLayout.targetView = imageView
 		
-		labelFrame.contentAlignment = (.fill, .fill)
-		labelFrame.targetView = titleLabel
-		if let titleLabel = titleLabel {
-			labelFrame.addSubview(titleLabel)
-		}
-		
+		labelFrameLayout.contentAlignment = (.fill, .fill)
+		labelFrameLayout.targetView = titleLabel
+
 		updateLayoutAlignment()
-		
-		addSubview(imageFrame)
-		addSubview(labelFrame)
-		addSubview(frameLayout)
-	}
-	
-	required public init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
+		addSubview(labelFrameLayout)
+		addSubview(imageFrameLayout)
+		addSubview(contentFrameLayout)
 	}
 	
 	open override func setNeedsLayout() {
 		super.setNeedsLayout()
 		
-		frameLayout.setNeedsLayout()
-		imageFrame.setNeedsLayout()
-		labelFrame.setNeedsLayout()
+		contentFrameLayout.setNeedsLayout()
+		imageFrameLayout.setNeedsLayout()
+		labelFrameLayout.setNeedsLayout()
 	}
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
-		var result = frameLayout.sizeThatFits(size)
+		var result = contentFrameLayout.sizeThatFits(size)
 		
 		result.width  += extendSize.width
 		result.height += extendSize.height
@@ -466,10 +456,10 @@ open class NKButton: UIButton {
 		backgroundLayer.frame = bounds
 		flashLayer.frame = bounds
 		gradientLayer.frame = bounds
-		frameLayout.frame = bounds
+		contentFrameLayout.frame = bounds
 		
-		frameLayout.setNeedsLayout()
-		frameLayout.layoutIfNeeded()
+		contentFrameLayout.setNeedsLayout()
+		contentFrameLayout.layoutIfNeeded()
 		
 		if let imageView = imageView {
 			#if swift(>=4.2)
@@ -521,67 +511,67 @@ open class NKButton: UIButton {
 	fileprivate func updateLayoutAlignment() {
 		switch imageAlignment {
 		case .left:
-			frameLayout.axis = .horizontal
-			frameLayout.distribution = .center
+			contentFrameLayout.axis = .horizontal
+			contentFrameLayout.distribution = .center
 			
-			frameLayout.leftFrameLayout.targetView = imageFrame
-			frameLayout.rightFrameLayout.targetView = labelFrame
+			contentFrameLayout.leftFrameLayout.targetView = imageFrameLayout
+			contentFrameLayout.rightFrameLayout.targetView = labelFrameLayout
 			break
 			
 		case .leftEdge:
-			frameLayout.axis = .horizontal
-			frameLayout.distribution = .left
+			contentFrameLayout.axis = .horizontal
+			contentFrameLayout.distribution = .left
 			
-			frameLayout.leftFrameLayout.targetView = imageFrame
-			frameLayout.rightFrameLayout.targetView = labelFrame
+			contentFrameLayout.leftFrameLayout.targetView = imageFrameLayout
+			contentFrameLayout.rightFrameLayout.targetView = labelFrameLayout
 			break
 			
 		case .right:
-			frameLayout.axis = .horizontal
-			frameLayout.distribution = .center
+			contentFrameLayout.axis = .horizontal
+			contentFrameLayout.distribution = .center
 			
-			frameLayout.leftFrameLayout.targetView = labelFrame
-			frameLayout.rightFrameLayout.targetView = imageFrame
+			contentFrameLayout.leftFrameLayout.targetView = labelFrameLayout
+			contentFrameLayout.rightFrameLayout.targetView = imageFrameLayout
 			break
 			
 		case .rightEdge:
-			frameLayout.axis = .horizontal
-			frameLayout.distribution = .right
+			contentFrameLayout.axis = .horizontal
+			contentFrameLayout.distribution = .right
 			
-			frameLayout.leftFrameLayout.targetView = labelFrame
-			frameLayout.rightFrameLayout.targetView = imageFrame
+			contentFrameLayout.leftFrameLayout.targetView = labelFrameLayout
+			contentFrameLayout.rightFrameLayout.targetView = imageFrameLayout
 			break
 			
 		case .top:
-			frameLayout.axis = .vertical
-			frameLayout.distribution = .center
+			contentFrameLayout.axis = .vertical
+			contentFrameLayout.distribution = .center
 			
-			frameLayout.topFrameLayout.targetView = imageFrame
-			frameLayout.bottomFrameLayout.targetView = labelFrame
+			contentFrameLayout.topFrameLayout.targetView = imageFrameLayout
+			contentFrameLayout.bottomFrameLayout.targetView = labelFrameLayout
 			break
 			
 		case .topEdge:
-			frameLayout.axis = .vertical
-			frameLayout.distribution = .top
+			contentFrameLayout.axis = .vertical
+			contentFrameLayout.distribution = .top
 			
-			frameLayout.topFrameLayout.targetView = imageFrame
-			frameLayout.bottomFrameLayout.targetView = labelFrame
+			contentFrameLayout.topFrameLayout.targetView = imageFrameLayout
+			contentFrameLayout.bottomFrameLayout.targetView = labelFrameLayout
 			break
 			
 		case .bottom:
-			frameLayout.axis = .vertical
-			frameLayout.distribution = .center
+			contentFrameLayout.axis = .vertical
+			contentFrameLayout.distribution = .center
 			
-			frameLayout.topFrameLayout.targetView = labelFrame
-			frameLayout.bottomFrameLayout.targetView = imageFrame
+			contentFrameLayout.topFrameLayout.targetView = labelFrameLayout
+			contentFrameLayout.bottomFrameLayout.targetView = imageFrameLayout
 			break
 			
 		case .bottomEdge:
-			frameLayout.axis = .vertical
-			frameLayout.distribution = .bottom
+			contentFrameLayout.axis = .vertical
+			contentFrameLayout.distribution = .bottom
 			
-			frameLayout.topFrameLayout.targetView = labelFrame
-			frameLayout.bottomFrameLayout.targetView = imageFrame
+			contentFrameLayout.topFrameLayout.targetView = labelFrameLayout
+			contentFrameLayout.bottomFrameLayout.targetView = imageFrameLayout
 			break
 		}
 		
@@ -614,17 +604,16 @@ open class NKButton: UIButton {
 	
 	override open var isHighlighted: Bool {
 		didSet {
-			if super.isHighlighted != oldValue {
-				setNeedsDisplay()
-				
-//				if isHighlighted {
-//					if #available(iOS 10, *) {
-//						let generator = UIImpactFeedbackGenerator(style: .light)
-//						generator.prepare()
-//						generator.impactOccurred()
-//					}
+			guard isHighlighted != oldValue else { return }
+			setNeedsDisplay()
+			
+//			if isHighlighted {
+//				if #available(iOS 10, *) {
+//					let generator = UIImpactFeedbackGenerator(style: .light)
+//					generator.prepare()
+//					generator.impactOccurred()
 //				}
-			}
+//			}
 		}
 	}
 	
@@ -632,6 +621,8 @@ open class NKButton: UIButton {
 	// MARK: -
 	
 	open func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.85, repeatCount: Int = 10) {
+		flashLayer.removeAnimation(forKey: "flashAnimation")
+		
 		let flash = CABasicAnimation(keyPath: "opacity")
 		flash.fromValue = 0.0
 		flash.toValue = intensity
@@ -647,20 +638,16 @@ open class NKButton: UIButton {
 	
 	override open func setTitle(_ title: String?, for state: UIControl.State) {
 		super.setTitle(title, for: state)
-		
-		if self.state == state {
-			titleLabel?.text = title
-			setNeedsLayout()
-		}
+		guard self.state == state else { return }
+		titleLabel?.text = title
+		setNeedsLayout()
 	}
 	
 	override open func setImage(_ image: UIImage?, for state: UIControl.State) {
 		super.setImage(image, for: state)
-		
-		if self.state == state {
-			imageView?.image = image
-			setNeedsLayout()
-		}
+		guard self.state == state else { return }
+		imageView?.image = image
+		setNeedsLayout()
 	}
 	
 	open func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
@@ -769,18 +756,18 @@ open class NKButton: UIButton {
 	// MARK: -
 	
 	fileprivate func showLoadingView() {
-		if loadingView == nil {
-			let viewSize = bounds.size
-			let minSize = min(viewSize.width, viewSize.height) * loadingIndicatorScaleRatio
-			let indicatorSize = CGSize(width: minSize, height: minSize)
-			let loadingFrame = CGRect(x: 0, y: 0, width: indicatorSize.width, height: indicatorSize.height)
-			let color = loadingIndicatorColor ?? titleColor(for: .normal)
-			
-			loadingView = NVActivityIndicatorView(frame: loadingFrame, type: loadingIndicatorStyle, color: color, padding: 0)
-			loadingView!.startAnimating()
-			addSubview(loadingView!)
-			setNeedsLayout()
-		}
+		guard loadingView == nil else { return }
+		
+		let viewSize = bounds.size
+		let minSize = min(viewSize.width, viewSize.height) * loadingIndicatorScaleRatio
+		let indicatorSize = CGSize(width: minSize, height: minSize)
+		let loadingFrame = CGRect(x: 0, y: 0, width: indicatorSize.width, height: indicatorSize.height)
+		let color = loadingIndicatorColor ?? titleColor(for: .normal)
+		
+		loadingView = NVActivityIndicatorView(frame: loadingFrame, type: loadingIndicatorStyle, color: color, padding: 0)
+		loadingView!.startAnimating()
+		addSubview(loadingView!)
+		setNeedsLayout()
 	}
 	
 	fileprivate func hideLoadingView() {

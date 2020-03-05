@@ -12,8 +12,8 @@ import FrameLayoutKit
 
 extension NKButton {
 	
-	class func DefaultButton(title:String, color: UIColor) -> NKButton {
-		let button: NKButton = NKButton(title: title, buttonColor: color, shadowColor: color)
+	class func DefaultButton(title: String, color: UIColor) -> NKButton {
+		let button = NKButton(title: title, buttonColor: color, shadowColor: color)
 		button.title = title
 		button.titleLabel?.font = UIFont(name: "Helvetica", size: 14)
 		
@@ -32,31 +32,29 @@ extension NKButton {
 }
 
 class ViewController: UIViewController {
-	var loginButton: NKButton!
-	var facebookButton: NKButton!
-	var twitterButton: NKButton!
-	var forgotButton: NKButton!
-	var flashButton: NKButton!
+	let loginButton = NKButton.DefaultButton(title: "SIGN IN", color: UIColor(red:0.10, green:0.58, blue:0.15, alpha:1.00))
+	let facebookButton = NKButton.DefaultButton(title: "FACEBOOK", color: UIColor(red:0.25, green:0.39, blue:0.80, alpha:1.00))
+	let twitterButton = NKButton.DefaultButton(title: "TWITTER", color: UIColor(red:0.42, green:0.67, blue:0.91, alpha:1.00))
+	let forgotButton = NKButton(title: "Forgot Password?", buttonColor: .clear)
+	let flashButton = NKButton.DefaultButton(title: "TAP TO FLASH", color: UIColor(red:0.61, green:0.11, blue:0.08, alpha:1.00))
 	var frameLayout: StackFrameLayout!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		loginButton = NKButton.DefaultButton(title: "SIGN IN", color: UIColor(red:0.10, green:0.58, blue:0.15, alpha:1.00))
 		loginButton.setImage(#imageLiteral(resourceName: "login"), for: .normal)
 		loginButton.transitionToCircleWhenLoading = false
 		loginButton.loadingIndicatorStyle = .ballScaleRippleMultiple
 		loginButton.loadingIndicatorAlignment = .center
 		loginButton.underlineTitleDisabled = true
 		loginButton.spacing = 10.0 // space between icon and title
-		loginButton.extendSize = CGSize(width: 50, height: 20)
+		loginButton.extendSize = CGSize(width: 0, height: 20)
 		loginButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 		loginButton.imageAlignment = .rightEdge
-		loginButton.contentFrameLayout.leftFrameLayout.contentAlignment = (.center, .right)
+		loginButton.textAlignment = (.center, .right)
 		loginButton.isRoundedButton = false
 		
 		let facebookIcon = #imageLiteral(resourceName: "facebook")
-		facebookButton = NKButton.DefaultButton(title: "FACEBOOK", color: UIColor(red:0.25, green:0.39, blue:0.80, alpha:1.00))
 		facebookButton.setImage(facebookIcon, for: .normal)
 		facebookButton.setImage(facebookIcon, for: .highlighted)
 		facebookButton.setBackgroundColor(UIColor(red:0.45, green:0.59, blue:1.0, alpha:1.00), for: .highlighted)
@@ -65,13 +63,12 @@ class ViewController: UIViewController {
 		facebookButton.loadingIndicatorAlignment = .right
 		facebookButton.underlineTitleDisabled = true
 		facebookButton.loadingIndicatorStyle = .ballClipRotatePulse
-		facebookButton.extendSize = CGSize(width: 50, height: 20)
+		facebookButton.extendSize = CGSize(width: 0, height: 20)
 		facebookButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 		facebookButton.imageAlignment = .leftEdge
 		facebookButton.isRoundedButton = false
 		
 		let twitterIcon = #imageLiteral(resourceName: "twitter")
-		twitterButton = NKButton.DefaultButton(title: "TWITTER", color: UIColor(red:0.42, green:0.67, blue:0.91, alpha:1.00))
 		twitterButton.setImage(twitterIcon, for: .normal)
 		twitterButton.setImage(twitterIcon, for: .highlighted)
 		twitterButton.setBackgroundColor(UIColor(red:0.45, green:0.59, blue:1.0, alpha:1.00), for: .highlighted)
@@ -90,7 +87,6 @@ class ViewController: UIViewController {
 		twitterButton.cornerRadius = 10.0
 		twitterButton.extendSize = CGSize(width: 50, height: 20)
 		
-		forgotButton = NKButton(title: "Forgot Password?", buttonColor: .clear)
 		forgotButton.setImage(#imageLiteral(resourceName: "key"), for: .normal)
 		forgotButton.setTitleColor(.gray, for: .normal)
 		forgotButton.setTitleColor(.gray, for: .highlighted)
@@ -104,10 +100,9 @@ class ViewController: UIViewController {
 		forgotButton.isRoundedButton = true
 		forgotButton.extendSize = CGSize(width: 20, height: 20)
 		
-		flashButton = NKButton.DefaultButton(title: "TAP TO FLASH", color: UIColor(red:0.61, green:0.11, blue:0.08, alpha:1.00))
 		flashButton.flashColor = .red
 		flashButton.underlineTitleDisabled = true
-		flashButton.extendSize = CGSize(width: 50, height: 20)
+		flashButton.extendSize = CGSize(width: 0, height: 20)
 		
 		loginButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 		facebookButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
@@ -126,10 +121,6 @@ class ViewController: UIViewController {
 		view.addSubview(forgotButton)
 		view.addSubview(flashButton)
 		view.addSubview(frameLayout)
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-			self.viewDidLayoutSubviews()
-		}
     }
 	
 	override func viewDidLayoutSubviews() {
