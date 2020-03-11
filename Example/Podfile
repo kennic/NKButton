@@ -3,6 +3,7 @@ use_frameworks!
 target 'NKButton_Example' do
 	pod 'FrameLayoutKit'
   	pod 'NKButton', :path => '../'
+#  	pod 'NVActivityIndicatorView/AppExtension'
 
   target 'NKButton_Tests' do
     inherit! :search_paths

@@ -8,7 +8,9 @@
 
 import UIKit
 import FrameLayoutKit
+#if canImport(NVActivityIndicatorView)
 import NVActivityIndicatorView
+#endif
 
 public typealias NKButtonAnimationCompletionBlock = ((_ sender: NKButton) -> Void)
 
@@ -269,8 +271,12 @@ open class NKButton: UIButton {
 	open var hideTitleWhileLoading = true
 	/** Button will animated to circle shape when set `isLoading = true`*/
 	open var transitionToCircleWhenLoading = false
+	#if canImport(NVActivityIndicatorView)
 	/** Style of loading indicator */
 	open var loadingIndicatorStyle: NVActivityIndicatorType = .ballPulse
+	#else
+	open var loadingIndicatorStyle: UIActivityIndicatorView.Style = .white
+	#endif
 	/** Scale ratio of loading indicator, based on the minimum value of button width or height */
 	open var loadingIndicatorScaleRatio: CGFloat = 0.7
 	/** Color of loading indicator, if `nil`, it will use titleColor of normal state */
@@ -298,7 +304,11 @@ open class NKButton: UIButton {
 	
 	open var animationationDidEnd: NKButtonAnimationCompletionBlock? = nil
 	
+	#if canImport(NVActivityIndicatorView)
 	fileprivate var loadingView 	: NVActivityIndicatorView? = nil
+	#else
+	fileprivate var loadingView 	: UIActivityIndicatorView? = nil
+	#endif
 	fileprivate let shadowLayer 	= CAShapeLayer()
 	fileprivate let backgroundLayer = CAShapeLayer()
 	fileprivate let flashLayer 		= CAShapeLayer()
@@ -764,7 +774,12 @@ open class NKButton: UIButton {
 		let loadingFrame = CGRect(x: 0, y: 0, width: indicatorSize.width, height: indicatorSize.height)
 		let color = loadingIndicatorColor ?? titleColor(for: .normal)
 		
+		#if canImport(NVActivityIndicatorView)
 		loadingView = NVActivityIndicatorView(frame: loadingFrame, type: loadingIndicatorStyle, color: color, padding: 0)
+		#else
+		loadingView = UIActivityIndicatorView(style: loadingIndicatorStyle)
+		#endif
+		
 		loadingView!.startAnimating()
 		addSubview(loadingView!)
 		setNeedsLayout()

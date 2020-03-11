@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'NKButton'
-  s.version          = '3.10.0'
+  s.version          = '3.11.0'
   s.summary          = 'A fully customizable UIButton'
   s.description      = <<-DESC
 A fully customizable button that fills all lacked functions from UIButton like:
@@ -9,7 +9,7 @@ A fully customizable button that fills all lacked functions from UIButton like:
         + setShadowColor:forState
 		+ setGradientColor:forState
         + cornerRadius and isRoundedButton
-        + imageAlignment (left, top, bottom, right)
+        + imageAlignment (top, left, bottom, right, topEdge, leftEdge, bottomEdge, rightEdge)
         + set spacing between image and text
         + set loading state with loading animation from NVActivityIndicator
         + animate to circle shape while loading

@@ -9,6 +9,9 @@
 import UIKit
 import NKButton
 import FrameLayoutKit
+#if canImport(NVActivityIndicatorView)
+import NVActivityIndicatorView
+#endif
 
 extension NKButton {
 	
@@ -44,7 +47,9 @@ class ViewController: UIViewController {
 		
 		loginButton.setImage(#imageLiteral(resourceName: "login"), for: .normal)
 		loginButton.transitionToCircleWhenLoading = false
+		#if canImport(NVActivityIndicatorView)
 		loginButton.loadingIndicatorStyle = .ballScaleRippleMultiple
+		#endif
 		loginButton.loadingIndicatorAlignment = .center
 		loginButton.underlineTitleDisabled = true
 		loginButton.spacing = 10.0 // space between icon and title
@@ -62,7 +67,9 @@ class ViewController: UIViewController {
 //		facebookButton.transitionToCircleWhenLoading = true
 		facebookButton.loadingIndicatorAlignment = .right
 		facebookButton.underlineTitleDisabled = true
+		#if canImport(NVActivityIndicatorView)
 		facebookButton.loadingIndicatorStyle = .ballClipRotatePulse
+		#endif
 		facebookButton.extendSize = CGSize(width: 0, height: 20)
 		facebookButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
 		facebookButton.imageAlignment = .leftEdge
@@ -82,7 +89,9 @@ class ViewController: UIViewController {
 		twitterButton.hideImageWhileLoading = true
 		twitterButton.hideTitleWhileLoading = false
 		twitterButton.underlineTitleDisabled = true
+		#if canImport(NVActivityIndicatorView)
 		twitterButton.loadingIndicatorStyle = .ballBeat
+		#endif
 		twitterButton.isRoundedButton = false
 		twitterButton.cornerRadius = 10.0
 		twitterButton.extendSize = CGSize(width: 50, height: 20)
@@ -99,6 +108,9 @@ class ViewController: UIViewController {
 		forgotButton.autoSetDisableColor = false
 		forgotButton.isRoundedButton = true
 		forgotButton.extendSize = CGSize(width: 20, height: 20)
+		#if !canImport(NVActivityIndicatorView)
+		forgotButton.loadingIndicatorStyle = .gray
+		#endif
 		
 		flashButton.flashColor = .red
 		flashButton.underlineTitleDisabled = true

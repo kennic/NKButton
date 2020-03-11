@@ -12,14 +12,14 @@ let package = Package(
             targets: ["NKButton"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+		.package(url: "https://github.com/kennic/FrameLayoutKit.git", .branch("master")),
+		.package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", .upToNextMajor(from: "4.8.0")),
     ],
     targets: [
         .target(
             name: "NKButton",
-            dependencies: [],
-			path: "NKButton",
+            dependencies: ["FrameLayoutKit", "NVActivityIndicatorView"],
+			path: "NKButton/CLasses",
 			exclude: ["Example"])
     ]
 )
