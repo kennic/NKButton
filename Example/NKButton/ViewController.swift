@@ -116,13 +116,15 @@ class ViewController: UIViewController {
 		flashButton.underlineTitleDisabled = true
 		flashButton.extendSize = CGSize(width: 0, height: 20)
 		
-		loginButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
-		facebookButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
-		twitterButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
-		forgotButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
-		flashButton.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
+		let allButtons = [loginButton, facebookButton, twitterButton, forgotButton, flashButton]
+		allButtons.forEach { (button) in
+			button.addTarget(self, action: #selector(onButtonSelected), for: .touchUpInside)
+			if #available(iOS 13.4, *) {
+				button.enablePointerInteraction()
+			}
+		}
 		
-		frameLayout = StackFrameLayout(axis: .vertical, distribution: .top, views: [loginButton, facebookButton, twitterButton, forgotButton, flashButton])
+		frameLayout = StackFrameLayout(axis: .vertical, distribution: .top, views: allButtons)
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.spacing = 40
 //		frameLayout.showFrameDebug = true // uncomment this to see how frameLayout layout its contents

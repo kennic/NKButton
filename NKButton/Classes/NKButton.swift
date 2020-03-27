@@ -646,6 +646,18 @@ open class NKButton: UIButton {
 		flashLayer.removeAnimation(forKey: "flashAnimation")
 	}
 	
+	@available (iOS 13.4, *)
+	open func enablePointerInteraction(insets: CGFloat = -5) {
+		isPointerInteractionEnabled = true
+		pointerStyleProvider = { (button, effect, shape) in
+			let frame = button.frame.insetBy(dx: insets, dy: insets)
+			let buttonShape = UIPointerShape.roundedRect(frame, radius: self.cornerRadius)
+			return UIPointerStyle(effect: effect, shape: buttonShape)
+		}
+	}
+	
+	// MARK: -
+	
 	override open func setTitle(_ title: String?, for state: UIControl.State) {
 		super.setTitle(title, for: state)
 		guard self.state == state else { return }
