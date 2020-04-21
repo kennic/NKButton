@@ -41,6 +41,7 @@
 		607FACE51AFB9204008FA782 /* NKButton_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NKButton_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		6311EB8A244E9D5100EAFED7 /* NKButton_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NKButton_Example.entitlements; sourceTree = "<group>"; };
 		6537A997F13C099931A534D1 /* Pods_NKButton_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NKButton_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B5D6DD3E144098F1FAB7BCD /* Pods_NKButton_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NKButton_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C3E1505DB4F9EF1F84B25D /* Pods-NKButton_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NKButton_Example.release.xcconfig"; path = "Target Support Files/Pods-NKButton_Example/Pods-NKButton_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				6311EB8A244E9D5100EAFED7 /* NKButton_Example.entitlements */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for NKButton */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -493,6 +495,7 @@
 			baseConfigurationReference = AB97E56E9BE9789826C230C1 /* Pods-NKButton_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NKButton_Example.entitlements;
 				DEVELOPMENT_TEAM = 385YL4KG69;
 				INFOPLIST_FILE = NKButton/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -500,6 +503,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -511,6 +515,7 @@
 			baseConfigurationReference = 93C3E1505DB4F9EF1F84B25D /* Pods-NKButton_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NKButton_Example.entitlements;
 				DEVELOPMENT_TEAM = 385YL4KG69;
 				INFOPLIST_FILE = NKButton/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -518,6 +523,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

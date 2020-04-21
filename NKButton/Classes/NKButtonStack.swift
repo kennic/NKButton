@@ -23,36 +23,33 @@ public struct NKButtonItem {
 	}
 }
 
-public typealias NKButtonCreationBlock = ((NKButtonItem, Int) -> UIButton)
-public typealias NKButtonSelectionBlock = ((UIButton, NKButtonItem, Int) -> Void)
+public typealias NKButtonCreationBlock<T> = ((NKButtonItem, Int) -> T)
+public typealias NKButtonSelectionBlock<T> = ((T, NKButtonItem, Int) -> Void)
 
-public class NKButtonStack: UIControl {
+open class NKButtonStack<T: UIButton>: UIControl {
 	
-	public var items: [NKButtonItem]? = nil {
+	open var items: [NKButtonItem]? = nil {
 		didSet {
 			updateLayout()
 			setNeedsLayout()
 		}
 	}
 	
-	public var buttons: [UIButton] {
-		var results: [UIButton] = []
-		frameLayout.enumerate { (layout, idx, stop) in
-			results.append(layout.targetView as! UIButton)
+	public var buttons: [T] {
+		return frameLayout.frameLayouts.map { (layout) -> T in
+			return layout.targetView as! T
 		}
-		
-		return results
 	}
 	
-	public var firstButton: UIButton? {
-		return frameLayout.firstFrameLayout?.targetView as? UIButton
+	public var firstButton: T? {
+		return frameLayout.firstFrameLayout?.targetView as? T
 	}
 	
-	public var lastButton: UIButton? {
-		return frameLayout.lastFrameLayout?.targetView as? UIButton
+	public var lastButton: T? {
+		return frameLayout.lastFrameLayout?.targetView as? T
 	}
 	
-	public var spacing: CGFloat {
+	open var spacing: CGFloat {
 		get {
 			return frameLayout.spacing
 		}
@@ -62,13 +59,28 @@ public class NKButtonStack: UIControl {
 		}
 	}
 	
-	public var contentEdgeInsets: UIEdgeInsets {
+	open var contentEdgeInsets: UIEdgeInsets {
 		get {
 			return frameLayout.edgeInsets
 		}
 		set {
 			frameLayout.edgeInsets = newValue
 			setNeedsLayout()
+		}
+	}
+	
+	open var cornerRadius: CGFloat = 0 {
+		didSet {
+			layer.cornerRadius = cornerRadius
+			layer.masksToBounds = cornerRadius > 0
+		}
+	}
+	
+	open var isRounded: Bool = false {
+		didSet {
+			if isRounded != oldValue {
+				setNeedsLayout()
+			}
 		}
 	}
 	
@@ -104,9 +116,9 @@ public class NKButtonStack: UIControl {
 	
 	public var isMomentary: Bool = true
 	
-	public var buttonCreationBlock: NKButtonCreationBlock? = nil
-	public var buttonConfigurationBlock: NKButtonSelectionBlock? = nil
-	public var buttonSelectionBlock: NKButtonSelectionBlock? = nil
+	public var creationBlock: NKButtonCreationBlock<T>? = nil
+	public var configurationBlock: NKButtonSelectionBlock<T>? = nil
+	public var selectionBlock: NKButtonSelectionBlock<T>? = nil
 	
 	public let scrollView = UIScrollView()
 	public let frameLayout = StackFrameLayout(axis: .horizontal, distribution: .equal)
@@ -152,21 +164,27 @@ public class NKButtonStack: UIControl {
 	override open func layoutSubviews() {
 		super.layoutSubviews()
 		
-		let contentSize = frameLayout.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+		let viewSize = bounds.size
+		let contentSize = frameLayout.sizeThatFits(CGSize(width: CGFloat.infinity, height: CGFloat.infinity))
 		scrollView.contentSize = contentSize
 		scrollView.frame = bounds
 		
 		var contentFrame = bounds
-		if contentSize.width > bounds.size.width {
+		if contentSize.width > viewSize.width {
 			contentFrame.size.width = contentSize.width
 		}
 		frameLayout.frame = contentFrame
+		
+		if isRounded {
+			cornerRadius = viewSize.height / 2
+			setNeedsDisplay()
+		}
 	}
 	
 	// MARK: -
 	
-	public func button(at index: Int) -> UIButton? {
-		return frameLayout.frameLayout(at: index)?.targetView as? UIButton
+	public func button(at index: Int) -> T? {
+		return frameLayout.frameLayout(at: index)?.targetView as? T
 	}
 	
 	// MARK: -
@@ -178,7 +196,7 @@ public class NKButtonStack: UIControl {
 			if frameLayout.frameLayouts.count > total {
 				frameLayout.enumerate({ (layout, index, stop) in
 					if Int(index) >= Int(total) {
-						if let button: UIButton = layout.targetView as? UIButton {
+						if let button = layout.targetView as? T {
 							button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 							button.removeFromSuperview()
 						}
@@ -191,13 +209,13 @@ public class NKButtonStack: UIControl {
 			frameLayout.enumerate({ (layout, idx, stop) in
 				let index = Int(idx)
 				let buttonItem = items![index]
-				let button: UIButton = layout.targetView as? UIButton ?? buttonCreationBlock?(buttonItem, index) ?? UIButton(type: .custom)
+				let button = layout.targetView as? T ?? creationBlock?(buttonItem, index) ?? T()
 				button.tag = index
 				button.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 				scrollView.addSubview(button)
 				layout.targetView = button
 				
-				guard let configurationBlock = buttonConfigurationBlock else {
+				guard let configurationBlock = configurationBlock else {
 					button.setTitle(buttonItem.title, for: .normal)
 					button.setImage(buttonItem.image, for: .normal)
 					
@@ -208,12 +226,12 @@ public class NKButtonStack: UIControl {
 					return
 				}
 				
-				configurationBlock(button, buttonItem, index)
+				configurationBlock(button , buttonItem, index)
 			})
 		}
 		else {
 			frameLayout.enumerate({ (layout, index, stop) in
-				if let button: UIButton = layout.targetView as? UIButton {
+				if let button = layout.targetView as? T {
 					button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
 					button.removeFromSuperview()
 				}
@@ -229,9 +247,8 @@ public class NKButtonStack: UIControl {
 			selectedIndex = index
 		}
 		
-		if buttonSelectionBlock != nil {
-			let item = items![index]
-			buttonSelectionBlock!(sender, item, index)
+		if selectionBlock != nil, let item = items?[index], let button = sender as? T {
+			selectionBlock!(button, item, index)
 		}
 		
 		sendActions(for: .valueChanged)

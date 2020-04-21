@@ -135,6 +135,29 @@ class ViewController: UIViewController {
 		view.addSubview(forgotButton)
 		view.addSubview(flashButton)
 		view.addSubview(frameLayout)
+		
+		// Example of NKButtonStack usage:
+		
+		let buttonStack = NKButtonStack<NKButton>()
+		
+		buttonStack.configurationBlock = { (button, item, index) in
+			button.setBackgroundColor(.brown, for: .normal)
+			button.setBackgroundColor(.gray, for: .highlighted)
+			button.setBackgroundColor(.red, for: .selected)
+			button.title = item.title
+			button.extendSize = CGSize(width: 20, height: 20)
+		}
+		
+		buttonStack.selectionBlock = { (button, item, index) in
+			print("Selected: \(button)")
+		}
+		
+		buttonStack.items = [NKButtonItem(title: "Section A"),
+							 NKButtonItem(title: "Section B"),
+							 NKButtonItem(title: "Section C")]
+		view.addSubview(buttonStack)
+		buttonStack.isRounded = true
+		frameLayout.append(view: buttonStack)
     }
 	
 	override func viewDidLayoutSubviews() {
