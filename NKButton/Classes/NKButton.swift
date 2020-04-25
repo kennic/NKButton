@@ -366,9 +366,17 @@ open class NKButton: UIButton {
 		addSubview(imageFrameLayout)
 		addSubview(contentFrameLayout)
 		
-		if #available(iOSApplicationExtension 13.0, *) {
-			let hoverGesture = UIHoverGestureRecognizer(target: self, action: #selector(onHovered))
-			addGestureRecognizer(hoverGesture)
+		if #available(iOS 13.0, *) {
+			#if targetEnvironment(macCatalyst)
+			let isMouseSupport = true
+			#else
+			let isMouseSupport = UIDevice.current.userInterfaceIdiom == .pad
+			#endif
+			
+			if isMouseSupport {
+				let hoverGesture = UIHoverGestureRecognizer(target: self, action: #selector(onHovered))
+				addGestureRecognizer(hoverGesture)
+			}
 		}
 	}
 	
