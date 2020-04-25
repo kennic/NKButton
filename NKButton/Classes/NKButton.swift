@@ -212,8 +212,6 @@ open class NKButton: UIButton {
 		}
 	}
 	
-	public var isHoverGestureEnabled = true
-	
 	/** If `true`, disabled color will be set from normal color with tranparency */
 	open var autoSetDisableColor: Bool = true
 	/** If `true`, highlighted color will be set from normal color with tranparency */
@@ -365,24 +363,12 @@ open class NKButton: UIButton {
 		addSubview(labelFrameLayout)
 		addSubview(imageFrameLayout)
 		addSubview(contentFrameLayout)
-		
-		if #available(iOS 13.0, *) {
-			setupHoverGesture()
-		}
 	}
 	
 	@available(iOS 13.0, *)
-	func setupHoverGesture() {
-		#if targetEnvironment(macCatalyst)
-		let isMouseSupport = true
-		#else
-		let isMouseSupport = UIDevice.current.userInterfaceIdiom == .pad
-		#endif
-		
-		if isMouseSupport {
-			let hoverGesture = UIHoverGestureRecognizer(target: self, action: #selector(onHovered))
-			addGestureRecognizer(hoverGesture)
-		}
+	open func enableHoverGesture() {
+		let hoverGesture = UIHoverGestureRecognizer(target: self, action: #selector(onHovered))
+		addGestureRecognizer(hoverGesture)
 	}
 	
 	open override func setNeedsLayout() {
@@ -636,11 +622,6 @@ open class NKButton: UIButton {
 	
 	@available(iOS 13.0, *)
 	@objc func onHovered(_ gesture: UIHoverGestureRecognizer) {
-		guard isHoverGestureEnabled else {
-			isHovering = false
-			return
-		}
-		
 		let gestureState = gesture.state
 		if gestureState == .began || gestureState == .ended || gestureState == .cancelled {
 			isHovering = gestureState == .began

@@ -117,7 +117,7 @@ class ViewController: UIViewController {
 		let allButtons = [loginButton, facebookButton, twitterButton, forgotButton, flashButton]
 		allButtons.forEach { (button) in
 			button.addTarget(self, action: #selector(onButtonSelected), for: .touchUpInside)
-			button.isHoverGestureEnabled = true
+			button.enableHoverGesture()
 			button.backgroundColors[.hovered] = .red
 			if #available(iOS 13.4, *) {
 				button.enablePointerInteraction()
