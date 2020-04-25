@@ -12,7 +12,9 @@ import FrameLayoutKit
 import NVActivityIndicatorView
 #endif
 
-public typealias NKButtonAnimationCompletionBlock = ((_ sender: NKButton) -> Void)
+public extension UIControl.State {
+	static let hovered = UIControl.State(rawValue: 1 << 18)
+}
 
 public enum NKButtonLoadingIndicatorAlignment: String {
 	case left
@@ -210,6 +212,8 @@ open class NKButton: UIButton {
 		}
 	}
 	
+	public var isHoverGestureEnabled = true
+	
 	/** If `true`, disabled color will be set from normal color with tranparency */
 	open var autoSetDisableColor: Bool = true
 	/** If `true`, highlighted color will be set from normal color with tranparency */
@@ -230,47 +234,33 @@ open class NKButton: UIButton {
 			if isLoading {
 				showLoadingView()
 				
-				if transitionToCircleWhenLoading {
-					titleLabel?.alpha = 0.0
+				if hideImageWhileLoading {
 					imageView?.alpha = 0.0
-					transition(toCircle: true)
 				}
-				else {
-					if hideImageWhileLoading {
-						imageView?.alpha = 0.0
-					}
-					
-					if hideTitleWhileLoading {
-						titleLabel?.alpha = 0.0
-					}
+				
+				if hideTitleWhileLoading {
+					titleLabel?.alpha = 0.0
 				}
 			}
 			else {
 				hideLoadingView()
 				
-				if transitionToCircleWhenLoading {
-					titleLabel?.alpha = 1.0
+				if hideImageWhileLoading {
 					imageView?.alpha = 1.0
-					transition(toCircle: false)
 				}
-				else {
-					if hideImageWhileLoading {
-						imageView?.alpha = 1.0
-					}
-					
-					if hideTitleWhileLoading {
-						titleLabel?.alpha = 1.0
-					}
+				
+				if hideTitleWhileLoading {
+					titleLabel?.alpha = 1.0
 				}
 			}
 		}
 	}
+	/// `true` is mous cursor is hovering
+	public fileprivate(set) var isHovering = false
 	/** imageView will be hidden when `isLoading` is true */
 	open var hideImageWhileLoading = false
 	/** titleLabel will be hidden when `isLoading` is true */
 	open var hideTitleWhileLoading = true
-	/** Button will animated to circle shape when set `isLoading = true`*/
-	open var transitionToCircleWhenLoading = false
 	#if canImport(NVActivityIndicatorView)
 	/** Style of loading indicator */
 	open var loadingIndicatorStyle: NVActivityIndicatorType = .ballPulse
@@ -301,8 +291,6 @@ open class NKButton: UIButton {
 	public let labelFrameLayout		= FrameLayout()
 	/** `FrameLayout` that handles contents */
 	public let contentFrameLayout 	= DoubleFrameLayout(axis: .horizontal)
-	
-	open var animationationDidEnd: NKButtonAnimationCompletionBlock? = nil
 	
 	#if canImport(NVActivityIndicatorView)
 	fileprivate var loadingView 	: NVActivityIndicatorView? = nil
@@ -377,6 +365,11 @@ open class NKButton: UIButton {
 		addSubview(labelFrameLayout)
 		addSubview(imageFrameLayout)
 		addSubview(contentFrameLayout)
+		
+		if #available(iOSApplicationExtension 13.0, *) {
+			let hoverGesture = UIHoverGestureRecognizer(target: self, action: #selector(onHovered))
+			addGestureRecognizer(hoverGesture)
+		}
 	}
 	
 	open override func setNeedsLayout() {
@@ -406,12 +399,13 @@ open class NKButton: UIButton {
 	override open func draw(_ rect: CGRect) {
 		super.draw(rect)
 		
+		let currentState = isHovering ? [state, .hovered] : state
 		let backgroundFrame = bounds
-		let fillColor 		= backgroundColor(for: state)
-		let strokeColor 	= borderColor(for: state)
-		let strokeSize		= borderSize(for: state)
+		let fillColor 		= backgroundColor(for: currentState) ?? backgroundColor(for: state) ?? backgroundColor(for: .normal)
+		let strokeColor 	= borderColor(for: currentState)
+		let strokeSize		= borderSize(for: currentState)
 		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
-		let path			= transitionToCircleWhenLoading && isLoading ? backgroundLayer.path : roundedPath.cgPath
+		let path			= isLoading ? backgroundLayer.path : roundedPath.cgPath
 		
 		backgroundLayer.path			= path
 		backgroundLayer.fillColor		= fillColor?.cgColor
@@ -422,7 +416,7 @@ open class NKButton: UIButton {
 		flashLayer.path 				= path
 		flashLayer.fillColor 			= flashColor.cgColor
 		
-		if let shadowColor = shadowColor(for: state) {
+		if let shadowColor = shadowColor(for: currentState) {
 			shadowLayer.isHidden 		= false
 			shadowLayer.path 			= path
 			shadowLayer.shadowPath 		= path
@@ -436,7 +430,7 @@ open class NKButton: UIButton {
 			shadowLayer.isHidden = true
 		}
 		
-		if let gradientColors = gradientColor(for: state) {
+		if let gradientColors = gradientColor(for: currentState) {
 			var colors: [CGColor] = []
 			for color in gradientColors {
 				colors.append(color.cgColor)
@@ -627,6 +621,20 @@ open class NKButton: UIButton {
 		}
 	}
 	
+	@available(iOS 13.0, *)
+	@objc func onHovered(_ gesture: UIHoverGestureRecognizer) {
+		guard isHoverGestureEnabled else {
+			isHovering = false
+			return
+		}
+		
+		let gestureState = gesture.state
+		if gestureState == .began || gestureState == .ended || gestureState == .cancelled {
+			isHovering = gestureState == .began
+			setNeedsDisplay()
+		}
+	}
+	
 	
 	// MARK: -
 	
@@ -803,83 +811,6 @@ open class NKButton: UIButton {
 		loadingView = nil
 	}
 	
-	fileprivate func transition(toCircle: Bool) {
-		backgroundLayer.removeAllAnimations()
-		shadowLayer.removeAllAnimations()
-		
-		let animation = CABasicAnimation(keyPath: "bounds.size.width")
-		
-		if toCircle {
-			animation.fromValue = frame.width
-			animation.toValue = frame.height
-			animation.duration = 0.1
-			#if swift(>=4.2)
-			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-			#else
-			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-			#endif
-			backgroundLayer.masksToBounds = true
-			backgroundLayer.cornerRadius = cornerRadius
-		}
-		else {
-			animation.fromValue = frame.height
-			animation.toValue = frame.width
-			animation.duration = 0.15
-			#if swift(>=4.2)
-			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-			#else
-			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-			#endif
-			
-			setNeedsLayout()
-			setNeedsDisplay()
-		}
-		
-		#if swift(>=4.2)
-		animation.fillMode = CAMediaTimingFillMode.forwards
-		#else
-		animation.fillMode = kCAFillModeForwards
-		#endif
-		animation.isRemovedOnCompletion = false
-		
-		backgroundLayer.add(animation, forKey: animation.keyPath)
-		shadowLayer.add(animation, forKey: animation.keyPath)
-		gradientLayer.add(animation, forKey: animation.keyPath)
-		flashLayer.add(animation, forKey: animation.keyPath)
-	}
-	
-	open func expandFullscreen(duration:Double = 0.3, completionBlock:NKButtonAnimationCompletionBlock? = nil) {
-		animationationDidEnd = completionBlock
-		hideLoadingView()
-		
-		if window != nil {
-			let targetFrame = convert(bounds, to: window!)
-			window!.addSubview(self)
-			frame = targetFrame
-		}
-		
-		isEnabled = true // back to normal color
-		isUserInteractionEnabled = false
-		titleLabel?.alpha = 0.0
-		imageView?.alpha = 0.0
-		
-		let animation = CABasicAnimation(keyPath: "transform.scale")
-		animation.fromValue = 1.0
-		animation.toValue = 26.0
-		animation.duration = duration
-		animation.delegate = self
-		#if swift(>=4.2)
-		animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-		animation.fillMode = CAMediaTimingFillMode.forwards
-		#else
-		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-		animation.fillMode = kCAFillModeForwards
-		#endif
-		animation.isRemovedOnCompletion = false
-		
-		backgroundLayer.add(animation, forKey: animation.keyPath)
-	}
-	
 	fileprivate func removeLabelUnderline() {
 		let attributedText: NSMutableAttributedString? = titleLabel?.attributedText?.mutableCopy() as? NSMutableAttributedString
 		if attributedText != nil {
@@ -897,15 +828,6 @@ open class NKButton: UIButton {
 	
 }
 
-extension NKButton: CAAnimationDelegate {
-	
-	open func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-		if flag {
-			animationationDidEnd?(self)
-		}
-	}
-	
-}
 
 // MARK: -
 
@@ -954,7 +876,7 @@ public class UIControlStateValue<T> {
 		self.setter = setter
 	}
 	
-	subscript(state: UIControl.State) -> T? {
+	public subscript(state: UIControl.State) -> T? {
 		get {
 			return getter(state)
 		}
@@ -964,29 +886,29 @@ public class UIControlStateValue<T> {
 	}
 }
 
-extension NKButton {
+public extension NKButton {
 	
-	public var titles: UIControlStateValue<String> {
+	var titles: UIControlStateValue<String> {
 		return UIControlStateValue<String>.init(getter: self.title(for:), setter: self.setTitle(_:for:))
 	}
 	
-	public var titleColors: UIControlStateValue<UIColor> {
+	var titleColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
 	}
 	
-	public var backgroundColors: UIControlStateValue<UIColor> {
+	var backgroundColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>.init(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
 	}
 	
-	public var borderColors: UIControlStateValue<UIColor> {
+	var borderColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
 	}
 	
-	public var shadowColors: UIControlStateValue<UIColor> {
+	var shadowColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:))
 	}
 	
-	public var gradientColors: UIControlStateValue<[UIColor]> {
+	var gradientColors: UIControlStateValue<[UIColor]> {
 		return UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:))
 	}
 	

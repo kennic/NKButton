@@ -46,7 +46,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 		
 		loginButton.setImage(#imageLiteral(resourceName: "login"), for: .normal)
-		loginButton.transitionToCircleWhenLoading = false
 		#if canImport(NVActivityIndicatorView)
 		loginButton.loadingIndicatorStyle = .ballScaleRippleMultiple
 		#endif
@@ -82,7 +81,6 @@ class ViewController: UIViewController {
 		twitterButton.setGradientColor([UIColor(white: 1.0, alpha: 0.5), UIColor(white: 1.0, alpha: 0.0)], for: .normal)
 		twitterButton.setGradientColor([UIColor(white: 1.0, alpha: 0.0), UIColor(white: 1.0, alpha: 0.5)], for: .highlighted)
 		twitterButton.spacing = 10.0 // space between icon and title
-		twitterButton.transitionToCircleWhenLoading = false
 		twitterButton.imageAlignment = .top
 		twitterButton.titleLabel?.textAlignment = .center
 		twitterButton.loadingIndicatorAlignment = .atImage
@@ -119,6 +117,8 @@ class ViewController: UIViewController {
 		let allButtons = [loginButton, facebookButton, twitterButton, forgotButton, flashButton]
 		allButtons.forEach { (button) in
 			button.addTarget(self, action: #selector(onButtonSelected), for: .touchUpInside)
+			button.isHoverGestureEnabled = true
+			button.backgroundColors[.hovered] = .red
 			if #available(iOS 13.4, *) {
 				button.enablePointerInteraction()
 			}
@@ -141,9 +141,10 @@ class ViewController: UIViewController {
 		let buttonStack = NKButtonStack<NKButton>()
 		
 		buttonStack.configurationBlock = { (button, item, index) in
-			button.setBackgroundColor(.brown, for: .normal)
-			button.setBackgroundColor(.gray, for: .highlighted)
-			button.setBackgroundColor(.red, for: .selected)
+			button.backgroundColors[.normal] = .brown
+			button.backgroundColors[.highlighted] = .gray
+			button.backgroundColors[.selected] = .red
+			button.backgroundColors[[.selected, .highlighted]] = .green
 			button.title = item.title
 			button.extendSize = CGSize(width: 20, height: 20)
 		}
@@ -179,14 +180,6 @@ class ViewController: UIViewController {
 		button.isLoading = true
 		DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
 			button.isLoading = false
-			
-			/*
-			button.expandFullscreen(duration: 0.5, completionBlock: { (sender) in
-				UIView.animate(withDuration: 0.25, animations: {
-					button.alpha = 0.0
-				})
-			})
-			*/
 		}
 	}
 
