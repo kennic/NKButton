@@ -448,6 +448,7 @@ open class NKButton: UIButton {
 			}
 			
 			gradientLayer.isHidden = false
+			gradientLayer.cornerRadius = cornerRadius
 			gradientLayer.shadowPath = path
 			gradientLayer.colors = colors
 		}
