@@ -12,8 +12,9 @@ A fully customizable button that fills all lacked functions from UIButton like:
         + imageAlignment (top, left, bottom, right, topEdge, leftEdge, bottomEdge, rightEdge)
         + set spacing between image and text
         + set loading state with loading animation from NVActivityIndicator
-        + animate to circle shape while loading
         + a backgroundView to attach an UIVisualEffectView if you want
+        + flash effect
+        + hover gesture
                        DESC
 
   s.homepage         = 'https://github.com/kennic/NKButton'

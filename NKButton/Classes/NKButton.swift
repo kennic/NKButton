@@ -175,6 +175,7 @@ open class NKButton: UIButton {
 			return labelFrame.contentHorizontalAlignment
 		}
 		set {
+			resetLabelAlignment()
 			labelFrame.contentHorizontalAlignment = newValue
 			setNeedsLayout()
 		}
@@ -186,6 +187,7 @@ open class NKButton: UIButton {
 			return labelFrame.contentVerticalAlignment
 		}
 		set {
+			resetLabelAlignment()
 			labelFrame.contentVerticalAlignment = newValue
 			setNeedsLayout()
 		}
@@ -197,6 +199,7 @@ open class NKButton: UIButton {
 			return labelFrame.contentAlignment
 		}
 		set {
+			resetLabelAlignment()
 			labelFrame.contentAlignment = newValue
 			setNeedsLayout()
 		}
@@ -380,12 +383,21 @@ open class NKButton: UIButton {
 	}
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
+		let lastOverlapped = contentFrameLayout.isOverlapped
+		if lastOverlapped {
+			resetLabelAlignment()
+		}
+		
 		var result = contentFrameLayout.sizeThatFits(size)
 		
 		result.width  += extendSize.width
 		result.height += extendSize.height
 		result.width  = min(result.width, size.width)
 		result.height = min(result.height, size.height)
+		
+		if lastOverlapped {
+			makeTitleRealCenter()
+		}
 		
 		return result
 	}
@@ -512,6 +524,8 @@ open class NKButton: UIButton {
 	}
 	
 	fileprivate func updateLayoutAlignment() {
+		resetLabelAlignment()
+		
 		switch imageAlignment {
 		case .left:
 			contentFrameLayout.axis = .horizontal
@@ -527,6 +541,7 @@ open class NKButton: UIButton {
 			
 			contentFrameLayout.leftFrameLayout.targetView = imageFrameLayout
 			contentFrameLayout.rightFrameLayout.targetView = labelFrameLayout
+			makeTitleRealCenter()
 			break
 			
 		case .right:
@@ -543,6 +558,7 @@ open class NKButton: UIButton {
 			
 			contentFrameLayout.leftFrameLayout.targetView = labelFrameLayout
 			contentFrameLayout.rightFrameLayout.targetView = imageFrameLayout
+			makeTitleRealCenter()
 			break
 			
 		case .top:
@@ -580,6 +596,20 @@ open class NKButton: UIButton {
 		
 		setNeedsDisplay()
 		setNeedsLayout()
+	}
+	
+	open func makeTitleRealCenter() {
+		if (imageAlignment == .leftEdge || imageAlignment == .rightEdge) {
+			contentFrameLayout.isOverlapped = true
+			labelFrameLayout.isIntrinsicSizeEnabled = false
+			labelFrameLayout.contentAlignment = (.center, .center)
+		}
+	}
+	
+	open func resetLabelAlignment() {
+		contentFrameLayout.isOverlapped = false
+		labelFrameLayout.isIntrinsicSizeEnabled = true
+		labelFrameLayout.contentAlignment = (.fill, .fill)
 	}
 	
 	// MARK: -
