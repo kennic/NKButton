@@ -196,11 +196,11 @@ open class NKButton: UIButton {
 	/** Text Alignment */
 	open var textAlignment: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
 		get {
-			return labelFrame.contentAlignment
+			return labelFrame.alignment
 		}
 		set {
 			resetLabelAlignment()
-			labelFrame.contentAlignment = newValue
+			labelFrame.alignment = newValue
 			setNeedsLayout()
 		}
 	}
@@ -353,13 +353,13 @@ open class NKButton: UIButton {
 		layer.addSublayer(gradientLayer)
 		
 		contentFrameLayout.isIntrinsicSizeEnabled = true
-		contentFrameLayout.frameLayout1.contentAlignment = (.center, .center)
-		contentFrameLayout.frameLayout2.contentAlignment = (.center, .center)
+		contentFrameLayout.frameLayout1.alignment = (.center, .center)
+		contentFrameLayout.frameLayout2.alignment = (.center, .center)
 		
-		imageFrameLayout.contentAlignment = (.center, .center)
+		imageFrameLayout.alignment = (.center, .center)
 		imageFrameLayout.targetView = imageView
 		
-		labelFrameLayout.contentAlignment = (.fill, .fill)
+		labelFrameLayout.alignment = (.fill, .fill)
 		labelFrameLayout.targetView = titleLabel
 
 		updateLayoutAlignment()
@@ -603,14 +603,14 @@ open class NKButton: UIButton {
 		if (imageAlignment == .leftEdge || imageAlignment == .rightEdge) {
 			contentFrameLayout.isOverlapped = true
 			labelFrameLayout.isIntrinsicSizeEnabled = false
-			labelFrameLayout.contentAlignment = (.center, .center)
+			labelFrameLayout.alignment = (.center, .center)
 		}
 	}
 	
 	open func resetLabelAlignment() {
 		contentFrameLayout.isOverlapped = false
 		labelFrameLayout.isIntrinsicSizeEnabled = true
-		labelFrameLayout.contentAlignment = (.fill, .fill)
+		labelFrameLayout.alignment = (.fill, .fill)
 	}
 	
 	// MARK: -

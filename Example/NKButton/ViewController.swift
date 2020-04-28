@@ -131,7 +131,7 @@ class ViewController: UIViewController {
 		frameLayout = StackFrameLayout(axis: .vertical, distribution: .top, views: allButtons)
 		frameLayout.isIntrinsicSizeEnabled = true
 		frameLayout.spacing = 40
-//		frameLayout.showFrameDebug = true // uncomment this to see how frameLayout layout its contents
+//		frameLayout.debug = true // uncomment this to see how frameLayout layout its contents
 		
 		view.addSubview(loginButton)
 		view.addSubview(facebookButton)
@@ -162,7 +162,7 @@ class ViewController: UIViewController {
 							 NKButtonItem(title: "Section C")]
 		view.addSubview(buttonStack)
 		buttonStack.isRounded = true
-		frameLayout.append(view: buttonStack)
+		frameLayout += buttonStack
     }
 	
 	override func viewDidLayoutSubviews() {
