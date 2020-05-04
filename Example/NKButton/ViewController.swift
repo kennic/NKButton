@@ -150,6 +150,8 @@ class ViewController: UIViewController {
 			button.backgroundColors[.selected] = .red
 			button.backgroundColors[[.selected, .highlighted]] = .green
 			button.title = item.title
+			button.setTitleFont(.systemFont(ofSize: 14, weight: .regular), for: .normal)
+			button.setTitleFont(.systemFont(ofSize: 15, weight: .bold), for: .selected)
 			button.extendSize = CGSize(width: 20, height: 20)
 		}
 		

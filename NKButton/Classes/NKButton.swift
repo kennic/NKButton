@@ -308,6 +308,7 @@ open class NKButton: UIButton {
 	fileprivate var shadowColorDict		: [String : UIColor] = [:]
 	fileprivate var gradientColorDict	: [String : [UIColor]] = [:]
 	fileprivate var borderSizeDict		: [String : CGFloat] = [:]
+	fileprivate var titleFontDict		: [String : UIFont] = [:]
 	
 	fileprivate var labelFrame: FrameLayout {
 		return contentFrameLayout.leftFrameLayout.targetView == labelFrameLayout ? contentFrameLayout.leftFrameLayout : contentFrameLayout.rightFrameLayout
@@ -455,6 +456,10 @@ open class NKButton: UIButton {
 		else {
 			gradientLayer.isHidden = true
 			gradientLayer.colors = nil
+		}
+		
+		if let titleFont = titleFont(for: currentState) {
+			titleLabel?.font = titleFont
 		}
 		
 		if underlineTitleDisabled {
@@ -698,6 +703,14 @@ open class NKButton: UIButton {
 		setNeedsLayout()
 	}
 	
+	open func setTitleFont(_ font: UIFont?, for state: UIControl.State) {
+		let key = titleFontKey(for: state)
+		titleFontDict[key] = font
+		guard self.state == state else { return }
+		titleLabel?.font = font
+		setNeedsLayout()
+	}
+	
 	override open func setImage(_ image: UIImage?, for state: UIControl.State) {
 		super.setImage(image, for: state)
 		guard self.state == state else { return }
@@ -786,6 +799,11 @@ open class NKButton: UIButton {
 		return borderSizeDict[key] ?? 0
 	}
 	
+	open func titleFont(for state: UIControl.State) -> UIFont? {
+		let key = titleFontKey(for: state)
+		return titleFontDict[key]
+	}
+	
 	// MARK: -
 	
 	fileprivate func backgroundColorKey(for state: UIControl.State) -> String {
@@ -806,6 +824,10 @@ open class NKButton: UIButton {
 	
 	fileprivate func borderSizeKey(for state: UIControl.State) -> String {
 		return "bs\(state.rawValue)"
+	}
+	
+	fileprivate func titleFontKey(for state: UIControl.State) -> String {
+		return "tf\(state.rawValue)"
 	}
 	
 	// MARK: -
@@ -919,6 +941,10 @@ public extension NKButton {
 	
 	var titleColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
+	}
+	
+	var titleFonts: UIControlStateValue<UIFont> {
+		return UIControlStateValue<UIFont>(getter: self.titleFont(for:), setter: self.setTitleFont(_:for:))
 	}
 	
 	var backgroundColors: UIControlStateValue<UIColor> {
