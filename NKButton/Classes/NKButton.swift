@@ -947,6 +947,10 @@ public extension NKButton {
 		return UIControlStateValue<UIFont>(getter: self.titleFont(for:), setter: self.setTitleFont(_:for:))
 	}
 	
+	var images: UIControlStateValue<UIImage> {
+		return UIControlStateValue<UIImage>.init(getter: self.image, setter: self.setImage(_:for:))
+	}
+	
 	var backgroundColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>.init(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
 	}
