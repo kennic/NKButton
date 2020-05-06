@@ -357,7 +357,7 @@ open class NKButton: UIButton {
 		contentFrameLayout.frameLayout1.alignment = (.center, .center)
 		contentFrameLayout.frameLayout2.alignment = (.center, .center)
 		
-		imageFrameLayout.alignment = (.center, .center)
+		imageFrameLayout.alignment = (.fit, .fit)
 		imageFrameLayout.targetView = imageView
 		
 		labelFrameLayout.alignment = (.fill, .fill)
