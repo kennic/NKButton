@@ -16,11 +16,12 @@ public extension UIControl.State {
 	static let hovered = UIControl.State(rawValue: 1 << 18)
 }
 
-public enum NKButtonLoadingIndicatorAlignment: String {
+public enum NKButtonLoadingIndicatorAlignment {
 	case left
 	case center
 	case right
 	case atImage
+	case atPosition(position: CGPoint)
 }
 
 public enum NKButtonImageAlignment {
@@ -28,10 +29,10 @@ public enum NKButtonImageAlignment {
 	case right
 	case top
 	case bottom
-	case leftEdge
-	case rightEdge
-	case topEdge
-	case bottomEdge
+	case leftEdge(spacing: CGFloat)
+	case rightEdge(spacing: CGFloat)
+	case topEdge(spacing: CGFloat)
+	case bottomEdge(spacing: CGFloat)
 }
 
 open class NKButton: UIButton {
@@ -493,10 +494,11 @@ open class NKButton: UIButton {
 		if let loadingView = loadingView {
 			var point = CGPoint(x: 0, y: viewSize.height / 2)
 			switch (loadingIndicatorAlignment) {
-			case .left: 	point.x = loadingView.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
-			case .center: 	point.x = viewSize.width/2
-			case .right: 	point.x = viewSize.width - (loadingView.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
-			case .atImage:	point = imageView?.center ?? point
+				case .left: 	point.x = loadingView.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
+				case .center: 	point.x = viewSize.width/2
+				case .right: 	point.x = viewSize.width - (loadingView.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
+				case .atImage:	point = imageView?.center ?? point
+				case .atPosition(let position): point = position
 			}
 			
 			loadingView.center = point
@@ -541,10 +543,11 @@ open class NKButton: UIButton {
 			contentFrameLayout.rightFrameLayout.targetView = labelFrameLayout
 			break
 			
-		case .leftEdge:
+		case .leftEdge(let spacing):
 			contentFrameLayout.axis = .horizontal
 			contentFrameLayout.distribution = .left
 			
+			imageFrameLayout.padding(top: 0, left: spacing, bottom: 0, right: 0)
 			contentFrameLayout.leftFrameLayout.targetView = imageFrameLayout
 			contentFrameLayout.rightFrameLayout.targetView = labelFrameLayout
 			makeTitleRealCenter()
@@ -558,10 +561,11 @@ open class NKButton: UIButton {
 			contentFrameLayout.rightFrameLayout.targetView = imageFrameLayout
 			break
 			
-		case .rightEdge:
+		case .rightEdge(let spacing):
 			contentFrameLayout.axis = .horizontal
 			contentFrameLayout.distribution = .right
 			
+			imageFrameLayout.padding(top: 0, left: 0, bottom: 0, right: spacing)
 			contentFrameLayout.leftFrameLayout.targetView = labelFrameLayout
 			contentFrameLayout.rightFrameLayout.targetView = imageFrameLayout
 			makeTitleRealCenter()
@@ -575,10 +579,11 @@ open class NKButton: UIButton {
 			contentFrameLayout.bottomFrameLayout.targetView = labelFrameLayout
 			break
 			
-		case .topEdge:
+		case .topEdge(let spacing):
 			contentFrameLayout.axis = .vertical
 			contentFrameLayout.distribution = .top
 			
+			imageFrameLayout.padding(top: spacing, left: 0, bottom: 0, right: 0)
 			contentFrameLayout.topFrameLayout.targetView = imageFrameLayout
 			contentFrameLayout.bottomFrameLayout.targetView = labelFrameLayout
 			break
@@ -591,10 +596,11 @@ open class NKButton: UIButton {
 			contentFrameLayout.bottomFrameLayout.targetView = imageFrameLayout
 			break
 			
-		case .bottomEdge:
+		case .bottomEdge(let spacing):
 			contentFrameLayout.axis = .vertical
 			contentFrameLayout.distribution = .bottom
 			
+			imageFrameLayout.padding(top: 0, left: 0, bottom: spacing, right: 0)
 			contentFrameLayout.topFrameLayout.targetView = labelFrameLayout
 			contentFrameLayout.bottomFrameLayout.targetView = imageFrameLayout
 			break
@@ -605,10 +611,13 @@ open class NKButton: UIButton {
 	}
 	
 	open func makeTitleRealCenter() {
-		if (imageAlignment == .leftEdge || imageAlignment == .rightEdge) {
-			contentFrameLayout.isOverlapped = true
-			labelFrameLayout.isIntrinsicSizeEnabled = false
-			labelFrameLayout.alignment = (.center, .center)
+		switch imageAlignment {
+			case .leftEdge(_), .rightEdge:
+				contentFrameLayout.isOverlapped = true
+				labelFrameLayout.isIntrinsicSizeEnabled = false
+				labelFrameLayout.alignment = (.center, .center)
+			
+			default: break
 		}
 	}
 	
@@ -957,6 +966,10 @@ public extension NKButton {
 	
 	var borderColors: UIControlStateValue<UIColor> {
 		return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
+	}
+	
+	var borderSizes: UIControlStateValue<CGFloat> {
+		return UIControlStateValue<CGFloat>(getter: self.borderSize(for:), setter: self.setBorderSize(_:for:))
 	}
 	
 	var shadowColors: UIControlStateValue<UIColor> {
