@@ -369,10 +369,10 @@ open class NKButton: UIButton {
 		addSubview(imageFrameLayout)
 		addSubview(contentFrameLayout)
 		
-		if #available(iOSApplicationExtension 13.4, *) {
+		if #available(iOS 13.4, *) {
 			enablePointerInteraction()
 		}
-		else if #available(iOSApplicationExtension 13.0, *) {
+		else if #available(iOS 13.0, *) {
 			enableHoverGesture()
 		}
 	}
