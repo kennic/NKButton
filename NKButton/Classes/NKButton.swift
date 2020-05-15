@@ -368,6 +368,13 @@ open class NKButton: UIButton {
 		addSubview(labelFrameLayout)
 		addSubview(imageFrameLayout)
 		addSubview(contentFrameLayout)
+		
+		if #available(iOSApplicationExtension 13.4, *) {
+			enablePointerInteraction()
+		}
+		else if #available(iOSApplicationExtension 13.0, *) {
+			enableHoverGesture()
+		}
 	}
 	
 	@available(iOS 13.0, *)
@@ -610,7 +617,7 @@ open class NKButton: UIButton {
 		setNeedsLayout()
 	}
 	
-	open func makeTitleRealCenter() {
+	fileprivate func makeTitleRealCenter() {
 		switch imageAlignment {
 			case .leftEdge(_), .rightEdge:
 				contentFrameLayout.isOverlapped = true
@@ -621,7 +628,7 @@ open class NKButton: UIButton {
 		}
 	}
 	
-	open func resetLabelAlignment() {
+	fileprivate func resetLabelAlignment() {
 		contentFrameLayout.isOverlapped = false
 		labelFrameLayout.isIntrinsicSizeEnabled = true
 		labelFrameLayout.alignment = (.fill, .fill)
@@ -916,7 +923,8 @@ fileprivate extension UIColor {
 /**
 Supports:
 let button = NKButton()
-button.titles[[.normal, .highlighted]] = ""
+button.titles[.normal] = ""
+button.titleColors[[.normal, .highlighted]] = .black
 button.backgroundColors[[.normal, .highlighted]] = .white
 */
 public class UIControlStateValue<T> {
