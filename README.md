@@ -85,10 +85,13 @@ button.startFlashing(flashDuration: 0.25, intensity: 0.9, repeatCount: 10)
 ## Subscript syntax:
 ```swift
 button.titleColors[.normal] = .black
+button.titleFonts[.normal] = normalFont
+button.titleFonts[.highlight] = boldFont
 button.backgroundColors[.normal] = .white
 button.backgroundColors[.highlight] = .yellow
 button.borderColors[.normal] = .gray
 button.borderColors[[.highlight, .selected]] = .black
+button.shadowColors[.normal] = .black
 ```
 
 ## Dependency
