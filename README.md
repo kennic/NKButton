@@ -82,7 +82,7 @@ button.startFlashing()
 button.startFlashing(flashDuration: 0.25, intensity: 0.9, repeatCount: 10)
 ```
 
-Subscript syntax:
+## Subscript syntax:
 ```swift
 button.titleColors[.normal] = .black
 button.backgroundColors[.normal] = .white
@@ -91,13 +91,11 @@ button.borderColors[.normal] = .gray
 button.borderColors[[.highlight, .selected]] = .black
 ```
 
-NKButton uses [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView) for loading indicator, so it currently has 32 animation types
+## Dependency
+
+NKButton uses [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView) for loading indicator, so it currently has 32 animation types.
 
 NKButton uses [FrameLayoutKit](https://github.com/kennic/FrameLayoutKit) for content layout so you can customize the layout easily
-
-
-## Extension
-[NKSparkleButton](https://github.com/kennic/NKSparkleButton) subclasses NKButton to have sparkle effect on tap
 
 ## Author
 
