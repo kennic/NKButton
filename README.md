@@ -15,8 +15,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-NKButton is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+NKButton is available through `Swift Package Manager` (Recommended) and [CocoaPods](http://cocoapods.org):
+
 
 ```ruby
 pod 'NKButton'
