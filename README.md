@@ -30,12 +30,14 @@ let button = NKButton()
 button.title = "Button"
 button.setTitleColor(.black, for: .normal) // set title color for normal state
 button.setTitleColor(.white, for: .highlighted) // set title color for highlight state
+button.setTitleFont(normalFont, for: .normal)
+button.setTitleFont(boldFont, for: .highlight)
 button.setBackgroundColor(.blue, for: .normal) // set background color for normal state
 button.setBackgroundColor(.green, for: .highlighted) // set background color for highlight state
 button.spacing = 10.0 // space between icon and title
 button.imageAlignment = .top // icon alignment
 button.underlineTitleDisabled = true // no underline text when `Settings > Accessibility > Button Shapes` is ON
-button.isRoundedButton = false
+button.isRoundedButton = true
 button.cornerRadius = 10.0
 button.extendSize = CGSize(width: 50, height: 20) // size that will be included in sizeThatFits
 ```
@@ -44,7 +46,8 @@ Add border:
 ```swift
 button.setBorderColor(.black, for: .normal) // set border color for normal state
 button.setBorderColor(.white, for: .highlighted) // set border color for highlight state
-button.borderSize = 2.0 // border stroke size
+button.setBorderSize(1.0, for: .normal) // border stroke size
+button.setBorderSize(2.0, for: .highlighted)
 ```
 
 Add shadow:
@@ -65,11 +68,10 @@ button.setGradientColor([UIColor(white: 1.0, alpha: 0.0), UIColor(white: 1.0, al
 Set loading state:
 
 ```swift
+button.loadingIndicatorStyle = .ballBeat // loading indicator style
+button.loadingIndicatorAlignment = .atImage // loading indicator alignment
 button.hideImageWhileLoading = true
 button.hideTitleWhileLoading = false
-button.loadingIndicatorStyle = .ballBeat // loading indicator style
-button.loadingIndicatorAlignment = .atImage // loading indicator alignment, apply when transitionToCircleWhenLoading = false
-button.transitionToCircleWhenLoading = true // animate to circle shape while in loading state
 
 button.isLoading = true // show loading indicator in the button, and button will be disabled automatically until setting isLoading = false
 ```
@@ -79,6 +81,16 @@ Flashing:
 button.startFlashing()
 button.startFlashing(flashDuration: 0.25, intensity: 0.9, repeatCount: 10)
 ```
+
+Subscript syntax:
+```swift
+button.titleColors[.normal] = .black
+button.backgroundColors[.normal] = .white
+button.backgroundColors[.highlight] = .yellow
+button.borderColors[.normal] = .gray
+button.borderColors[[.highlight, .selected]] = .black
+```
+
 NKButton uses [NVActivityIndicatorView](https://github.com/ninjaprox/NVActivityIndicatorView) for loading indicator, so it currently has 32 animation types
 
 NKButton uses [FrameLayoutKit](https://github.com/kennic/FrameLayoutKit) for content layout so you can customize the layout easily
