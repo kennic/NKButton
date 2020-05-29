@@ -309,6 +309,7 @@ open class NKButton: UIButton {
 	fileprivate var shadowColorDict		: [String : UIColor] = [:]
 	fileprivate var gradientColorDict	: [String : [UIColor]] = [:]
 	fileprivate var borderSizeDict		: [String : CGFloat] = [:]
+	fileprivate var borderDashDict		: [String : [NSNumber]] = [:]
 	fileprivate var titleFontDict		: [String : UIFont] = [:]
 	
 	fileprivate var labelFrame: FrameLayout {
@@ -424,6 +425,7 @@ open class NKButton: UIButton {
 		let fillColor 		= backgroundColor(for: currentState) ?? backgroundColor(for: state) ?? backgroundColor(for: .normal)
 		let strokeColor 	= borderColor(for: currentState)
 		let strokeSize		= borderSize(for: currentState)
+		let lineDashPattern = borderDashPattern(for: currentState)
 		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
 		let path			= isLoading ? backgroundLayer.path : roundedPath.cgPath
 		
@@ -432,6 +434,7 @@ open class NKButton: UIButton {
 		backgroundLayer.strokeColor		= strokeColor?.cgColor
 		backgroundLayer.lineWidth		= strokeSize
 		backgroundLayer.miterLimit		= roundedPath.miterLimit
+		backgroundLayer.lineDashPattern = lineDashPattern
 		
 		flashLayer.path 				= path
 		flashLayer.fillColor 			= flashColor.cgColor
@@ -764,6 +767,12 @@ open class NKButton: UIButton {
 		setNeedsDisplay()
 	}
 	
+	open func setBorderDashPattern(_ value: [NSNumber]?, for state: UIControl.State) {
+		let key = borderDashKey(for: state)
+		borderDashDict[key] = value
+		setNeedsDisplay()
+	}
+	
 	open func backgroundColor(for state: UIControl.State) -> UIColor? {
 		let key = backgroundColorKey(for: state)
 		var result = bgColorDict[key]
@@ -798,6 +807,11 @@ open class NKButton: UIButton {
 		}
 		
 		return result
+	}
+	
+	open func borderDashPattern(for state: UIControl.State) -> [NSNumber]? {
+		let key = borderDashKey(for: state)
+		return borderDashDict[key]
 	}
 	
 	open func shadowColor(for state: UIControl.State) -> UIColor? {
@@ -840,6 +854,10 @@ open class NKButton: UIButton {
 	
 	fileprivate func borderSizeKey(for state: UIControl.State) -> String {
 		return "bs\(state.rawValue)"
+	}
+	
+	fileprivate func borderDashKey(for state: UIControl.State) -> String {
+		return "bd\(state.rawValue)"
 	}
 	
 	fileprivate func titleFontKey(for state: UIControl.State) -> String {
@@ -978,6 +996,10 @@ public extension NKButton {
 	
 	var borderSizes: UIControlStateValue<CGFloat> {
 		return UIControlStateValue<CGFloat>(getter: self.borderSize(for:), setter: self.setBorderSize(_:for:))
+	}
+	
+	var borderDashPatterns: UIControlStateValue<[NSNumber]> {
+		return UIControlStateValue<[NSNumber]>(getter: self.borderDashPattern(for:), setter: self.setBorderDashPattern(_:for:))
 	}
 	
 	var shadowColors: UIControlStateValue<UIColor> {

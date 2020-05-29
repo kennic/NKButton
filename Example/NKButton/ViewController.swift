@@ -98,8 +98,6 @@ class ViewController: UIViewController {
 		forgotButton.setTitleColor(.gray, for: .normal)
 		forgotButton.setTitleColor(.gray, for: .highlighted)
 		forgotButton.setTitleColor(.gray, for: .disabled)
-		forgotButton.setBorderColor(.gray, for: .normal)
-		forgotButton.borderSize = 1.0
 		forgotButton.showsTouchWhenHighlighted = true
 		forgotButton.titleLabel?.font = UIFont(name: "Helvetica", size: 14)
 		forgotButton.spacing = 5.0 // space between icon and title
@@ -109,6 +107,9 @@ class ViewController: UIViewController {
 		#if !canImport(NVActivityIndicatorView)
 		forgotButton.loadingIndicatorStyle = .gray
 		#endif
+		forgotButton.borderSizes[.normal] = 1
+		forgotButton.borderColors[.normal] = .gray
+		forgotButton.borderDashPatterns[.normal] = [2, 2]
 		
 		flashButton.flashColor = .red
 		flashButton.underlineTitleDisabled = true
@@ -159,7 +160,7 @@ class ViewController: UIViewController {
 							 NKButtonItem(title: "Section C")]
 		view.addSubview(buttonStack)
 		buttonStack.isRounded = true
-		frameLayout += buttonStack
+		frameLayout + buttonStack
     }
 	
 	override func viewDidLayoutSubviews() {
