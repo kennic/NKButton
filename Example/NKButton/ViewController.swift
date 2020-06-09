@@ -54,7 +54,7 @@ class ViewController: UIViewController {
 		loginButton.spacing = 10.0 // space between icon and title
 		loginButton.extendSize = CGSize(width: 0, height: 20)
 		loginButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-		loginButton.imageAlignment = .rightEdge(spacing: 50)
+		loginButton.imageAlignment = .rightEdge(spacing: 10)
 		loginButton.textAlignment = (.center, .right)
 		loginButton.isRoundedButton = false
 		
@@ -63,7 +63,6 @@ class ViewController: UIViewController {
 		facebookButton.setImage(facebookIcon, for: .highlighted)
 		facebookButton.setBackgroundColor(UIColor(red:0.45, green:0.59, blue:1.0, alpha:1.00), for: .highlighted)
 		facebookButton.spacing = 10.0 // space between icon and title
-//		facebookButton.transitionToCircleWhenLoading = true
 		facebookButton.loadingIndicatorAlignment = .atImage
 		facebookButton.underlineTitleDisabled = true
 		#if canImport(NVActivityIndicatorView)
