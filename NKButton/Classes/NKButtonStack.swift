@@ -36,9 +36,7 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	}
 	
 	public var buttons: [T] {
-		return frameLayout.frameLayouts.map { (layout) -> T in
-			return layout.targetView as! T
-		}
+		return frameLayout.frameLayouts.map( { return $0.targetView as! T })
 	}
 	
 	public var firstButton: T? {
