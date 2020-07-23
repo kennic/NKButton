@@ -168,8 +168,11 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		scrollView.frame = bounds
 		
 		var contentFrame = bounds
-		if contentSize.width > viewSize.width {
+		if frameLayout.axis == .horizontal, contentSize.width > viewSize.width {
 			contentFrame.size.width = contentSize.width
+		}
+		else if frameLayout.axis == .vertical, contentSize.height > viewSize.height {
+			contentFrame.size.height = contentSize.height
 		}
 		frameLayout.frame = contentFrame
 		
