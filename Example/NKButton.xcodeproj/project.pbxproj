@@ -34,7 +34,7 @@
 		93C3E1505DB4F9EF1F84B25D /* Pods-NKButton_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NKButton_Example.release.xcconfig"; path = "Target Support Files/Pods-NKButton_Example/Pods-NKButton_Example.release.xcconfig"; sourceTree = "<group>"; };
 		9C317DF4DBD9314503EFDB6A /* Pods-NKButton_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NKButton_Tests.release.xcconfig"; path = "Target Support Files/Pods-NKButton_Tests/Pods-NKButton_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		AB97E56E9BE9789826C230C1 /* Pods-NKButton_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NKButton_Example.debug.xcconfig"; path = "Target Support Files/Pods-NKButton_Example/Pods-NKButton_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		ECF7CAE7E2524B386CD28B7E /* NKButton.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = NKButton.podspec; path = ../NKButton.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		ECF7CAE7E2524B386CD28B7E /* NKButton.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = NKButton.podspec; path = ../NKButton.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

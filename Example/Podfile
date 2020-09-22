@@ -5,8 +5,4 @@ target 'NKButton_Example' do
   	pod 'NKButton', :path => '../'
 #  	pod 'NVActivityIndicatorView/AppExtension'
 
-  target 'NKButton_Tests' do
-    inherit! :search_paths
-    
-  end
 end
