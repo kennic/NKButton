@@ -276,6 +276,8 @@ open class NKButton: UIButton {
 	/** Alignment for loading indicator */
 	open var loadingIndicatorAlignment: NKButtonLoadingIndicatorAlignment = .center
 	
+	open var isFlashing: Bool = false
+	
 	/** The background view of the button */
 	open var backgroundView: UIView? = nil {
 		didSet {
@@ -688,6 +690,7 @@ open class NKButton: UIButton {
 	// MARK: -
 	
 	open func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.85, repeatCount: Int = 10) {
+		isFlashing = true
 		flashLayer.removeAnimation(forKey: "flashAnimation")
 		
 		let flash = CABasicAnimation(keyPath: "opacity")
@@ -700,6 +703,7 @@ open class NKButton: UIButton {
 	}
 	
 	open func stopFlashing() {
+		isFlashing = false
 		flashLayer.removeAnimation(forKey: "flashAnimation")
 	}
 	
