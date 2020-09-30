@@ -276,7 +276,10 @@ open class NKButton: UIButton {
 	/** Alignment for loading indicator */
 	open var loadingIndicatorAlignment: NKButtonLoadingIndicatorAlignment = .center
 	
-	open var isFlashing: Bool = false
+	private let flashAnimationKey = "flashAnimation"
+	open var isFlashing: Bool {
+		return flashLayer.animation(forKey: flashAnimationKey) != nil
+	}
 	
 	/** The background view of the button */
 	open var backgroundView: UIView? = nil {
@@ -689,9 +692,8 @@ open class NKButton: UIButton {
 	
 	// MARK: -
 	
-	open func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.85, repeatCount: Int = 10) {
-		isFlashing = true
-		flashLayer.removeAnimation(forKey: "flashAnimation")
+	open func startFlashing(flashDuration: TimeInterval = 0.5, intensity: Float = 0.85, repeatCount: Int = -1) {
+		flashLayer.removeAnimation(forKey: flashAnimationKey)
 		
 		let flash = CABasicAnimation(keyPath: "opacity")
 		flash.fromValue = 0.0
@@ -699,12 +701,11 @@ open class NKButton: UIButton {
 		flash.duration = flashDuration
 		flash.autoreverses = true
 		flash.repeatCount = repeatCount < 0 ? .infinity : Float(repeatCount)
-		flashLayer.add(flash, forKey: "flashAnimation")
+		flashLayer.add(flash, forKey: flashAnimationKey)
 	}
 	
 	open func stopFlashing() {
-		isFlashing = false
-		flashLayer.removeAnimation(forKey: "flashAnimation")
+		flashLayer.removeAnimation(forKey: flashAnimationKey)
 	}
 	
 	@available (iOS 13.4, *)
