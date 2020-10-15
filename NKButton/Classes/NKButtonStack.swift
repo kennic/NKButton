@@ -23,6 +23,12 @@ public struct NKButtonItem {
 	}
 }
 
+public enum NKButtonStackSelectionMode {
+	case momentary
+	case singleSelection
+	case multiSelection
+}
+
 public typealias NKButtonCreationBlock<T> = ((NKButtonItem, Int) -> T)
 public typealias NKButtonSelectionBlock<T> = ((T, NKButtonItem, Int) -> Void)
 
@@ -102,6 +108,24 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		}
 	}
 	
+	public var selectedIndexes: [Int] {
+		get {
+			var results = [Int]()
+			for button in buttons {
+				if button.isSelected {
+					results.append(button.tag)
+				}
+			}
+			
+			return results
+		}
+		set {
+			for button in buttons {
+				button.isSelected = newValue.contains(button.tag)
+			}
+		}
+	}
+	
 	public var axis: NKLayoutAxis {
 		get {
 			return frameLayout.axis
@@ -112,7 +136,14 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		}
 	}
 	
-	public var isMomentary: Bool = true
+	@available(*, deprecated, message: "Use `selectionMode` instead")
+	public var isMomentary = false {
+		didSet {
+			selectionMode = isMomentary ? .momentary : .singleSelection
+		}
+	}
+	
+	public var selectionMode: NKButtonStackSelectionMode = .singleSelection
 	
 	public var creationBlock: NKButtonCreationBlock<T>? = nil
 	public var configurationBlock: NKButtonSelectionBlock<T>? = nil
@@ -244,12 +275,16 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	
 	@objc fileprivate func onButtonSelected(_ sender: UIButton) {
 		let index = sender.tag
-		if isMomentary {
+		
+		if selectionMode == .singleSelection {
 			selectedIndex = index
 		}
+		else if selectionMode == .multiSelection {
+			sender.isSelected = !sender.isSelected
+		}
 		
-		if selectionBlock != nil, let item = items?[index], let button = sender as? T {
-			selectionBlock!(button, item, index)
+		if let item = items?[index], let button = sender as? T {
+			selectionBlock?(button, item, index)
 		}
 		
 		sendActions(for: .valueChanged)
