@@ -57,6 +57,7 @@ class ViewController: UIViewController {
 		loginButton.imageAlignment = .rightEdge(spacing: 10)
 		loginButton.textAlignment = (.center, .right)
 		loginButton.isRoundedButton = false
+		loginButton.transitionToCircleWhenLoading = true
 		
 		let facebookIcon = #imageLiteral(resourceName: "facebook")
 		facebookButton.setImage(facebookIcon, for: .normal)

@@ -236,23 +236,37 @@ open class NKButton: UIButton {
 			if isLoading {
 				showLoadingView()
 				
-				if hideImageWhileLoading {
-					imageView?.alpha = 0.0
-				}
-				
-				if hideTitleWhileLoading {
+				if transitionToCircleWhenLoading {
 					titleLabel?.alpha = 0.0
+					imageView?.alpha = 0.0
+					transition(toCircle: true)
+				}
+				else {
+					if hideImageWhileLoading {
+						imageView?.alpha = 0.0
+					}
+					
+					if hideTitleWhileLoading {
+						titleLabel?.alpha = 0.0
+					}
 				}
 			}
 			else {
 				hideLoadingView()
 				
-				if hideImageWhileLoading {
-					imageView?.alpha = 1.0
-				}
-				
-				if hideTitleWhileLoading {
+				if transitionToCircleWhenLoading {
 					titleLabel?.alpha = 1.0
+					imageView?.alpha = 1.0
+					transition(toCircle: false)
+				}
+				else {
+					if hideImageWhileLoading {
+						imageView?.alpha = 1.0
+					}
+					
+					if hideTitleWhileLoading {
+						titleLabel?.alpha = 1.0
+					}
 				}
 			}
 		}
@@ -263,6 +277,8 @@ open class NKButton: UIButton {
 	open var hideImageWhileLoading = false
 	/** titleLabel will be hidden when `isLoading` is true */
 	open var hideTitleWhileLoading = true
+	/** Button will animated to circle shape when set `isLoading = true`*/
+	open var transitionToCircleWhenLoading: Bool = false
 	#if canImport(NVActivityIndicatorView)
 	/** Style of loading indicator */
 	open var loadingIndicatorStyle: NVActivityIndicatorType = .ballPulse
@@ -432,7 +448,7 @@ open class NKButton: UIButton {
 		let strokeSize		= borderSize(for: currentState)
 		let lineDashPattern = borderDashPattern(for: currentState)
 		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
-		let path			= isLoading ? backgroundLayer.path : roundedPath.cgPath
+		let path			= transitionToCircleWhenLoading && isLoading ? backgroundLayer.path : roundedPath.cgPath
 		
 		backgroundLayer.path			= path
 		backgroundLayer.fillColor		= fillColor?.cgColor
@@ -895,6 +911,51 @@ open class NKButton: UIButton {
 		loadingView?.stopAnimating()
 		loadingView?.removeFromSuperview()
 		loadingView = nil
+	}
+	
+	fileprivate func transition(toCircle: Bool) {
+		backgroundLayer.removeAllAnimations()
+		shadowLayer.removeAllAnimations()
+		
+		let animation = CABasicAnimation(keyPath: "bounds.size.width")
+		
+		if toCircle {
+			animation.fromValue = frame.width
+			animation.toValue = frame.height
+			animation.duration = 0.1
+			#if swift(>=4.2)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+			#else
+			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			#endif
+			backgroundLayer.masksToBounds = true
+			backgroundLayer.cornerRadius = min(frame.width, frame.height)/2
+		}
+		else {
+			animation.fromValue = frame.height
+			animation.toValue = frame.width
+			animation.duration = 0.15
+			#if swift(>=4.2)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+			#else
+			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			#endif
+			
+			setNeedsLayout()
+			setNeedsDisplay()
+		}
+		
+		#if swift(>=4.2)
+		animation.fillMode = CAMediaTimingFillMode.forwards
+		#else
+		animation.fillMode = kCAFillModeForwards
+		#endif
+		animation.isRemovedOnCompletion = false
+		
+		backgroundLayer.add(animation, forKey: animation.keyPath)
+		shadowLayer.add(animation, forKey: animation.keyPath)
+		gradientLayer.add(animation, forKey: animation.keyPath)
+		flashLayer.add(animation, forKey: animation.keyPath)
 	}
 	
 	fileprivate func removeLabelUnderline() {
