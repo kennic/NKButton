@@ -974,45 +974,49 @@ public class UIControlStateValue<T> {
 }
 
 public extension NKButton {
-	
-	var titles: UIControlStateValue<String> {
-		return UIControlStateValue<String>.init(getter: self.title(for:), setter: self.setTitle(_:for:))
-	}
-	
-	var titleColors: UIControlStateValue<UIColor> {
-		return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
-	}
-	
-	var titleFonts: UIControlStateValue<UIFont> {
-		return UIControlStateValue<UIFont>(getter: self.titleFont(for:), setter: self.setTitleFont(_:for:))
-	}
-	
-	var images: UIControlStateValue<UIImage> {
-		return UIControlStateValue<UIImage>.init(getter: self.image, setter: self.setImage(_:for:))
-	}
-	
-	var backgroundColors: UIControlStateValue<UIColor> {
-		return UIControlStateValue<UIColor>.init(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
-	}
-	
-	var borderColors: UIControlStateValue<UIColor> {
-		return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
-	}
-	
-	var borderSizes: UIControlStateValue<CGFloat> {
-		return UIControlStateValue<CGFloat>(getter: self.borderSize(for:), setter: self.setBorderSize(_:for:))
-	}
-	
-	var borderDashPatterns: UIControlStateValue<[NSNumber]> {
-		return UIControlStateValue<[NSNumber]>(getter: self.borderDashPattern(for:), setter: self.setBorderDashPattern(_:for:))
-	}
-	
-	var shadowColors: UIControlStateValue<UIColor> {
-		return UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:))
-	}
-	
-	var gradientColors: UIControlStateValue<[UIColor]> {
-		return UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:))
-	}
-	
+    
+    var attributedTitles: UIControlStateValue<NSAttributedString> {
+        return UIControlStateValue<NSAttributedString>(getter: self.attributedTitle(for:), setter: self.setAttributedTitle(_:for:))
+    }
+    
+    var titles: UIControlStateValue<String> {
+        return UIControlStateValue<String>(getter: self.title(for:), setter: self.setTitle(_:for:))
+    }
+    
+    var titleColors: UIControlStateValue<UIColor> {
+        return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
+    }
+    
+    var titleFonts: UIControlStateValue<UIFont> {
+        return UIControlStateValue<UIFont>(getter: self.titleFont(for:), setter: self.setTitleFont(_:for:))
+    }
+    
+    var images: UIControlStateValue<UIImage> {
+        return UIControlStateValue<UIImage>.init(getter: self.image, setter: self.setImage(_:for:))
+    }
+    
+    var backgroundColors: UIControlStateValue<UIColor> {
+        return UIControlStateValue<UIColor>(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
+    }
+    
+    var borderColors: UIControlStateValue<UIColor> {
+        return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
+    }
+    
+    var borderSizes: UIControlStateValue<CGFloat> {
+        return UIControlStateValue<CGFloat>(getter: self.borderSize(for:), setter: self.setBorderSize(_:for:))
+    }
+    
+    var borderDashPatterns: UIControlStateValue<[NSNumber]> {
+        return UIControlStateValue<[NSNumber]>(getter: self.borderDashPattern(for:), setter: self.setBorderDashPattern(_:for:))
+    }
+    
+    var shadowColors: UIControlStateValue<UIColor> {
+        return UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:))
+    }
+    
+    var gradientColors: UIControlStateValue<[UIColor]> {
+        return UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:))
+    }
+    
 }
