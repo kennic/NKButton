@@ -686,6 +686,7 @@ open class NKButton: UIButton {
 			guard isHighlighted != oldValue else { return }
 			setNeedsDisplay()
 			
+//			#if os(iOS)
 //			if isHighlighted {
 //				if #available(iOS 10, *) {
 //					let generator = UIImpactFeedbackGenerator(style: .light)
@@ -693,6 +694,7 @@ open class NKButton: UIButton {
 //					generator.impactOccurred()
 //				}
 //			}
+//			#endif
 		}
 	}
 	
