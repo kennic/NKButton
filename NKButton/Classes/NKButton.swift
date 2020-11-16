@@ -39,9 +39,7 @@ open class NKButton: UIButton {
 	
 	/** Set/Get title of the button */
 	open var title: String? {
-		get {
-			return currentTitle
-		}
+		get { currentTitle }
 		set {
 			setTitle(newValue, for: .normal)
 			setNeedsLayout()
@@ -50,12 +48,9 @@ open class NKButton: UIButton {
 	
 	/** Space between image and text */
 	open var spacing: CGFloat {
-		get {
-			return contentFrameLayout.spacing
-		}
+		get { contentFrameLayout.spacing }
 		set {
 			contentFrameLayout.spacing = newValue
-			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -67,7 +62,6 @@ open class NKButton: UIButton {
 		}
 		set {
 			imageFrameLayout.minSize = newValue
-			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -79,7 +73,6 @@ open class NKButton: UIButton {
 		}
 		set {
 			imageFrameLayout.maxSize = newValue
-			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -91,7 +84,6 @@ open class NKButton: UIButton {
 		}
 		set {
 			imageFrameLayout.fixSize = newValue
-			contentFrameLayout.setNeedsLayout()
 			setNeedsLayout()
 		}
 	}
@@ -111,55 +103,46 @@ open class NKButton: UIButton {
 	/** Shadow radius */
 	open var shadowRadius: CGFloat = 0 {
 		didSet {
-			if shadowRadius != oldValue {
-				setNeedsDisplay()
-			}
+			guard shadowRadius != oldValue else { return }
+			setNeedsDisplay()
 		}
 	}
 	
 	/** Shadow opacity */
 	open var shadowOpacity: Float = 0.5 {
 		didSet {
-			if shadowOpacity != oldValue {
-				setNeedsDisplay()
-			}
+			guard shadowOpacity != oldValue else { return }
+			setNeedsDisplay()
 		}
 	}
 	
 	/** Shadow offset */
 	open var shadowOffset: CGSize = .zero {
 		didSet {
-			if shadowOffset != oldValue {
-				setNeedsDisplay()
-			}
+			guard shadowOffset != oldValue else { return }
+			setNeedsDisplay()
 		}
 	}
 	
 	/** Size of border */
 	open var borderSize: CGFloat {
-		get {
-			return borderSize(for: .normal)
-		}
-		set {
-			setBorderSize(newValue, for: .normal)
-		}
+		get { borderSize(for: .normal) }
+		set { setBorderSize(newValue, for: .normal) }
 	}
 	
 	/** Rounds both sides of the button */
 	open var isRoundedButton: Bool = false {
 		didSet {
-			if isRoundedButton != oldValue {
-				setNeedsLayout()
-			}
+			guard isRoundedButton != oldValue else { return }
+			setNeedsDisplay()
 		}
 	}
 	
 	/** If `true`, title label will not be underlined when `Settings > Accessibility > Button Shapes` is ON */
 	open var underlineTitleDisabled: Bool = false {
 		didSet {
-			if underlineTitleDisabled != oldValue {
-				setNeedsDisplay()
-			}
+			guard underlineTitleDisabled != oldValue else { return }
+			setNeedsDisplay()
 		}
 	}
 	
@@ -172,9 +155,7 @@ open class NKButton: UIButton {
 	
 	/** Text Horizontal Alignment */
 	open var textHorizontalAlignment: NKContentHorizontalAlignment {
-		get {
-			return labelFrame.horizontalAlignment
-		}
+		get { labelFrame.horizontalAlignment }
 		set {
 			resetLabelAlignment()
 			labelFrame.horizontalAlignment = newValue
@@ -184,9 +165,7 @@ open class NKButton: UIButton {
 	
 	/** Text Vertical Alignment */
 	open var textVerticalAlignment: NKContentVerticalAlignment {
-		get {
-			return labelFrame.verticalAlignment
-		}
+		get { labelFrame.verticalAlignment }
 		set {
 			resetLabelAlignment()
 			labelFrame.verticalAlignment = newValue
@@ -196,9 +175,7 @@ open class NKButton: UIButton {
 	
 	/** Text Alignment */
 	open var textAlignment: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
-		get {
-			return labelFrame.alignment
-		}
+		get { labelFrame.alignment }
 		set {
 			resetLabelAlignment()
 			labelFrame.alignment = newValue
@@ -207,9 +184,7 @@ open class NKButton: UIButton {
 	}
 	
 	override open var contentEdgeInsets: UIEdgeInsets {
-		get {
-			return contentFrameLayout.edgeInsets
-		}
+		get { contentFrameLayout.edgeInsets }
 		set {
 			contentFrameLayout.edgeInsets = newValue
 			setNeedsLayout()
@@ -405,6 +380,7 @@ open class NKButton: UIButton {
 		addGestureRecognizer(hoverGesture)
 	}
 	
+	/*
 	open override func setNeedsLayout() {
 		super.setNeedsLayout()
 		
@@ -412,6 +388,7 @@ open class NKButton: UIButton {
 		imageFrameLayout.setNeedsLayout()
 		labelFrameLayout.setNeedsLayout()
 	}
+	*/
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
 		let lastOverlapped = contentFrameLayout.isOverlapped
@@ -441,7 +418,7 @@ open class NKButton: UIButton {
 	override open func draw(_ rect: CGRect) {
 		super.draw(rect)
 		
-		let currentState = isHovering ? [state, .hovered] : state
+		let currentState 	= isHovering ? [state, .hovered] : state
 		let backgroundFrame = bounds
 		let fillColor 		= backgroundColor(for: currentState) ?? backgroundColor(for: state) ?? backgroundColor(for: .normal)
 		let strokeColor 	= borderColor(for: currentState)
@@ -511,9 +488,6 @@ open class NKButton: UIButton {
 		gradientLayer.frame = bounds
 		contentFrameLayout.frame = bounds
 		
-		contentFrameLayout.setNeedsLayout()
-		contentFrameLayout.layoutIfNeeded()
-		
 		if let imageView = imageView {
 			#if swift(>=4.2)
 			bringSubviewToFront(imageView)
@@ -523,13 +497,19 @@ open class NKButton: UIButton {
 		}
 		
 		if let loadingView = loadingView {
-			var point = CGPoint(x: 0, y: viewSize.height / 2)
-			switch (loadingIndicatorAlignment) {
-				case .left: 	point.x = loadingView.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
-				case .center: 	point.x = viewSize.width/2
-				case .right: 	point.x = viewSize.width - (loadingView.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
-				case .atImage:	point = imageView?.center ?? point
-				case .atPosition(let position): point = position
+			var point = CGPoint(x: 0, y: viewSize.height/2)
+			
+			if transitionToCircleWhenLoading {
+				point.x = viewSize.width/2
+			}
+			else {
+				switch (loadingIndicatorAlignment) {
+					case .left: 	point.x = loadingView.frame.size.width/2 + 5 + contentFrameLayout.edgeInsets.left
+					case .center: 	point.x = viewSize.width/2
+					case .right: 	point.x = viewSize.width - (loadingView.frame.size.width/2) - 5 -  contentFrameLayout.edgeInsets.right
+					case .atImage:	point = imageView?.center ?? point
+					case .atPosition(let position): point = position
+				}
 			}
 			
 			loadingView.center = point
