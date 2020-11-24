@@ -157,7 +157,6 @@ open class NKButton: UIButton {
 	open var textHorizontalAlignment: NKContentHorizontalAlignment {
 		get { labelFrame.horizontalAlignment }
 		set {
-			resetLabelAlignment()
 			labelFrame.horizontalAlignment = newValue
 			setNeedsLayout()
 		}
@@ -167,18 +166,15 @@ open class NKButton: UIButton {
 	open var textVerticalAlignment: NKContentVerticalAlignment {
 		get { labelFrame.verticalAlignment }
 		set {
-			resetLabelAlignment()
 			labelFrame.verticalAlignment = newValue
 			setNeedsLayout()
 		}
 	}
 	
 	/** Text Alignment */
-	open var textAlignment: (NKContentVerticalAlignment, NKContentHorizontalAlignment) {
-		get { labelFrame.alignment }
-		set {
-			resetLabelAlignment()
-			labelFrame.alignment = newValue
+	open var textAlignment: (vertical: NKContentVerticalAlignment, horizontal: NKContentHorizontalAlignment) = (.center, .center) {
+		didSet {
+			labelFrame.alignment = textAlignment
 			setNeedsLayout()
 		}
 	}
@@ -391,21 +387,12 @@ open class NKButton: UIButton {
 	*/
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
-		let lastOverlapped = contentFrameLayout.isOverlapped
-		if lastOverlapped {
-			resetLabelAlignment()
-		}
-		
 		var result = contentFrameLayout.sizeThatFits(size)
 		
 		result.width  += extendSize.width
 		result.height += extendSize.height
 		result.width  = min(result.width, size.width)
 		result.height = min(result.height, size.height)
-		
-		if lastOverlapped {
-			makeTitleRealCenter()
-		}
 		
 		return result
 	}
@@ -487,6 +474,7 @@ open class NKButton: UIButton {
 		flashLayer.frame = bounds
 		gradientLayer.frame = bounds
 		contentFrameLayout.frame = bounds
+		makeTitleRealCenter()
 		
 		if let imageView = imageView {
 			#if swift(>=4.2)
@@ -543,8 +531,6 @@ open class NKButton: UIButton {
 	}
 	
 	fileprivate func updateLayoutAlignment() {
-		resetLabelAlignment()
-		
 		switch imageAlignment {
 		case .left:
 			contentFrameLayout.axis = .horizontal
@@ -561,7 +547,6 @@ open class NKButton: UIButton {
 			imageFrameLayout.padding(top: 0, left: spacing, bottom: 0, right: 0)
 			contentFrameLayout.leftFrameLayout.targetView = imageFrameLayout
 			contentFrameLayout.rightFrameLayout.targetView = labelFrameLayout
-			makeTitleRealCenter()
 			break
 			
 		case .right:
@@ -579,7 +564,6 @@ open class NKButton: UIButton {
 			imageFrameLayout.padding(top: 0, left: 0, bottom: 0, right: spacing)
 			contentFrameLayout.leftFrameLayout.targetView = labelFrameLayout
 			contentFrameLayout.rightFrameLayout.targetView = imageFrameLayout
-			makeTitleRealCenter()
 			break
 			
 		case .top:
@@ -617,25 +601,33 @@ open class NKButton: UIButton {
 			break
 		}
 		
+		labelFrame.alignment = textAlignment
 		setNeedsDisplay()
 		setNeedsLayout()
 	}
 	
 	fileprivate func makeTitleRealCenter() {
-		switch imageAlignment {
-			case .leftEdge, .rightEdge:
-				contentFrameLayout.isOverlapped = true
-				labelFrameLayout.isIntrinsicSizeEnabled = false
-				labelFrameLayout.alignment = (.center, .center)
+		if textHorizontalAlignment == .center {
+			switch imageAlignment {
+				case .leftEdge(let padding): labelFrameLayout.translationX = -(imageFrameLayout.frame.size.width + padding + imageFrameLayout.edgeInsets.left + imageFrameLayout.edgeInsets.right)/2
+				case .rightEdge(let padding): labelFrameLayout.translationX = (imageFrameLayout.frame.size.width + padding + imageFrameLayout.edgeInsets.left + imageFrameLayout.edgeInsets.right)/2
+					
+				default: break
+			}
 			
-			default: break
+			if labelFrameLayout.translationX != 0, let label = titleLabel, let imageView = imageView, label.frame.intersects(imageView.frame) { labelFrameLayout.translationX = 0 }
 		}
-	}
-	
-	fileprivate func resetLabelAlignment() {
-		contentFrameLayout.isOverlapped = false
-		labelFrameLayout.isIntrinsicSizeEnabled = true
-		labelFrameLayout.alignment = (.fill, .fill)
+		
+		if textVerticalAlignment == .center {
+			switch imageAlignment {
+				case .topEdge(let padding): labelFrameLayout.translationY = -(imageFrameLayout.frame.size.height + padding + imageFrameLayout.edgeInsets.top + imageFrameLayout.edgeInsets.bottom)/2
+				case .bottomEdge(let padding): labelFrameLayout.translationY = (imageFrameLayout.frame.size.height + padding + imageFrameLayout.edgeInsets.top + imageFrameLayout.edgeInsets.bottom)/2
+					
+				default: break
+			}
+			
+			if labelFrameLayout.translationY != 0, let label = titleLabel, let imageView = imageView, label.frame.intersects(imageView.frame) { labelFrameLayout.translationY = 0 }
+		}
 	}
 	
 	// MARK: -
