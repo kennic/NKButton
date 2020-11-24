@@ -201,10 +201,16 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		var contentFrame = bounds
 		if frameLayout.axis == .horizontal, contentSize.width > viewSize.width {
 			contentFrame.size.width = contentSize.width
+			scrollView.delaysContentTouches = true
 		}
 		else if frameLayout.axis == .vertical, contentSize.height > viewSize.height {
 			contentFrame.size.height = contentSize.height
+			scrollView.delaysContentTouches = true
 		}
+		else {
+			scrollView.delaysContentTouches = false
+		}
+		
 		frameLayout.frame = contentFrame
 		
 		if isRounded {

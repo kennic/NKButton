@@ -623,7 +623,7 @@ open class NKButton: UIButton {
 	
 	fileprivate func makeTitleRealCenter() {
 		switch imageAlignment {
-			case .leftEdge(_), .rightEdge:
+			case .leftEdge, .rightEdge:
 				contentFrameLayout.isOverlapped = true
 				labelFrameLayout.isIntrinsicSizeEnabled = false
 				labelFrameLayout.alignment = (.center, .center)
