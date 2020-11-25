@@ -473,7 +473,9 @@ open class NKButton: UIButton {
 		backgroundLayer.frame = bounds
 		flashLayer.frame = bounds
 		gradientLayer.frame = bounds
+		
 		contentFrameLayout.frame = bounds
+		contentFrameLayout.layoutIfNeeded()
 		makeTitleRealCenter()
 		
 		if let imageView = imageView {
@@ -607,26 +609,21 @@ open class NKButton: UIButton {
 	}
 	
 	fileprivate func makeTitleRealCenter() {
-		if textHorizontalAlignment == .center {
-			switch imageAlignment {
-				case .leftEdge(let padding): labelFrameLayout.translationX = -(imageFrameLayout.frame.size.width + padding + imageFrameLayout.edgeInsets.left + imageFrameLayout.edgeInsets.right)/2
-				case .rightEdge(let padding): labelFrameLayout.translationX = (imageFrameLayout.frame.size.width + padding + imageFrameLayout.edgeInsets.left + imageFrameLayout.edgeInsets.right)/2
-					
-				default: break
-			}
-			
-			if labelFrameLayout.translationX != 0, let label = titleLabel, let imageView = imageView, label.frame.intersects(imageView.frame) { labelFrameLayout.translationX = 0 }
-		}
+		guard imageView?.image != nil else { return }
+		guard let titleLabel = titleLabel else { return }
 		
-		if textVerticalAlignment == .center {
+		if textHorizontalAlignment == .center {
+			var labelBound = titleLabel.frame
+			let contentBounds = bounds.inset(by: contentEdgeInsets)
+			let textSize = titleLabel.sizeThatFits(contentBounds.size)
+			labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
+			titleLabel.frame = labelBound
+			
 			switch imageAlignment {
-				case .topEdge(let padding): labelFrameLayout.translationY = -(imageFrameLayout.frame.size.height + padding + imageFrameLayout.edgeInsets.top + imageFrameLayout.edgeInsets.bottom)/2
-				case .bottomEdge(let padding): labelFrameLayout.translationY = (imageFrameLayout.frame.size.height + padding + imageFrameLayout.edgeInsets.top + imageFrameLayout.edgeInsets.bottom)/2
-					
+				case .leftEdge(_): if let imageView = imageView, imageView.frame.maxX > titleLabel.frame.minX { titleLabel.frame.origin.x = imageView.frame.maxX + spacing }
+				case .rightEdge(_): if let imageView = imageView, titleLabel.frame.maxX > imageView.frame.minX { titleLabel.frame.origin.x -= (titleLabel.frame.maxX - imageView.frame.minX) + spacing }
 				default: break
 			}
-			
-			if labelFrameLayout.translationY != 0, let label = titleLabel, let imageView = imageView, label.frame.intersects(imageView.frame) { labelFrameLayout.translationY = 0 }
 		}
 	}
 	
