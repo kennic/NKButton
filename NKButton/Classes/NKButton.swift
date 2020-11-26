@@ -613,15 +613,23 @@ open class NKButton: UIButton {
 		guard let titleLabel = titleLabel else { return }
 		
 		if textHorizontalAlignment == .center {
-			var labelBound = titleLabel.frame
-			let contentBounds = bounds.inset(by: contentEdgeInsets)
-			let textSize = titleLabel.sizeThatFits(contentBounds.size)
-			labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
-			titleLabel.frame = labelBound
-			
 			switch imageAlignment {
-				case .leftEdge(_): if let imageView = imageView, imageView.frame.maxX > titleLabel.frame.minX { titleLabel.frame.origin.x = imageView.frame.maxX + spacing }
-				case .rightEdge(_): if let imageView = imageView, titleLabel.frame.maxX > imageView.frame.minX { titleLabel.frame.origin.x -= (titleLabel.frame.maxX - imageView.frame.minX) + spacing }
+				case .leftEdge(_):
+					var labelBound = titleLabel.frame
+					let contentBounds = bounds.inset(by: contentEdgeInsets)
+					let textSize = titleLabel.sizeThatFits(contentBounds.size)
+					labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
+					titleLabel.frame = labelBound
+					if let imageView = imageView, imageView.frame.maxX > titleLabel.frame.minX { titleLabel.frame.origin.x = imageView.frame.maxX + spacing }
+					
+				case .rightEdge(_):
+					var labelBound = titleLabel.frame
+					let contentBounds = bounds.inset(by: contentEdgeInsets)
+					let textSize = titleLabel.sizeThatFits(contentBounds.size)
+					labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
+					titleLabel.frame = labelBound
+					if let imageView = imageView, titleLabel.frame.maxX > imageView.frame.minX { titleLabel.frame.origin.x -= (titleLabel.frame.maxX - imageView.frame.minX) + spacing }
+					
 				default: break
 			}
 		}
