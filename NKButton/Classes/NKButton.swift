@@ -42,6 +42,8 @@ open class NKButton: UIButton {
 		get { currentTitle }
 		set {
 			setTitle(newValue, for: .normal)
+			if state != .normal { setTitle(newValue, for: state) }
+			
 			setNeedsLayout()
 		}
 	}
@@ -387,6 +389,9 @@ open class NKButton: UIButton {
 	*/
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
+		titleLabel?.text = title(for: state)
+		imageView?.image = image(for: state)
+		
 		var result = contentFrameLayout.sizeThatFits(size)
 		
 		result.width  += extendSize.width
@@ -612,22 +617,22 @@ open class NKButton: UIButton {
 		guard imageView?.image != nil else { return }
 		guard let titleLabel = titleLabel else { return }
 		
+		func alignCenter() {
+			var labelBound = titleLabel.frame
+			let contentBounds = bounds.inset(by: contentEdgeInsets)
+			let textSize = titleLabel.sizeThatFits(contentBounds.size)
+			labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
+			titleLabel.frame = labelBound
+		}
+		
 		if textHorizontalAlignment == .center {
 			switch imageAlignment {
 				case .leftEdge(_):
-					var labelBound = titleLabel.frame
-					let contentBounds = bounds.inset(by: contentEdgeInsets)
-					let textSize = titleLabel.sizeThatFits(contentBounds.size)
-					labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
-					titleLabel.frame = labelBound
+					alignCenter()
 					if let imageView = imageView, imageView.frame.maxX > titleLabel.frame.minX { titleLabel.frame.origin.x = imageView.frame.maxX + spacing }
 					
 				case .rightEdge(_):
-					var labelBound = titleLabel.frame
-					let contentBounds = bounds.inset(by: contentEdgeInsets)
-					let textSize = titleLabel.sizeThatFits(contentBounds.size)
-					labelBound.origin.x = contentEdgeInsets.left + (contentBounds.size.width - textSize.width)/2
-					titleLabel.frame = labelBound
+					alignCenter()
 					if let imageView = imageView, titleLabel.frame.maxX > imageView.frame.minX { titleLabel.frame.origin.x -= (titleLabel.frame.maxX - imageView.frame.minX) + spacing }
 					
 				default: break
