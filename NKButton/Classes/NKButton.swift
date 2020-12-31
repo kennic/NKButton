@@ -306,7 +306,7 @@ open class NKButton: UIButton {
 	fileprivate var borderDashDict		: [String : [NSNumber]] = [:]
 	fileprivate var titleFontDict		: [String : UIFont] = [:]
 	
-	fileprivate var labelFrame: FrameLayout<UIView> {
+	fileprivate var labelFrame: FrameLayout {
 		return contentFrameLayout.leftFrameLayout.targetView == labelFrameLayout ? contentFrameLayout.leftFrameLayout : contentFrameLayout.rightFrameLayout
 	}
 	
