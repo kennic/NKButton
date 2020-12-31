@@ -306,7 +306,7 @@ open class NKButton: UIButton {
 	fileprivate var borderDashDict		: [String : [NSNumber]] = [:]
 	fileprivate var titleFontDict		: [String : UIFont] = [:]
 	
-	fileprivate var labelFrame: FrameLayout {
+	fileprivate var labelFrame: FrameLayout<UIView> {
 		return contentFrameLayout.leftFrameLayout.targetView == labelFrameLayout ? contentFrameLayout.leftFrameLayout : contentFrameLayout.rightFrameLayout
 	}
 	
@@ -943,11 +943,9 @@ open class NKButton: UIButton {
 	}
 	
 	fileprivate func removeLabelUnderline() {
-		let attributedText: NSMutableAttributedString? = titleLabel?.attributedText?.mutableCopy() as? NSMutableAttributedString
-		if attributedText != nil {
-			attributedText!.addAttribute(NSAttributedString.Key.underlineStyle, value: (0), range: NSRange(location: 0, length: attributedText!.length))
-			titleLabel?.attributedText = attributedText
-		}
+		guard let attributedText = titleLabel?.attributedText?.mutableCopy() as? NSMutableAttributedString else { return }
+		attributedText.addAttribute(NSAttributedString.Key.underlineStyle, value: (0), range: NSRange(location: 0, length: attributedText.length))
+		titleLabel?.attributedText = attributedText
 	}
 	
 	deinit {

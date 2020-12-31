@@ -40,7 +40,7 @@ class ViewController: UIViewController {
 	let twitterButton = NKButton.DefaultButton(title: "TWITTER", color: UIColor(red:0.42, green:0.67, blue:0.91, alpha:1.00))
 	let forgotButton = NKButton(title: "Forgot Password?", buttonColor: .clear)
 	let flashButton = NKButton.DefaultButton(title: "TAP TO FLASH", color: UIColor(red:0.61, green:0.11, blue:0.08, alpha:1.00))
-	var frameLayout: StackFrameLayout!
+	var frameLayout: StackFrameLayout<UIView>!
 
     override func viewDidLoad() {
         super.viewDidLoad()

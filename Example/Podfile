@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'NKButton_Example' do
-	pod 'FrameLayoutKit'
+  	pod 'FrameLayoutKit'
   	pod 'NKButton', :path => '../'
 #  	pod 'NVActivityIndicatorView/AppExtension'
 
