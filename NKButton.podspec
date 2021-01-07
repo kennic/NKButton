@@ -24,7 +24,7 @@ A fully customizable button that fills all lacked functions from UIButton like:
   s.social_media_url = 'https://twitter.com/namkennic'
   s.platform          = :ios, '9.0'
   s.ios.deployment_target = '9.0'
-  s.swift_version = '4.2'
+  s.swift_version = '5.0'
   
   s.source_files = 'NKButton/Classes/*.swift'
   s.frameworks = 'UIKit'
