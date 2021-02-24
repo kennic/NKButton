@@ -389,7 +389,13 @@ open class NKButton: UIButton {
 	*/
 	
 	override open func sizeThatFits(_ size: CGSize) -> CGSize {
-		titleLabel?.text = title(for: state)
+		if let attributedText = attributedTitle(for: state) {
+			titleLabel?.attributedText = attributedText
+		}
+		else {
+			titleLabel?.text = title(for: state)
+		}
+		
 		imageView?.image = image(for: state)
 		
 		var result = contentFrameLayout.sizeThatFits(size)
