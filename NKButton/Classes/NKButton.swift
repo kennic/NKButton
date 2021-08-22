@@ -59,9 +59,7 @@ open class NKButton: UIButton {
 	
 	/** Minimum size of imageView, set zero to width or height to disable */
 	open var imageMinSize: CGSize {
-		get {
-			return imageFrameLayout.minSize
-		}
+		get { imageFrameLayout.minSize }
 		set {
 			imageFrameLayout.minSize = newValue
 			setNeedsLayout()
@@ -70,9 +68,7 @@ open class NKButton: UIButton {
 	
 	/** Maximum size of imageView, set zero to width or height to disable */
 	open var imageMaxSize: CGSize {
-		get {
-			return imageFrameLayout.maxSize
-		}
+		get { imageFrameLayout.maxSize }
 		set {
 			imageFrameLayout.maxSize = newValue
 			setNeedsLayout()
@@ -81,11 +77,9 @@ open class NKButton: UIButton {
 	
 	/** Fixed size of imageView, set zero to width or height to disable */
 	open var imageFixSize: CGSize {
-		get {
-			return imageFrameLayout.fixSize
-		}
+		get {imageFrameLayout.fixedSize }
 		set {
-			imageFrameLayout.fixSize = newValue
+			imageFrameLayout.fixedSize = newValue
 			setNeedsLayout()
 		}
 	}
@@ -96,9 +90,8 @@ open class NKButton: UIButton {
 	/** Corner Radius, will be ignored if `isRoundedButton` is true */
 	open var cornerRadius: CGFloat = 0 {
 		didSet {
-			if cornerRadius != oldValue {
-				setNeedsDisplay()
-			}
+			guard cornerRadius != oldValue else { return }
+			setNeedsDisplay()
 		}
 	}
 	

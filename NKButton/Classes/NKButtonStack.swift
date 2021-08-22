@@ -54,9 +54,7 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	}
 	
 	open var spacing: CGFloat {
-		get {
-			return frameLayout.spacing
-		}
+		get { frameLayout.spacing }
 		set {
 			frameLayout.spacing = newValue
 			setNeedsLayout()
@@ -64,9 +62,7 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	}
 	
 	open var contentEdgeInsets: UIEdgeInsets {
-		get {
-			return frameLayout.edgeInsets
-		}
+		get { frameLayout.edgeInsets }
 		set {
 			frameLayout.edgeInsets = newValue
 			setNeedsLayout()
@@ -76,35 +72,28 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	open var cornerRadius: CGFloat = 0 {
 		didSet {
 			layer.cornerRadius = cornerRadius
-			layer.masksToBounds = cornerRadius > 0
+			if (cornerRadius > 0) { layer.masksToBounds = true }
 		}
 	}
 	
 	open var isRounded: Bool = false {
 		didSet {
-			if isRounded != oldValue {
-				setNeedsLayout()
-			}
+			guard isRounded != oldValue else { return }
+			setNeedsLayout()
 		}
 	}
 	
 	override open var frame: CGRect {
-		didSet {
-			setNeedsLayout()
-		}
+		didSet { setNeedsLayout() }
 	}
 	
 	override open var bounds: CGRect {
-		didSet {
-			setNeedsLayout()
-		}
+		didSet { setNeedsLayout() }
 	}
 	
 	public var selectedIndex: Int = -1 {
 		didSet {
-			for button in buttons {
-				button.isSelected = selectedIndex == button.tag
-			}
+			buttons.forEach { $0.isSelected = selectedIndex == $0.tag }
 		}
 	}
 	
@@ -120,16 +109,12 @@ open class NKButtonStack<T: UIButton>: UIControl {
 			return results
 		}
 		set {
-			for button in buttons {
-				button.isSelected = newValue.contains(button.tag)
-			}
+			buttons.forEach { $0.isSelected = newValue.contains($0.tag) }
 		}
 	}
 	
 	public var axis: NKLayoutAxis {
-		get {
-			return frameLayout.axis
-		}
+		get { frameLayout.axis }
 		set {
 			frameLayout.axis = newValue
 			setNeedsLayout()
@@ -144,7 +129,6 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	}
 	
 	public var selectionMode: NKButtonStackSelectionMode = .singleSelection
-	
 	public var creationBlock: NKButtonCreationBlock<T>? = nil
 	public var configurationBlock: NKButtonSelectionBlock<T>? = nil
 	public var selectionBlock: NKButtonSelectionBlock<T>? = nil
@@ -228,46 +212,7 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	// MARK: -
 	
 	fileprivate func updateLayout() {
-		if let buttonItems = items {
-			let total = buttonItems.count
-			
-			if frameLayout.frameLayouts.count > total {
-				frameLayout.enumerate({ (layout, index, stop) in
-					if Int(index) >= Int(total) {
-						if let button = layout.targetView as? T {
-							button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
-							button.removeFromSuperview()
-						}
-					}
-				})
-			}
-			
-			frameLayout.numberOfFrameLayouts = total
-			
-			frameLayout.enumerate({ (layout, idx, stop) in
-				let index = Int(idx)
-				let buttonItem = items![index]
-				let button = layout.targetView as? T ?? creationBlock?(buttonItem, index) ?? T()
-				button.tag = index
-				button.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
-				scrollView.addSubview(button)
-				layout.targetView = button
-				
-				guard let configurationBlock = configurationBlock else {
-					button.setTitle(buttonItem.title, for: .normal)
-					button.setImage(buttonItem.image, for: .normal)
-					
-					if buttonItem.selectedImage != nil {
-						button.setImage(buttonItem.selectedImage, for: .highlighted)
-						button.setImage(buttonItem.selectedImage, for: .selected)
-					}
-					return
-				}
-				
-				configurationBlock(button , buttonItem, index)
-			})
-		}
-		else {
+		guard let buttonItems = items else {
 			frameLayout.enumerate({ (layout, index, stop) in
 				if let button = layout.targetView as? T {
 					button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
@@ -276,7 +221,46 @@ open class NKButtonStack<T: UIButton>: UIControl {
 			})
 			
 			frameLayout.removeAll(autoRemoveTargetView: true)
+			return
 		}
+		
+		let total = buttonItems.count
+		
+		if frameLayout.frameLayouts.count > total {
+			frameLayout.enumerate({ (layout, index, stop) in
+				if Int(index) >= Int(total) {
+					if let button = layout.targetView as? T {
+						button.removeTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
+						button.removeFromSuperview()
+					}
+				}
+			})
+		}
+		
+		frameLayout.numberOfFrameLayouts = total
+		
+		frameLayout.enumerate({ (layout, idx, stop) in
+			let index = Int(idx)
+			let buttonItem = items![index]
+			let button = layout.targetView as? T ?? creationBlock?(buttonItem, index) ?? T()
+			button.tag = index
+			button.addTarget(self, action: #selector(onButtonSelected(_:)), for: .touchUpInside)
+			scrollView.addSubview(button)
+			layout.targetView = button
+			
+			guard let configurationBlock = configurationBlock else {
+				button.setTitle(buttonItem.title, for: .normal)
+				button.setImage(buttonItem.image, for: .normal)
+				
+				if buttonItem.selectedImage != nil {
+					button.setImage(buttonItem.selectedImage, for: .highlighted)
+					button.setImage(buttonItem.selectedImage, for: .selected)
+				}
+				return
+			}
+			
+			configurationBlock(button , buttonItem, index)
+		})
 	}
 	
 	@objc fileprivate func onButtonSelected(_ sender: UIButton) {
