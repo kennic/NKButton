@@ -76,7 +76,7 @@ open class NKButton: UIButton {
 	}
 	
 	/** Fixed size of imageView, set zero to width or height to disable */
-	open var imageFixSize: CGSize {
+	open var imageFixedSize: CGSize {
 		get {imageFrameLayout.fixedSize }
 		set {
 			imageFrameLayout.fixedSize = newValue
