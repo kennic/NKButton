@@ -150,18 +150,18 @@ open class NKButton: UIButton {
 	
 	/** Text Horizontal Alignment */
 	open var textHorizontalAlignment: NKContentHorizontalAlignment {
-		get { labelFrame.horizontalAlignment }
+		get { labelFrame.alignment.horizontal }
 		set {
-			labelFrame.horizontalAlignment = newValue
+			labelFrame.alignment.horizontal = newValue
 			setNeedsLayout()
 		}
 	}
 	
 	/** Text Vertical Alignment */
 	open var textVerticalAlignment: NKContentVerticalAlignment {
-		get { labelFrame.verticalAlignment }
+		get { labelFrame.alignment.vertical }
 		set {
-			labelFrame.verticalAlignment = newValue
+			labelFrame.alignment.vertical = newValue
 			setNeedsLayout()
 		}
 	}
