@@ -139,9 +139,15 @@ class ViewController: UIViewController {
 		// Example of NKButtonStack usage:
 		
 		let buttonStack = NKButtonStack<NKButton>()
+		buttonStack.backgroundColor = .systemRed
+		buttonStack.borderSize = 2
+		buttonStack.borderColor = .systemRed
+		buttonStack.shadowColor = .gray
+		buttonStack.shadowRadius = 4
+		buttonStack.shadowOpacity = 1.0
 		
 		buttonStack.configurationBlock = { (button, item, index) in
-			button.backgroundColors[.normal] = .brown
+			button.backgroundColors[.normal] = .lightGray
 			button.backgroundColors[.highlighted] = .gray
 			button.backgroundColors[.selected] = .red
 			button.backgroundColors[[.selected, .highlighted]] = .green

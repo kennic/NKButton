@@ -71,8 +71,75 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	
 	open var cornerRadius: CGFloat = 0 {
 		didSet {
-			layer.cornerRadius = cornerRadius
-			if (cornerRadius > 0) { layer.masksToBounds = true }
+			guard cornerRadius != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Shadow color */
+	open var shadowColor: UIColor? = nil {
+		didSet {
+			guard shadowColor != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Shadow radius */
+	open var shadowRadius: CGFloat = 0 {
+		didSet {
+			guard shadowRadius != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Shadow opacity */
+	open var shadowOpacity: Float = 0.5 {
+		didSet {
+			guard shadowOpacity != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Shadow offset */
+	open var shadowOffset: CGSize = .zero {
+		didSet {
+			guard shadowOffset != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Border color */
+	open var borderColor: UIColor? = nil {
+		didSet {
+			guard borderColor != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Size of border */
+	open var borderSize: CGFloat = 0 {
+		didSet {
+			guard borderSize != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Border dash pattern */
+	open var borderDashPattern: [NSNumber]? = nil {
+		didSet {
+			guard borderDashPattern != oldValue else { return }
+			setNeedsDisplay()
+		}
+	}
+	
+	/** Border color */
+	private var _backgroundColor: UIColor? = nil
+	open override var backgroundColor: UIColor?{
+		get { _backgroundColor }
+		set {
+			_backgroundColor = newValue
+			setNeedsDisplay()
+			super.backgroundColor = .clear
 		}
 	}
 	
@@ -136,6 +203,9 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	public let scrollView = UIScrollView()
 	public let frameLayout = StackFrameLayout(axis: .horizontal, distribution: .equal)
 	
+	fileprivate let shadowLayer 	= CAShapeLayer()
+	fileprivate let backgroundLayer = CAShapeLayer()
+	
 	// MARK: -
 	
 	convenience public init(items: [NKButtonItem], axis: NKLayoutAxis = .horizontal) {
@@ -149,6 +219,9 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	
 	public init() {
 		super.init(frame: .zero)
+		
+		layer.addSublayer(shadowLayer)
+		layer.addSublayer(backgroundLayer)
 		
 		frameLayout.spacing = 1.0
 		frameLayout.isIntrinsicSizeEnabled = true
@@ -174,8 +247,43 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		return frameLayout.sizeThatFits(size)
 	}
 	
+	override open func draw(_ rect: CGRect) {
+		super.draw(rect)
+		
+		let backgroundFrame = bounds
+		let fillColor 		= backgroundColor
+		let strokeColor 	= borderColor
+		let strokeSize		= borderSize
+		let roundedPath 	= UIBezierPath(roundedRect: backgroundFrame, cornerRadius: cornerRadius)
+		let path			= roundedPath.cgPath
+		
+		backgroundLayer.path			= path
+		backgroundLayer.fillColor		= fillColor?.cgColor
+		backgroundLayer.strokeColor		= strokeColor?.cgColor
+		backgroundLayer.lineWidth		= strokeSize
+		backgroundLayer.miterLimit		= roundedPath.miterLimit
+		backgroundLayer.lineDashPattern = borderDashPattern
+		
+		if let shadowColor = shadowColor {
+			shadowLayer.isHidden 		= false
+			shadowLayer.path 			= path
+			shadowLayer.shadowPath 		= path
+			shadowLayer.fillColor 		= shadowColor.cgColor
+			shadowLayer.shadowColor 	= shadowColor.cgColor
+			shadowLayer.shadowRadius 	= shadowRadius
+			shadowLayer.shadowOpacity 	= shadowOpacity
+			shadowLayer.shadowOffset 	= shadowOffset
+		}
+		else {
+			shadowLayer.isHidden = true
+		}
+	}
+	
 	override open func layoutSubviews() {
 		super.layoutSubviews()
+		
+		shadowLayer.frame = bounds
+		backgroundLayer.frame = bounds
 		
 		let viewSize = bounds.size
 		let contentSize = frameLayout.sizeThatFits(CGSize(width: CGFloat.infinity, height: CGFloat.infinity))
@@ -201,12 +309,28 @@ open class NKButtonStack<T: UIButton>: UIControl {
 			cornerRadius = viewSize.height / 2
 			setNeedsDisplay()
 		}
+		
+		if cornerRadius > 0 {
+			scrollView.layer.cornerRadius = cornerRadius
+			scrollView.layer.masksToBounds = true
+		}
+		else {
+			scrollView.layer.cornerRadius = 0
+			scrollView.layer.masksToBounds = false
+		}
 	}
 	
 	// MARK: -
 	
 	public func button(at index: Int) -> T? {
 		return frameLayout.frameLayout(at: index)?.targetView as? T
+	}
+	
+	open func setShadow(color: UIColor?, radius: CGFloat, opacity: Float = 1.0, offset: CGSize = .zero) {
+		self.shadowColor = color
+		self.shadowOpacity = opacity
+		self.shadowRadius = radius
+		self.shadowOffset = offset
 	}
 	
 	// MARK: -
