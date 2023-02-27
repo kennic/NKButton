@@ -299,9 +299,7 @@ open class NKButton: UIButton {
 	fileprivate var borderDashDict		: [String : [NSNumber]] = [:]
 	fileprivate var titleFontDict		: [String : UIFont] = [:]
 	
-	fileprivate var labelFrame: FrameLayout {
-		return contentFrameLayout.leftFrameLayout.targetView == labelFrameLayout ? contentFrameLayout.leftFrameLayout : contentFrameLayout.rightFrameLayout
-	}
+	fileprivate var labelFrame: FrameLayout { contentFrameLayout.leftFrameLayout.targetView == labelFrameLayout ? contentFrameLayout.leftFrameLayout : contentFrameLayout.rightFrameLayout }
 	
 	// MARK: -
 	
@@ -309,17 +307,9 @@ open class NKButton: UIButton {
 		self.init()
 		self.title = title
 		
-		if let color = titleColor {
-			setTitleColor(color, for: .normal)
-		}
-		
-		if let color = buttonColor {
-			setBackgroundColor(color, for: .normal)
-		}
-		
-		if let color = shadowColor {
-			setShadowColor(color, for: .normal)
-		}
+		if let color = titleColor { setTitleColor(color, for: .normal) }
+		if let color = buttonColor { setBackgroundColor(color, for: .normal) }
+		if let color = shadowColor { setShadowColor(color, for: .normal) }
 	}
 	
 	public init() {
@@ -458,19 +448,13 @@ open class NKButton: UIButton {
 			gradientLayer.colors = nil
 		}
 		
-		if let titleFont = titleFont(for: currentState) {
-			titleLabel?.font = titleFont
-		}
-		
-		if underlineTitleDisabled {
-			removeLabelUnderline()
-		}
+		if let titleFont = titleFont(for: currentState) { titleLabel?.font = titleFont }
+		if underlineTitleDisabled { removeLabelUnderline() }
 	}
 	
 	override open func layoutSubviews() {
 		super.layoutSubviews()
 		
-		let bounds = self.bounds
 		let viewSize = bounds.size
 		
 		shadowLayer.frame = bounds
@@ -1006,59 +990,23 @@ public class UIControlStateValue<T> {
 	}
 	
 	public subscript(state: UIControl.State) -> T? {
-		get {
-			return getter(state)
-		}
-		set {
-			setter(newValue, state)
-		}
+		get { getter(state) }
+		set { setter(newValue, state) }
 	}
 }
 
 public extension NKButton {
     
-    var attributedTitles: UIControlStateValue<NSAttributedString> {
-        return UIControlStateValue<NSAttributedString>(getter: self.attributedTitle(for:), setter: self.setAttributedTitle(_:for:))
-    }
-    
-    var titles: UIControlStateValue<String> {
-        return UIControlStateValue<String>(getter: self.title(for:), setter: self.setTitle(_:for:))
-    }
-    
-    var titleColors: UIControlStateValue<UIColor> {
-        return UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:))
-    }
-    
-    var titleFonts: UIControlStateValue<UIFont> {
-        return UIControlStateValue<UIFont>(getter: self.titleFont(for:), setter: self.setTitleFont(_:for:))
-    }
-    
-    var images: UIControlStateValue<UIImage> {
-        return UIControlStateValue<UIImage>.init(getter: self.image, setter: self.setImage(_:for:))
-    }
-    
-    var backgroundColors: UIControlStateValue<UIColor> {
-        return UIControlStateValue<UIColor>(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:))
-    }
-    
-    var borderColors: UIControlStateValue<UIColor> {
-        return UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:))
-    }
-    
-    var borderSizes: UIControlStateValue<CGFloat> {
-        return UIControlStateValue<CGFloat>(getter: self.borderSize(for:), setter: self.setBorderSize(_:for:))
-    }
-    
-    var borderDashPatterns: UIControlStateValue<[NSNumber]> {
-        return UIControlStateValue<[NSNumber]>(getter: self.borderDashPattern(for:), setter: self.setBorderDashPattern(_:for:))
-    }
-    
-    var shadowColors: UIControlStateValue<UIColor> {
-        return UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:))
-    }
-    
-    var gradientColors: UIControlStateValue<[UIColor]> {
-        return UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:))
-    }
+    var attributedTitles: UIControlStateValue<NSAttributedString> { UIControlStateValue<NSAttributedString>(getter: self.attributedTitle(for:), setter: self.setAttributedTitle(_:for:)) }
+    var titles: UIControlStateValue<String> { UIControlStateValue<String>(getter: self.title(for:), setter: self.setTitle(_:for:)) }
+    var titleColors: UIControlStateValue<UIColor> { UIControlStateValue<UIColor>(getter: self.titleColor(for:), setter: self.setTitleColor(_:for:)) }
+    var titleFonts: UIControlStateValue<UIFont> { UIControlStateValue<UIFont>(getter: self.titleFont(for:), setter: self.setTitleFont(_:for:)) }
+    var images: UIControlStateValue<UIImage> { UIControlStateValue<UIImage>.init(getter: self.image, setter: self.setImage(_:for:)) }
+    var backgroundColors: UIControlStateValue<UIColor> { UIControlStateValue<UIColor>(getter: self.backgroundColor(for:), setter: self.setBackgroundColor(_:for:)) }
+    var borderColors: UIControlStateValue<UIColor> { UIControlStateValue<UIColor>(getter: self.borderColor(for:), setter: self.setBorderColor(_:for:)) }
+    var borderSizes: UIControlStateValue<CGFloat> { UIControlStateValue<CGFloat>(getter: self.borderSize(for:), setter: self.setBorderSize(_:for:)) }
+    var borderDashPatterns: UIControlStateValue<[NSNumber]> { UIControlStateValue<[NSNumber]>(getter: self.borderDashPattern(for:), setter: self.setBorderDashPattern(_:for:)) }
+    var shadowColors: UIControlStateValue<UIColor> { UIControlStateValue<UIColor>(getter: self.shadowColor(for:), setter: self.setShadowColor(_:for:)) }
+    var gradientColors: UIControlStateValue<[UIColor]> { UIControlStateValue<[UIColor]>(getter: self.gradientColor(for:), setter: self.setGradientColor(_:for:)) }
     
 }

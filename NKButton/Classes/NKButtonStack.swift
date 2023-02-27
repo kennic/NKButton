@@ -29,8 +29,8 @@ public enum NKButtonStackSelectionMode {
 	case multiSelection
 }
 
-public typealias NKButtonCreationBlock<T> = ((NKButtonItem, Int) -> T)
-public typealias NKButtonSelectionBlock<T> = ((T, NKButtonItem, Int) -> Void)
+public typealias NKButtonCreationBlock<T> = (NKButtonItem, Int) -> T
+public typealias NKButtonSelectionBlock<T> = (T, NKButtonItem, Int) -> Void
 
 open class NKButtonStack<T: UIButton>: UIControl {
 	
@@ -41,17 +41,9 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		}
 	}
 	
-	public var buttons: [T] {
-		return frameLayout.frameLayouts.map( { return $0.targetView as! T })
-	}
-	
-	public var firstButton: T? {
-		return frameLayout.firstFrameLayout?.targetView as? T
-	}
-	
-	public var lastButton: T? {
-		return frameLayout.lastFrameLayout?.targetView as? T
-	}
+	public var buttons: [T] { frameLayout.frameLayouts.map( { return $0.targetView as! T }) }
+	public var firstButton: T? { frameLayout.firstFrameLayout?.targetView as? T }
+	public var lastButton: T? { frameLayout.lastFrameLayout?.targetView as? T }
 	
 	open var spacing: CGFloat {
 		get { frameLayout.spacing }
@@ -165,19 +157,8 @@ open class NKButtonStack<T: UIButton>: UIControl {
 	}
 	
 	public var selectedIndexes: [Int] {
-		get {
-			var results = [Int]()
-			for button in buttons {
-				if button.isSelected {
-					results.append(button.tag)
-				}
-			}
-			
-			return results
-		}
-		set {
-			buttons.forEach { $0.isSelected = newValue.contains($0.tag) }
-		}
+		get { buttons.filter { $0.isSelected }.map { $0.tag } }
+		set { buttons.forEach { $0.isSelected = newValue.contains($0.tag) } }
 	}
 	
 	public var axis: NKLayoutAxis {
@@ -331,6 +312,24 @@ open class NKButtonStack<T: UIButton>: UIControl {
 		self.shadowOpacity = opacity
 		self.shadowRadius = radius
 		self.shadowOffset = offset
+	}
+	
+	@discardableResult
+	public func creation(_ block: @escaping NKButtonCreationBlock<T>) -> Self {
+		creationBlock = block
+		return self
+	}
+	
+	@discardableResult
+	public func configuration(_ block: @escaping NKButtonSelectionBlock<T>) -> Self {
+		configurationBlock = block
+		return self
+	}
+	
+	@discardableResult
+	public func selection(_ block: @escaping NKButtonSelectionBlock<T>) -> Self {
+		selectionBlock = block
+		return self
 	}
 	
 	// MARK: -

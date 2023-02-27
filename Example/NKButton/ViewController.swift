@@ -146,7 +146,7 @@ class ViewController: UIViewController {
 		buttonStack.shadowRadius = 4
 		buttonStack.shadowOpacity = 1.0
 		
-		buttonStack.configurationBlock = { (button, item, index) in
+		buttonStack.configuration { button, item, index in
 			button.backgroundColors[.normal] = .lightGray
 			button.backgroundColors[.highlighted] = .gray
 			button.backgroundColors[.selected] = .red
@@ -156,9 +156,8 @@ class ViewController: UIViewController {
 			button.setTitleFont(.systemFont(ofSize: 15, weight: .bold), for: .selected)
 			button.extendSize = CGSize(width: 20, height: 20)
 		}
-		
-		buttonStack.selectionBlock = { (button, item, index) in
-			print("Selected: \(button)")
+		.selection { button, item, index in
+			print("Selected: \(index) - \(item)")
 		}
 		
 		buttonStack.items = [NKButtonItem(title: "Section A"),
