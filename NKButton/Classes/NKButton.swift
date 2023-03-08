@@ -463,7 +463,7 @@ open class NKButton: UIButton {
 		gradientLayer.frame = bounds
 		
 		contentFrameLayout.frame = bounds
-		contentFrameLayout.layoutIfNeeded()
+		contentFrameLayout.layoutSubviews()
 		makeTitleRealCenter()
 		
 		if let imageView = imageView {
