@@ -12,7 +12,7 @@ let package = Package(
             targets: ["NKButton"]),
     ],
     dependencies: [
-		.package(url: "https://github.com/kennic/FrameLayoutKit.git", .branch("master")),
+		.package(url: "https://github.com/kennic/FrameLayoutKit.git", .upToNextMajor(from: "7.0.5")),
 		.package(url: "https://github.com/ninjaprox/NVActivityIndicatorView.git", .upToNextMajor(from: "4.8.0")),
     ],
     targets: [
