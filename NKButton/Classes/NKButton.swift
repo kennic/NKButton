@@ -691,7 +691,7 @@ open class NKButton: UIButton {
 		flashLayer.removeAnimation(forKey: flashAnimationKey)
 	}
 	
-	@available (iOS 13.4, *)
+       @available(iOS 13.4, *)
 	open func enablePointerInteraction(insets: CGFloat = -5) {
 		isPointerInteractionEnabled = true
 		pointerStyleProvider = { (button, effect, shape) in
