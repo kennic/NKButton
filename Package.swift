@@ -19,7 +19,6 @@ let package = Package(
         .target(
             name: "NKButton",
             dependencies: ["FrameLayoutKit", "NVActivityIndicatorView"],
-			path: "NKButton/Classes",
-			exclude: ["Example"])
+            path: "NKButton/Classes")
     ]
 )
